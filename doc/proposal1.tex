@@ -6,6 +6,7 @@
 \usepackage{naaclhlt2012}
 \usepackage{times}
 \usepackage{latexsym}
+\usepackage{amsmath}
 \setlength\titlebox{6.5cm}    % Expanding the titlebox
 
 \title{Role Recognition for Multi-part Dialogue: A Combined Global and Local Approach}
@@ -22,24 +23,24 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-  
+We proposed a new model to do role recognition for multi-part dialogue. It relies on two observations. Firstly, a speaker's role doesn't change during a conversation; secondly, all the defined roles must be assigned to the speakers. In this way, a combined global and local approach is proposed.
+
 \end{abstract}
 
 \section{Introduction}
 
 ``People do not interact with one another as anonymous beings. They come together in the context of specific environments and with specific purposes" \cite{Tischler:1990}. As an example, people involved in multi-part dialogue usually play certain roles. For example, Radio Broadcasts
 
-Speaker role is an important cue to the structure dialogue. It can be benefit to role-based summerization \cite{Vinciarelli:2006}, semantical coherent segmentation, information retrieval \cite{Weng:2007,Knapp:1972}, etc.
+Speaker role is an important cue to the structure dialogue. It can be benefit to role-based summarization \cite{Vinciarelli:2006}, semantically coherent segmentation, information retrieval \cite{Weng:2007,Knapp:1972}, etc.
 
-Role recognition is the task of automatically recognizing roles of participants in an interaction
-recording. The goal is to assign to every participant in the recording of an interaction
+Role recognition is the task of automatically recognizing roles of participants in an interaction recording. The goal is to assign to every participant in the recording of an interaction
 (usually and audio recording or video recording) a role \cite{Salamin:2013}.
 
-In this paper, we will propose a new method for role recognition, which combines both the global and local constraints. There are two intuitions behind: firstly, during a converstion, the role of a participant doesn't change; secondly, the defined roles should be taken evenly among the participants. Take a two-person interview for example. Firstly, a interviewer is always interviewing during the conversation; Secondly, if one is the interviewer and the other must be the interviewee.
+In this paper, we will propose a new method for role recognition, which combines both the global and local constraints. There are two intuitions behind: firstly, during a conversation, the role of a participant doesn't change; secondly, the defined roles should be taken evenly among the participants. Take a two-person interview for example. Firstly, an interviewer is always interviewing during the conversation; Secondly, if one is the interviewer and the other must be the interviewee.
 
 \section{Related Work}
 
-Barzilay et al. \shortcite{Barzilay:2000} exploited the lexical information (from ASR transcriptions) to identify 3 type of roles: Anchor, Journalist, Guest speakers in news broadcast.
+Barzilay et al. \shortcite{Barzilay:2000} exploited the lexical information (from ASR transcriptions) to identify 3 types of roles: Anchor, Journalist, Guest speakers in news broadcast.
 
 Garg et al. \shortcite{Garg:2008} identified four predefined roles for multi-part meetings. It combined lexical features and social network (SNA) based on linear model. 
 They also extracted features from the social network \cite{Salamin:2009}. 
@@ -52,59 +53,87 @@ The corpus I will use is the AMI
 corpus \cite{McCowan:2005}, as same as one used in \cite{Garg:2008,Salamin:2009,Salamin:2010}.
 
 The AMI corpus a collection of 138 meeting recordings for a total
-of 45 hours and 38 minutes of material in a simulated environment. In each meeting, four partici-
-pants play the following roles: the Project Man-
-ager (PM), the Marketing Expert (ME), the User Interface
-Expert (UI), and the Industrial Designer (ID). Each par-
-ticipant plays a different role, and all roles are represented
-in each meeting. The same person can play different roles
-in different meetings, and the ratio of meeting time that
-each role accounts for, on average, is reported in Table \ref{table:corpus}.
+of 45 hours and 38 minutes of material in a simulated environment. In each meeting, four participants play the following roles: the Project Man-ager (PM), the Marketing Expert (ME), the User Interface Expert (UI), and the Industrial Designer (ID). Each participant plays a different role, and all roles are represented in each meeting. The same person can play different roles in different meetings, and the ratio of meeting time that each role accounts for, on average, is reported in Table \ref{table:corpus}.
 
 Currently, the state-of-art accuracy is 67.9\% on the AMI meeting corpus \cite{Garg:2008,Salamin:2013} by combining lexical information and social network analysis.
 
 \begin{table}[!htb] 
 \centering 
 \input{corpus.tex} 
-\caption{Role distribution.} 
+\caption{Role distribution in the AMI corpus.} 
 \label{table:corpus} 
 \end{table} 
 
 \section{Methodology}
-\subsection{ILP}
+\subsection{Local Model}
+For each meeting $M$, let $N$ be the total number of utterances.
 
-In this experiment, we assume that the speakers are 
+\begin{itemize}
+  \item[] $u = u_1, u_2, \ldots, u_N$ are the utterance sequence.
+  \item[] $s = s_1, s_2, \ldots, s_N$ are the speaker sequence.
+  \item[] $r = r_1, r_2, \ldots, r_N$ are the speaker sequence.
+\end{itemize}
 
+Where, speaker $s_i$ said $u_i$, who has the role $r_i$.
 
+The task is to assign the speakers to defined roles. Assume the role set is $R$ and the speaker set is $S$.
+
+For the local model, we can estimate the probability for a role $r_i$ given the utterance $u_i$.
+$$P(r_i|u_i)$$
+
+A simple local model could be the lexical model used in \cite{Garg:2008}.
+
+\subsection{Global Model}
+One of the global models could be Integer Linear Programming (ILP).
+The objective is to maximize the probability:
+$$P(r|u)$$
+If we assume utterances are independent with each other, then
+$$P(r|u)=\prod_{i=1}^N P(r_i|u_i)$$
+
+If we want to maximize the log of this probability, the objective function becomes to:
+$$max \sum_{i=1}^N log\left( P(r_i|u_i) \right)$$
+
+$P(r_i|u_i)$ is the local model.
+
+Assume there are k different roles, then $r_i$ could be one of the k roles. $r_i$ can be formulized as a k-length vector, 
+$$ r_i = <r_{i1}, r_{i2},\ldots, r_{ik}> $$
+
+where, 
+$$r_{ij} \in \{0, 1\}$$
+$$\sum_{j=1}^k r_{ij} = 1$$
+
+The assumption that a speaker's role doesn't change can be formulized as
+$$\forall i, j\ r_i = r_j\text{ if }s_i = s_j $$
+
+The assumption that all the roles must be assigned can be formulized as
+$$\forall j \sum_{i=1}^N r_{ij} \ge 1$$
+
+In this experiment, we assume that the speakers are known. We can relax the assumption in the future.
 
 \section{Timeline}
 
-\noindent \emph{Jan 12 - Jan 20}
+\noindent \emph{Sep 09 - Sep 22}
 \begin{itemize}
+  \item survey the related work regarding role recognition
   \item understanding the data, know how to extract and use the data
-  \item survey the related work regarding uncertainty prediction based on text
 \end{itemize}
 
-\noindent \emph{Jan 21 - Feb 8}
+\noindent \emph{Sep 23 -  Oct 20}
 \begin{itemize}
-  \item coding the rule-based methods
-  \item extract the unigram, bigram and trigram features
-  \item prelim results based this simple lexical features using Weka
-  \item present the prelim results
+  \item implement the method in \cite{Garg:2008} using the manual transcription, the lexical model will be used as the local model
+  \item do Speech Recognition (SR)
+  \item run the local model on SR results
 \end{itemize}
 
-\noindent \emph{Feb 9 - March 9}
+\noindent \emph{Oct 21 - Nov 9}
 \begin{itemize}
-  \item based on the suggestions, improve the model
-  \item develop more lexical features
-  \item extract other features, such as syntax, semantic
+  \item implement ILP global model, using the manual speaker segmentation
 \end{itemize}
 
-\noindent \emph{March 10 - April 20}
+\noindent \emph{Nov 10 - Dec 12}
 \begin{itemize}
-  \item improve the model based on new features
-  \item anaylze the confusion matrix of the model and improve the model based on the results
-  \item write the workshop-like paper
+  \item propose a model without the manual speaker segmentation
+  \item try other global model such as Bayes network, improved social network
 \end{itemize}
 
 \section*{Acknowledgments}
