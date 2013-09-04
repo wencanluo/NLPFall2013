@@ -1,9 +1,9 @@
 review:
-	latex proposal1.tex
+	latex proposal2.tex
 	#bibtex *.aux
-	latex proposal1.tex
-	latex proposal1.tex
-	dvipdf proposal1.dvi
+	latex proposal2.tex
+	latex proposal2.tex
+	dvipdf proposal2.dvi
 	
 clean:
 	rm *.aux
