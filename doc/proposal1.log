@@ -1,13 +1,25 @@
-This is TeX, Version 3.14159 (Web2C 7.4.5) (format=latex 2006.1.9)  3 SEP 2013 22:41
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Cygwin) (format=latex 2012.9.8)  3 SEP 2013 23:57
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
 **proposal1.tex
 (./proposal1.tex
-LaTeX2e <2001/06/01>
-Babel <v3.7h> and hyphenation patterns for american, french, german, ngerman, n
-ohyphenation, loaded.
-(/usr/share/texmf/tex/latex/base/article.cls
-Document Class: article 2001/04/21 v1.4e Standard LaTeX document class
-(/usr/share/texmf/tex/latex/base/size11.clo
-File: size11.clo 2001/04/21 v1.4e Standard LaTeX file (size option)
+LaTeX2e <2011/06/27>
+Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, ge
+rman-x-2012-05-30, ngerman-x-2012-05-30, afrikaans, ancientgreek, ibycus, arabi
+c, armenian, basque, bulgarian, catalan, pinyin, coptic, croatian, czech, danis
+h, dutch, ukenglish, usenglishmax, esperanto, estonian, ethiopic, farsi, finnis
+h, french, friulan, galician, german, ngerman, swissgerman, monogreek, greek, h
+ungarian, icelandic, assamese, bengali, gujarati, hindi, kannada, malayalam, ma
+rathi, oriya, panjabi, tamil, telugu, indonesian, interlingua, irish, italian, 
+kurmanji, latin, latvian, lithuanian, mongolian, mongolianlmc, bokmal, nynorsk,
+ polish, portuguese, romanian, romansh, russian, sanskrit, serbian, serbianc, s
+lovak, slovenian, spanish, swedish, turkish, turkmen, ukrainian, uppersorbian, 
+welsh, loaded.
+(/usr/share/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/share/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
 \c@section=\count80
@@ -23,14 +35,14 @@ File: size11.clo 2001/04/21 v1.4e Standard LaTeX file (size option)
 ) (./naaclhlt2012.sty
 Conference Style for NAACL-HLT 2012 -- released August 30, 2011
 \titlebox=\skip43
-) (/usr/share/texmf/tex/latex/psnfss/times.sty
-Package: times 2002/09/08 PSNFSS-v9.0a (SPQR) 
+) (/usr/share/texmf-dist/tex/latex/psnfss/times.sty
+Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
 )
-(/usr/share/texmf/tex/latex/base/latexsym.sty
+(/usr/share/texmf-dist/tex/latex/base/latexsym.sty
 Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
 \symlasy=\mathgroup4
 LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
-(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 42.
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 47.
 ) (./proposal1.aux)
 \openout1 = `proposal1.aux'.
 
@@ -48,7 +60,7 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
 LaTeX Font Info:    ... okay on input line 22.
 LaTeX Font Info:    Try loading font information for OT1+ptm on input line 22.
 
-(/usr/share/texmf/tex/latex/psnfss/ot1ptm.fd
+(/usr/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
@@ -61,14 +73,14 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 23.
 LaTeX Font Info:    Try loading font information for U+lasy on input line 23.
 
-(/usr/share/texmf/tex/latex/base/ulasy.fd
+(/usr/share/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 23.
 LaTeX Font Info:    Try loading font information for OT1+pcr on input line 23.
 
-(/usr/share/texmf/tex/latex/psnfss/ot1pcr.fd
+(/usr/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 Underfull \hbox (badness 1210) in paragraph at lines 34--37
@@ -80,36 +92,29 @@ Underfull \hbox (badness 1210) in paragraph at lines 34--37
 
 
 
-]
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 64.
-
-
-LaTeX Warning: Citation ` Salamin:2013' on page 2 undefined on input line 64.
-
-(./corpus.tex
+] (./corpus.tex
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <10.95> on input line 1.
 )
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 79.
- (/usr/share/texmf/tex/latex/psnfss/omsptm.fd
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 80.
+ (/usr/share/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 79.
-Missing character: There is no ^^96 in font ptmr7t!
-Missing character: There is no ^^96 in font ptmr7t!
-Missing character: There is no ^^96 in font ptmr7t!
-Missing character: There is no ^^96 in font ptmr7t!
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 80.
+Missing character: There is no – in font ptmr7t!
+Missing character: There is no – in font ptmr7t!
+Missing character: There is no – in font ptmr7t!
+Missing character: There is no – in font ptmr7t!
  [2]
 (./proposal1.aux) ) 
 Here is how much of TeX's memory you used:
- 393 strings out of 95847
- 4865 string characters out of 1193753
- 52526 words of memory out of 1000001
- 3369 multiletter control sequences out of 10000+50000
- 12613 words of font info for 40 fonts, out of 500000 for 1000
- 14 hyphenation exceptions out of 1000
- 22i,9n,23p,503b,347s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 390 strings out of 493489
+ 4959 string characters out of 3146902
+ 58432 words of memory out of 3000000
+ 3744 multiletter control sequences out of 15000+200000
+ 12094 words of font info for 39 fonts, out of 3000000 for 9000
+ 957 hyphenation exceptions out of 8191
+ 22i,9n,19p,503b,256s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on proposal1.dvi (2 pages, 9748 bytes).
+Output written on proposal1.dvi (2 pages, 10076 bytes).
