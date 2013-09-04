@@ -8,183 +8,64 @@
 \usepackage{latexsym}
 \setlength\titlebox{6.5cm}    % Expanding the titlebox
 
-\title{Frame-Semantic Parsing}
+\title{Semantic Rescoring Framework of Spoken Language Understandong}
 
-\author{Wencan Luo (advised by Diane Litman)\\
+\author{Wencan Luo\\
 	    Department of Computer Science\\
 	    University of Pittsburgh\\
 	    PA 15260, USA\\
 	    {\tt wencan@cs.pitt.edu}
 	  }
 
-\date{January 11, 2012}
+\date{September 4, 2013}
 
 \begin{document}
 \maketitle
 \begin{abstract}
-  This document is the proposal for the CS2001 project: Uncertainty Prediction on Mars Exploration Rover (MER)
- scientist dataset and the student engineering team dataset. The main goal for this 
- project is to retrieve the uncertainty utterance as much as possible in these two date sets. To do so, supervised 
- and unsupervised methods are both to try.
+  
 \end{abstract}
 
 \section{Introduction}
-Participants in dialog coordinate the presentation and acceptance of their utterances to establish, 
-maintain and confirm mutual understanding, which called grounding. However, uncertainty are always involved between the 
-speaker and hearer. Human beings can adjust their dialog by detecting the uncertainty to make sure they understood each
-other. Then, when comes to computer dialog system, detecting such state enables the system to respond more appropriately. 
-For example, in tutoring dialog system, the tutor can adjust the dialog content according 
-to the uncertainty level dynamically. In fact, \cite{Forbes-Riley:2009} shows that 
-adapting to student uncertainty did improve the overall performance
- in term of user satisfaction and learning efficiency.
-
-\section{Problem}
-There are two datasets: the Mars Exploration Rover (MER) scientist dataset, including 12,331 utterances,
-and the student engineering team datasets, including 16772 utterances. 
-Audio/video are available for both datasets. The student engineering teams are natural teams working on 
-their semester-long projects; the MER scientists are evaluating data downloaded from the rover, discussing their 
-work process, and/or making plans for the rovers.
-
-The MER scientists come from a large team of about 100+ scientists/faculty, graduate students, and  
-technicians. At any one time, conversations are between 2-10 people. The engineering dataset involves student teams
- of conversations of 2-6 individuals.
- 
-Among the MER data, 1641 of all the 12,331 (13.3\%) utterances are annotated as uncertainty by human; 
-however, for engineering dataset, only 1558 utterances are annotated and 221 of which are uncertainty (14.2\%).
-The first research problem is to build a model to automatically predict the uncertainty.
-
-From the above description, there are some points that are different between the two data sets. 
-Firstly, the occupations of subjects are different. One is diverse including scientists, graduate students and technicians; 
-the other is all students; secondly, the number of individuals in each dialog is different; 
-thirdly, the topics in the dialog are different.
-
-Therefore, we expect the uncertainty models in these different data sets are also different. Then, the research question 
-is what are the difference.
-
-\section{Goals}
-The goal for this project is to design a model that has a high recall, which means to retrieve the uncertainty utterance
-as much as possible. There may be many noises in the raw data sets, even annotated by human. Thus, this model serves as 
-a pre-processing stage rather than a final model. In advance, the false negative 
-instances given by the model can be rechecked by human in the further step. 
+Let a computer understand what people say is a long term goal. However, speech recognition (SR) is not perfect in current stage. 
+In fact, compared to manual trascriptions, SR errors have a significant decrease in many NLP Tasks, such as Quesition Answering \cite{Turmo:2007}, Speaker Role Recognition \cite{Garg:2008}, Natural Language Understanding (NLU) \cite{Raymond:2007}, etc.
 
 \section{Related Work}
-\subsection{Definition of Uncertainty}
-\label{sect:related_work}
+\subsection{NLU}
 
-As indicated in \cite{Barry_Shieber:2011}, there are two different meaning of uncertainty. 
-The one refers to how certain a person sounds, the perceived level of certainty; the other one 
-is about the internal level of certainty, how certain speakers actually are.
+NLU is a well-study field and many techniques have been proposed to improve the performance. For example, Eun at al.\shortcite{Eun:2005} showed that combining several different classifiers promoted the performance of natural language understanding. 
+ 
+Besides, Both generative and discriminative models work pretty well for spoken language understanding \cite{Raymond:2007}.
+ 
+However, majority of people work on human-transcribed text but rather than directly on speech recognition results. However, without ignoring the speech recognition errors, the performance is expected to decrease a lot. 
 
-In this paper, the later one is concerned.
-
-\subsection{Uncertainty Prediction}
-There are several literatures that try to predict uncertainty in dialog, the most recent ones 
-among which are \cite{Barry_Shieber:2011} and \cite{Forbes:2011}. Some common prosodic 
-features are both used in these two papers such as pitch, intensity and temporal features. 
-In fact, these prosodic features have also been used by many other research on speech affection detection  
-\cite{Breazeal:2002}, \cite{Dellaert:1996}, \cite{Lee:2001}.
-
-Besides the prosodic features, lexical features are also popular to predict uncertainty. 
-Commonly-used lexical features are unigram, word length, and part of speech. 
-In addition, utterance's familiarity and position are also included in \cite{Barry_Shieber:2011}.
-For tutoring dialog system, discourse features like tutor goal, problem, turn are considered in \cite{Forbes:2011}.
-Other features like the speaker's gender are also benefiting.
-
-In this paper, we want to develop more features on lexical.
+\subsection{Rescoring N-Best}
 
 \section{Methodology}
-\subsection{Rule-based Method}
-According to the guideline to annotate the corpus, we can write rules to predict the uncertainty as a baseline model.
-
-Followings are some of the rules.
-
-The clause below shows no evidence of uncertainty:
-\begin{itemize}
-  \item I/It can/would/will/won¡¯t ¡­
-  \item I am/It is¡­
-\end{itemize}
-
-The clause below shows some evidence of uncertainty:
-\begin{itemize}
-  \item you cannot tell whether X
-  \item some kind/sort of X
-  \item something like this
-  \item as far as I/we know
-  \item somehow
-  \item I didn¡¯t know X
-  \item I guess/think/believe/feel/hope
-  \item may/might/could
-  \item probably/possibly/maybe
-  \item sort of/kind of
-  \item worried that
-  \item really
-  \item not really
-  \item he¡¯s somewhere in space out there
-  \item that can vary
-  \item more or less
-\end{itemize}
-
-\subsection{Machine Learning Method}
-As each utterance is either uncertainty or certainty (neutral one is not considered in this paper), so it can be treated as a binary classification problem.
-Therefore, machine learning methods can be applied. The key points here are the features set. 
-Inspired by relating and our previous work, I want to try the following features, including lexical or discourse.
-
-The features are shown in Table~\ref{table:feature}.
-
-In particular, for the unigram, bigram or trigram features, not all the lexical words are included,
-but only the words that appear more than 14\% in the uncertainty utterances compared to certainty ones. In this way, 
-features number can be reduced.
-
-\begin{table}
-\begin{center}
-\noindent \begin{tabular}{ l | l | l }
-	\hline 
-	lexical & unigram &  \\
-		& bigram &  \\
-		& trigram &  \\
-		& overlap &  \\
-		& utterance length &  \\
-		& subject &  I, you, other \\
-	\hline 
-\end{tabular}
-\end{center}
-\caption{\label{table:feature} Feature Set. }
-\end{table}
-
-\section{Experiments}
-Model that has the maximal recall will be the final one. Therefore, we need to compare models
-under different feature sets.
-
-In addition, we also want to compare the performance between different data sets.
 
 \section{Timeline}
 
-\noindent \emph{Jan 12 - Jan 20}
+\noindent \emph{Sep 09 - Sep 22}
 \begin{itemize}
+  \item survey the related work regarding role recognition
   \item understanding the data, know how to extract and use the data
-  \item survey the related work regarding uncertainty prediction based on text
 \end{itemize}
 
-\noindent \emph{Jan 21 - Feb 8}
+\noindent \emph{Sep 23 -  Oct 20}
 \begin{itemize}
-  \item coding the rule-based methods
-  \item extract the unigram, bigram and trigram features
-  \item prelim results based this simple lexical features using Weka
-  \item present the prelim results
+  \item implement the method in \cite{Garg:2008} using the manual transcription, the lexical model will be used as the local model
+  \item do Speech Recognition (SR)
+  \item run the local model on SR results
 \end{itemize}
 
-\noindent \emph{Feb 9 - March 9}
+\noindent \emph{Oct 21 - Nov 9}
 \begin{itemize}
-  \item based on the suggestions, improve the model
-  \item develop more lexical features
-  \item extract other features, such as syntax, semantic
+  \item implement ILP global model, using the manual speaker segmentation
 \end{itemize}
 
-\noindent \emph{March 10 - April 20}
+\noindent \emph{Nov 10 - Dec 12}
 \begin{itemize}
-  \item improve the model based on new features
-  \item anaylze the confusion matrix of the model and improve the model based on the results
-  \item write the workshop-like paper
+  \item propose a model without the manual speaker segmentation
+  \item try other global model such as Bayes network, improved social network
 \end{itemize}
 
 \section*{Acknowledgments}
@@ -192,47 +73,23 @@ In addition, we also want to compare the performance between different data sets
 Do not number the acknowledgment section.
 
 \begin{thebibliography}{}
-\bibitem[\protect\citename{Drummond and Litman}2011]{Drummond-Litman:2011}
-Drummond, Joanna and Litman, Diane.
-\newblock 2011.
-\newblock {\em Examining the Impacts of Dialogue Content and System Automation on Affect Models in a Spoken Tutorial Dialogue System}.
-\newblock Proceedings of the SIGDIAL 2011 Conference, Portland, Oregon.
+\bibitem[\protect\citename{Turmo et al.}2007]{Turmo:2007}
+J. Turmo, P. Comas, C. Ayache, D. Mostefa, S. Rosset, L. Lamel.
+\newblock 2007.
+\newblock {\em Overview of QAST 2007}.
+\newblock In Working Notes of CLEF 2007 Workshop, Budapest, Hungary.
 
-\bibitem[\protect\citename{Forbes et al.}2011]{Forbes:2011}
-Drummond, Joanna and Litman, Diane.
-\newblock 2011.
-\newblock {\em Benefits and challenges of real-time uncertainty detection and adaptation in a spoken dialogue computer tutor}.
-\newblock Speech Communication, 2011, v53, pages: 1115~1136.
+\bibitem[\protect\citename{Garg et al.}2008]{Garg:2008}
+N. Garg, S. Favre, H. Salamin, D. Hakkani-Tur, and A. Vinciarelli. 
+\newblock 2008. 
+\newblock {\em Role recognition for meeting participants:an approach based on lexical information and social network analysis}.
+\newblock Proceedings ACM International Conference on Multimedia, 693-696.
 
-\bibitem[\protect\citename{Barry and Shieber}2011]{Barry_Shieber:2011}
-Barry Heather and Shieber Stuart M.
-\newblock 2011.
-\newblock {\em Recognizing Uncertainty in Speech}.
-\newblock EURASIP Journal on Advances in Signal Processing, 2011.
-
-\bibitem[\protect\citename{Forbes et al.}2009]{Forbes-Riley:2009}
-Forbes-Riley, Kate and Litman, Diane.
-\newblock 2011.
-\newblock {\em Adapting to Student Uncertainty Improves Tutoring Dialogues}.
-\newblock Proceedings of the 2009 conference on Artificial Intelligence in Education, 2009, pp. 33~40.
-
-\bibitem[\protect\citename{Breazeal and Aryananda}2002]{Breazeal:2002}
-Breazeal C. and Aryananda, L.
-\newblock 2002.
-\newblock {\em Recognition of affective communicative intent in robot-directed speech}.
-\newblock Autonomous Robots 12 1, 2002. pp. 83¨C104.
-
-\bibitem[\protect\citename{Dellaert et al.}1996]{Dellaert:1996}
-Dellaert, F., Polizin, t., and Waibel, A.
-\newblock 1996.
-\newblock {\em Recognizing Emotion in Speech}.
-\newblock In Proc. Of ICSLP 1996, Philadelphia, PA, pp.1970-1973, 1996
-
-\bibitem[\protect\citename{Lee et al.}2001]{Lee:2001}
-Lee, C.M.; Narayanan, S.; Pieraccini, R.
-\newblock 2001.
-\newblock {\em Recognition of Negative Emotion in the Human Speech Signals}.
-\newblock Workshop on Auto. Speech Recognition and Understanding, Dec 2001
+\bibitem[\protect\citename{Raymond and Riccardi}2007]{Raymond:2007} 
+C. Raymond and G. Riccardi. 
+\newblock 2005. 
+\newblock {\em Generative and discriminative algorithms for spoken language understanding.} 
+\newblock In Interspeech, pp. 1605â€“1608, Antwerp, Belgium, Aug. 2007. 
 
 \end{thebibliography}
 
