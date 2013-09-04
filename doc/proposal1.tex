@@ -1,0 +1,187 @@
+%
+% File naaclhlt2012.tex
+%
+
+\documentclass[11pt,letterpaper]{article}
+\usepackage{naaclhlt2012}
+\usepackage{times}
+\usepackage{latexsym}
+\setlength\titlebox{6.5cm}    % Expanding the titlebox
+
+\title{Role Recognition for Multi-part Dialogue: A Combined Global and Local Approach}
+
+\author{Wencan Luo\\
+	    Department of Computer Science\\
+	    University of Pittsburgh\\
+	    PA 15260, USA\\
+	    {\tt wencan@cs.pitt.edu}
+	  }
+
+\date{September 3, 2013}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+  
+\end{abstract}
+
+\section{Introduction}
+
+``People do not interact with one another as anonymous beings. They come together in the context of specific environments and with specific purposes" \cite{Tischler:1990}. As an example, people involved in multi-part dialogue usually play certain roles. For example, Radio Broadcasts
+
+Speaker role is an important cue to the structure dialogue. It can be benefit to role-based summerization \cite{Vinciarelli:2006}, semantical coherent segmentation, information retrieval \cite{Weng:2007,Knapp:1972}, etc.
+
+Role recognition is the task of automatically recognizing roles of participants in an interaction
+recording. The goal is to assign to every participant in the recording of an interaction
+(usually and audio recording or video recording) a role \cite{Salamin:2013}.
+
+In this paper, we will propose a new method for role recognition, which combines both the global and local constraints. There are two intuitions behind: firstly, during a converstion, the role of a participant doesn't change; secondly, the defined roles should be taken evenly among the participants. Take a two-person interview for example. Firstly, a interviewer is always interviewing during the conversation; Secondly, if one is the interviewer and the other must be the interviewee.
+
+\section{Related Work}
+
+Barzilay et al. \shortcite{Barzilay:2000} exploited the lexical information (from ASR transcriptions) to identify 3 type of roles: Anchor, Journalist, Guest speakers in news broadcast.
+
+Garg et al. \shortcite{Garg:2008} identified four predefined roles for multi-part meetings. It combined lexical features and social network (SNA) based on linear model. 
+They also extracted features from the social network \cite{Salamin:2009}. 
+Later, they proposed a graph model based on purely nonverbal vocal behavioral cues, including who talks when and how much (turn-taking behavior), and statistical properties of pitch, formants, energy and speaking rate (prosodic behavior)\cite{Salamin:2010}.
+
+Dynamic Bayesian Networks \cite{Yaman:2010} is also used in role recognition.
+
+\section{The Corpus}
+The corpus I will use is the AMI
+corpus \cite{McCowan:2005}, as same as one used in \cite{Garg:2008,Salamin:2009,Salamin:2010}.
+
+The AMI corpus a collection of 138 meeting recordings for a total
+of 45 hours and 38 minutes of material in a simulated environment. In each meeting, four partici-
+pants play the following roles: the Project Man-
+ager (PM), the Marketing Expert (ME), the User Interface
+Expert (UI), and the Industrial Designer (ID). Each par-
+ticipant plays a different role, and all roles are represented
+in each meeting. The same person can play different roles
+in different meetings, and the ratio of meeting time that
+each role accounts for, on average, is reported in Table \ref{table:corpus}.
+
+Currently, the state-of-art accuracy is 67.9\% on the AMI meeting corpus \cite{Garg:2008, Salamin:2013} by combining lexical information and social network analysis.
+
+\begin{table}[!htb] 
+\centering 
+\input{corpus.tex} 
+\caption{Role distribution.} 
+\label{table:corpus} 
+\end{table} 
+
+\section{Methodology}
+
+
+\section{Timeline}
+
+\noindent \emph{Jan 12 - Jan 20}
+\begin{itemize}
+  \item understanding the data, know how to extract and use the data
+  \item survey the related work regarding uncertainty prediction based on text
+\end{itemize}
+
+\noindent \emph{Jan 21 - Feb 8}
+\begin{itemize}
+  \item coding the rule-based methods
+  \item extract the unigram, bigram and trigram features
+  \item prelim results based this simple lexical features using Weka
+  \item present the prelim results
+\end{itemize}
+
+\noindent \emph{Feb 9 - March 9}
+\begin{itemize}
+  \item based on the suggestions, improve the model
+  \item develop more lexical features
+  \item extract other features, such as syntax, semantic
+\end{itemize}
+
+\noindent \emph{March 10 - April 20}
+\begin{itemize}
+  \item improve the model based on new features
+  \item anaylze the confusion matrix of the model and improve the model based on the results
+  \item write the workshop-like paper
+\end{itemize}
+
+\section*{Acknowledgments}
+
+Do not number the acknowledgment section.
+
+\begin{thebibliography}{}
+
+\bibitem[\protect\citename{Tischler}1990]{Tischler:1990}
+H. Tischler.
+\newblock 1990. 
+\newblock {\em Introduction to Sociology}. 
+\newblock Harcourt Brace College Publishers.
+
+\bibitem[\protect\citename{Vinciarelli}2006]{Vinciarelli:2006}
+A. Vinciarelli
+\newblock 2006. 
+\newblock {\em Sociometry based multiparty audio recordings summarization}. 
+\newblock in 18th International Conference on Pattern Recognition, vol. 2. IEEE, 2006, pp. 1154–1157.
+
+\bibitem[\protect\citename{Weng at el.}2007]{Weng:2007}
+C. Weng, W. Chu, and J. Wu.
+\newblock 2007. 
+\newblock {\em Movie analysis based on roles' social network}. 
+\newblock in IEEE International Conference on Multimedia and Expo, pp. 1403–1406.
+
+\bibitem[\protect\citename{Knapp and Hall}1972]{Knapp:1972}
+ M. Knapp and J. Hall.
+\newblock 1972. 
+\newblock {\em Nonverbal Communication in Human Interaction}. 
+\newblock Harcourt Brace College Publishers.
+
+\bibitem[\protect\citename{Barzilay et al.}2000]{Barzilay:2000}
+R. Barzilay, M. Colins, J. Hirschberg, and S. Whittaker. 
+\newblock 2000. 
+\newblock {\em The rules behind roles: Identifying speaker role in radio broadcasts}. 
+\newblock Proc. AAAI Conference on Artificial Intelligence \& Conference on Innovative Applications of Artificial Intelligence, 679-684. AAAI Press/MIT Press.
+
+\bibitem[\protect\citename{Garg et al.}2008]{Garg:2008}
+N. Garg, S. Favre, H. Salamin, D. Hakkani-Tur, and A. Vinciarelli. 
+\newblock 2008. 
+\newblock {\em Role recognition for meeting participants:an approach based on lexical information and social network analysis}.
+\newblock Proceedings ACM International Conference on Multimedia, 693-696.
+
+\bibitem[\protect\citename{Salamin et al.}2009]{Salamin:2009}
+H. Salamin, S. Favre, and A. Vinciarelli. 
+\newblock 2009. 
+\newblock {\em Automatic role recognition in multiparty recordings: Using social affiliation networks for feature extraction}.
+\newblock IEEE Trans. Multimedia, vol. 11, no. 7, pp. 1373–1380
+
+\bibitem[\protect\citename{Salamin et al.}2010]{Salamin:2010}
+H. Salamin , A. Vinciarelli , K. Truong and G. Mohammadi.
+\newblock 2010. 
+\newblock {\em Automatic role recognition based on conversational and prosodic behaviour}.
+\newblock Proceedings of the international conference on Multimedia, October 25-29, 2010, Firenze, Italy 
+
+\bibitem[\protect\citename{Salamin and Vinciarelli}2012]{Salamin:2012}
+H. Salamin and A. Vinciarelli.
+\newblock 2012. 
+\newblock {\em Automatic role recognition in multiparty conversations: An approach based on turn organization, prosody and conditional random fields}.
+\newblock IEEE Trans. Multimedia, vol. 14, no.2, pp. 338–345, 2012.
+
+\bibitem[\protect\citename{Salamin}2013]{Salamin:2013}
+H. Salamin.
+\newblock 2013. 
+\newblock {\em Automatic role recognition}.
+\newblock PhD thesis, University of Glasgow.
+
+\bibitem[\protect\citename{Yaman et al.}2010]{Yaman:2010}
+S. Yaman, D. Hakkani-Tu\'{r}, G. Tu\'{r}.
+\newblock 2010.
+\newblock {\em Social role discovery from spoken language using Dynamic Bayesian Networks}. 
+\newblock Proc. of Interspeech, 2010. 
+
+\bibitem[\protect\citename{McCowan et al.}2005]{McCowan:2005}
+I. McCowan, J. Carletta, W. Kraaij, S. Ashby, S. Bourban, M. Flynn, M. Guillemot, T. Hain, J. Kadlec, V. Karaiskos, M. 
+Kronenthal, G. Lathoud, M. Lincoln, A. Lisowska, W. Post, D. Reidsma, and P. Wellner. 
+\newblock 2005.
+\newblock {\em The ami meeting corpus}. 
+\newblock In Proceedings of the 5th International Conference on Methods and Techniques in Behavioral Research.
+
+\end{thebibliography}
+
+\end{document}
