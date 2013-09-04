@@ -1,7 +1,7 @@
 <map version="1.0.0">
 <!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
 <node CREATED="1377900213055" ID="ID_550371443" MODIFIED="1378226365778" STYLE="bubble" TEXT="Independent Study">
-<node CREATED="1378168807941" ID="ID_668244475" MODIFIED="1378253675413" POSITION="right" TEXT="Role Identification during Meeting">
+<node CREATED="1378168807941" FOLDED="true" ID="ID_668244475" MODIFIED="1378306449059" POSITION="right" TEXT="Role Identification during Meeting">
 <node CREATED="1378173829144" ID="ID_416707992" MODIFIED="1378173832281" TEXT="Related Work">
 <node CREATED="1378173834076" ID="ID_908375329" LINK="http://www.dcs.gla.ac.uk/~vincia/papers/soclexroles.pdf" MODIFIED="1378173867287" TEXT="Garg et al., 2008"/>
 </node>
