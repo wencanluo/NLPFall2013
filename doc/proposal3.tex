@@ -34,11 +34,20 @@ In fact, compared to manual trascriptions, SR errors have a significant decrease
 
 NLU is a well-study field and many techniques have been proposed to improve the performance. For example, Eun at al.\shortcite{Eun:2005} showed that combining several different classifiers promoted the performance of natural language understanding. 
  
-Besides, Both generative and discriminative models work pretty well for spoken language understanding \cite{Raymond:2007}.
+Besides, both generative and discriminative models work pretty well for spoken language understanding \cite{Raymond:2007}, such as Finite State Transducers, CRF, SVM.
  
 However, majority of people work on human-transcribed text but rather than directly on speech recognition results. However, without ignoring the speech recognition errors, the performance is expected to decrease a lot. 
 
 \subsection{Rescoring N-Best}
+
+Rescoring N-Best has shown to be effective to decrease the WER \cite{Zhang:2004,Zhou:2006}.
+
+\cite{Zhang:2005}
+
+\cite{Morbini:2012}
+
+These work mainly focus on to reduce the WER, 
+
 
 \section{Methodology}
 
@@ -85,11 +94,30 @@ N. Garg, S. Favre, H. Salamin, D. Hakkani-Tur, and A. Vinciarelli.
 \newblock {\em Role recognition for meeting participants:an approach based on lexical information and social network analysis}.
 \newblock Proceedings ACM International Conference on Multimedia, 693-696.
 
-\bibitem[\protect\citename{Raymond and Riccardi}2007]{Raymond:2007} 
-C. Raymond and G. Riccardi. 
+\bibitem[\protect\citename{Zhang and Rudnicky}2004]{Zhang:2004}
+R. Zhang, and A.I. Rudnicky.
+\newblock 2004. 
+\newblock {\em Apply N-best list re-ranking to acoustic model combinations of Boosting Training}.
+\newblock Proc. ICSLP, 2004. 
+
+\bibitem[\protect\citename{Zhang and Rudnicky}2005]{Zhang:2005}
+V. H. Quan, et al.
 \newblock 2005. 
-\newblock {\em Generative and discriminative algorithms for spoken language understanding.} 
-\newblock In Interspeech, pp. 1605–1608, Antwerp, Belgium, Aug. 2007. 
+\newblock {\em Integrated n-best re-ranking for spoken language translation}.
+\newblock in Proc. of Interspeech, Lisbon, Portugal.
+
+\bibitem[\protect\citename{Zhou et al.}2006]{Zhou:2006}
+Z. Zhou, J. Gao, F. K. Soong, and H. Meng.
+\newblock 2006. 
+\newblock {\em A comparative study of discriminative methods for reranking lvcsr n-best hypotheses in domain adaptation and generalization}.
+\newblock in Proceedings of ICASSP, 2006, vol. 1, pp. 141-144. 
+
+\bibitem[\protect\citename{Morbini et al.}2012]{Morbini:2012} 
+F. Morbini, K. Audhkhasi, R. Artstein, M. Van Segbroeck, K. Sagae, P. Georgiou, D. R. Traum, S. Narayanan.
+\newblock 2012. 
+\newblock {\em A reranking approach for recognition and classification of speech input in conversational dialogue systems.} 
+\newblock Spoken Language Technology Workshop (SLT), 2012 IEEE
+
 
 \end{thebibliography}
 
