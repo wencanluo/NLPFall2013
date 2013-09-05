@@ -1,0 +1,139 @@
+This is TeX, Version 3.14159 (Web2C 7.4.5) (format=latex 2010.8.24)  4 SEP 2013 22:59
+**proposal3.tex
+(./proposal3.tex
+LaTeX2e <2001/06/01>
+Babel <v3.7h> and hyphenation patterns for american, french, german, ngerman, n
+ohyphenation, loaded.
+(/usr/share/texmf/tex/latex/base/article.cls
+Document Class: article 2001/04/21 v1.4e Standard LaTeX document class
+(/usr/share/texmf/tex/latex/base/size11.clo
+File: size11.clo 2001/04/21 v1.4e Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+) (./naaclhlt2012.sty
+Conference Style for NAACL-HLT 2012 -- released August 30, 2011
+\titlebox=\skip43
+) (/usr/share/texmf/tex/latex/psnfss/times.sty
+Package: times 2002/09/08 PSNFSS-v9.0a (SPQR) 
+)
+(/usr/share/texmf/tex/latex/base/latexsym.sty
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 42.
+)
+(/usr/share/texmf/tex/latex/multirow/multirow.sty
+\bigstrutjot=\dimen103
+) (./proposal3.aux)
+\openout1 = `proposal3.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 23.
+
+(/usr/share/texmf/tex/latex/psnfss/ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 24.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 24.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 24.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 24.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 24.
+
+(/usr/share/texmf/tex/latex/base/ulasy.fd
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 24.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 24.
+
+(/usr/share/texmf/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 40.
+ [1
+
+
+
+
+]
+Underfull \hbox (badness 1735) in paragraph at lines 66--67
+\OT1/ptm/m/n/10.95 project MEDIA-EVALDA (Bonneau-Maynard et
+ []
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 73.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <9> on input line 73.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 73.
+Missing character: There is no ^^e2 in font ptmr7t!
+Missing character: There is no ^^80 in font ptmr7t!
+Missing character: There is no ^^99 in font ptmr7t!
+(./corpus_bosch.tex) (./crf_basic.tex) [2]
+Underfull \hbox (badness 4144) in paragraph at lines 125--126
+[]\OT1/ptm/m/n/10.95 Another idea might be Prob-a-bilis-tic frame-
+ []
+
+(./slot_nbest_nodummy.tex)
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 138.
+
+ (/usr/share/texmf/tex/latex/psnfss/omsptm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 138.
+
+Underfull \hbox (badness 3428) in paragraph at lines 138--139
+[]\OT1/ptm/m/n/10.95 survey the re-lated work re-gard-ing frame-
+ []
+
+Missing character: There is no ^^e2 in font ptmr7t!
+Missing character: There is no ^^80 in font ptmr7t!
+Missing character: There is no ^^93 in font ptmr7t!
+Missing character: There is no ^^e2 in font ptmr7t!
+Missing character: There is no ^^80 in font ptmr7t!
+Missing character: There is no ^^93 in font ptmr7t!
+[3]
+Underfull \hbox (badness 1430) in paragraph at lines 232--236
+\OT1/ptm/m/n/10 Smith, D. Pal-lett, C. Pao, A. Rud-nicky, and E.
+ []
+
+[4
+
+] (./proposal3.aux) ) 
+Here is how much of TeX's memory you used:
+ 430 strings out of 95847
+ 5423 string characters out of 1195948
+ 54526 words of memory out of 1000001
+ 3392 multiletter control sequences out of 10000+50000
+ 15258 words of font info for 48 fonts, out of 500000 for 1000
+ 14 hyphenation exceptions out of 1000
+ 24i,9n,19p,631b,347s stack positions out of 1500i,500n,5000p,200000b,5000s
+
+Output written on proposal3.dvi (4 pages, 19220 bytes).
