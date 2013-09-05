@@ -1,4 +1,4 @@
-This is TeX, Version 3.14159 (Web2C 7.4.5) (format=latex 2010.8.24)  4 SEP 2013 22:59
+This is TeX, Version 3.14159 (Web2C 7.4.5) (format=latex 2006.1.9)  5 SEP 2013 19:42
 **proposal3.tex
 (./proposal3.tex
 LaTeX2e <2001/06/01>
@@ -76,6 +76,9 @@ File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 40.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
  [1
 
 
@@ -95,9 +98,9 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 Missing character: There is no ^^e2 in font ptmr7t!
 Missing character: There is no ^^80 in font ptmr7t!
 Missing character: There is no ^^99 in font ptmr7t!
-(./corpus_bosch.tex) (./crf_basic.tex) [2]
-Underfull \hbox (badness 4144) in paragraph at lines 125--126
-[]\OT1/ptm/m/n/10.95 Another idea might be Prob-a-bilis-tic frame-
+(./corpus_bosch.tex) [2] (./crf_basic.tex)
+Underfull \hbox (badness 4429) in paragraph at lines 125--126
+[]\OT1/ptm/m/n/10.95 Another idea might be prob-a-bilis-tic frame-
  []
 
 (./slot_nbest_nodummy.tex)
@@ -128,12 +131,12 @@ Underfull \hbox (badness 1430) in paragraph at lines 232--236
 
 ] (./proposal3.aux) ) 
 Here is how much of TeX's memory you used:
- 430 strings out of 95847
- 5423 string characters out of 1195948
+ 431 strings out of 95847
+ 5455 string characters out of 1193753
  54526 words of memory out of 1000001
  3392 multiletter control sequences out of 10000+50000
  15258 words of font info for 48 fonts, out of 500000 for 1000
  14 hyphenation exceptions out of 1000
  24i,9n,19p,631b,347s stack positions out of 1500i,500n,5000p,200000b,5000s
 
-Output written on proposal3.dvi (4 pages, 19220 bytes).
+Output written on proposal3.dvi (4 pages, 19440 bytes).

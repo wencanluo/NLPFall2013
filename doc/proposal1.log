@@ -1,4 +1,4 @@
-This is TeX, Version 3.14159 (Web2C 7.4.5) (format=latex 2010.8.24)  4 SEP 2013 21:17
+This is TeX, Version 3.14159 (Web2C 7.4.5) (format=latex 2006.1.9)  5 SEP 2013 19:21
 **proposal1.tex
 (./proposal1.tex
 LaTeX2e <2001/06/01>
@@ -123,7 +123,7 @@ LaTeX Font Info:    Try loading font information for OT1+pcr on input line 24.
 (/usr/share/texmf/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-Underfull \hbox (badness 1210) in paragraph at lines 36--38
+Underfull \hbox (badness 1210) in paragraph at lines 36--37
 []\OT1/ptm/m/n/10.95 Role recog-ni-tion is the task of au-to-mat-i-cally
  []
 
@@ -134,19 +134,19 @@ Underfull \hbox (badness 1210) in paragraph at lines 36--38
 
 ] (./corpus.tex)
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 68.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 67.
 
-Underfull \hbox (badness 1168) in paragraph at lines 105--106
+Underfull \hbox (badness 1168) in paragraph at lines 107--108
 []\OT1/ptm/m/n/10.95 The as-sump-tion that a speaker's role doesn't
  []
 
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 117.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 119.
 
 (/usr/share/texmf/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 117.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 119.
  [2]
 Missing character: There is no ^^96 in font ptmr7t!
 Missing character: There is no ^^96 in font ptmr7t!
@@ -154,12 +154,12 @@ Missing character: There is no ^^96 in font ptmr7t!
 Missing character: There is no ^^96 in font ptmr7t!
  [3] (./proposal1.aux) ) 
 Here is how much of TeX's memory you used:
- 994 strings out of 95847
- 11436 string characters out of 1195948
+ 995 strings out of 95847
+ 11468 string characters out of 1193753
  61429 words of memory out of 1000001
  3953 multiletter control sequences out of 10000+50000
  14525 words of font info for 46 fonts, out of 500000 for 1000
  14 hyphenation exceptions out of 1000
  27i,9n,20p,542b,364s stack positions out of 1500i,500n,5000p,200000b,5000s
 
-Output written on proposal1.dvi (3 pages, 13004 bytes).
+Output written on proposal1.dvi (3 pages, 13256 bytes).

@@ -30,11 +30,11 @@ However, the objective function is to maximizing the semantic meaning of candida
 
 \section{Introduction}
 Let a computer understand what people say is a long term goal. However, ASR is not perfect in current stage. 
-In fact, compared to manual transcriptions, ASR errors have a significant decrease in many NLP Tasks, such as Question Answering \cite{Turmo:2007}, Speaker Role Recognition \cite{Garg:2008}, Natural Language Understanding (NLU) \cite{Raymond:2007}, etc.
+In fact, compared to manual transcriptions, ASR errors have a significant performance decrease in many NLP Tasks, such as Question Answering \cite{Turmo:2007}, Speaker Role Recognition \cite{Garg:2008}, Natural Language Understanding (NLU) \cite{Raymond:2007}, etc.
 
-The NLU component of dialogue systems must produce a semantic representation that is appropriate for the dialogue task \cite{Jurafsky:2000}. In this paper, we use frame to represent the semantic knowledge, grounded in the theory of frame semantics \cite{Fillmore:1982}.
+In dialogue systems, a NLU component produces a semantic representation that is appropriate for the dialogue task \cite{Jurafsky:2000}. In this paper, we use frames to represent the semantic knowledge, grounded in the theory of frame semantics \cite{Fillmore:1982}.
 
-For Spoken Language Understanding (SLU), one additional challenge that has to deal with is the ASR errors, which is the focus in this paper.
+For Spoken Language Understanding (SLU), one challenge that has to deal with is the ASR errors, which is the focus in this paper.
 
 \section{Related Work}
 \subsection{NLU}
@@ -50,20 +50,20 @@ Rescoring N-Best has shown to be effective to decrease the Word Error Rate (WER)
 
 However, decreasing the WER is not our goal. Lower WER doesn't mean a better understanding, because, some words are more important than others in term of understanding. A better way to rescore the N-Best might be to directly focus on the meaning of the sentences. Quan et al. \shortcite{Quan:2005} proposed an extrinsic measurement to score N-Best with the ad-hoc task of Spoken Language Translation.
 
-A recent work by Morbini et al. \shortcite{Morbini:2012} is similar to us. They rescored the N-Best with the objective to increase the performance of NLU component by combining different ASR engines. It proposed a classification model to evaluate different ASR engines, but not the semantic meaning of the sentences.
+A recent work by Morbini et al. \shortcite{Morbini:2012} is most similar to us. They rescored the N-Best with the objective to increase the performance of NLU component by combining different ASR engines. However, it proposed a classification model to evaluate different ASR engines, but not the semantic meaning of the sentences.
 
 \section{The Corpus}
 
 There are several benchmark corpora that are commonly used by researchers to evaluate a SLU component.
 
-\subsection{ATIS}
+\subsection{The ATIS}
 The Air Travel Information System (ATIS) corpus \cite{Dahl:1994} has been used for the last decade to evaluate models of Automatic Speech Recognition and Understanding. It is made of single turns acquired with a Wizard of Oz (WOZ) approach, where users ask for fight information.
 
 However, the ATIS is licensed by LDC, which costs \$1500.
 
 \subsection{French MEDIAN}
 
-The corpus MEDIA was collected within the French project MEDIA-EVALDA \cite{Bonneau-Maynard:2006} for development and evaluation of spoken understanding models and linguistic studies. The corpus is composed of 1:257 dialogs (from 250 different speakers) acquired with a Wizard of Oz (WOZ) approach in the context of hotel room reservations and tourist information.
+The corpus MEDIA was collected within the French project MEDIA-EVALDA \cite{Bonneau-Maynard:2006} for development and evaluation of spoken understanding models and linguistic studies. The corpus is composed of 1,257 dialogs (from 250 different speakers) acquired with a Wizard of Oz (WOZ) approach in the context of hotel room reservations and tourist information.
 
 However, the MEDIAN is licensed by ELRA, which costs 750 EURO.
 
@@ -73,11 +73,11 @@ The data for the Polish corpus has been collected at the Warsaw Transportation c
 The LUNA corpus is public available\footnote{http://zil.ipipan.waw.pl/LUNA}. It has 12,908 sentences for training and 3,005 for testing.
 
 \subsection{The Bosch Corpus}
-This data is collected by Amazon Mechanical Turk. %what does the task look like?
-The turkers’ task is to response what they want to say when given a topic\footnote{A topic is described as a frame}. Totally, there are 3364 distinct ways \footnote{A way to say something about a topic is a sentence.} for 11 topics and their frequencies follow power law. The number of ways for each topic is shown in Table \ref{table:corpus_bosch} and the topics are grouped into four domains. These topics are chosen because we believe these are the most popular scenarios when people driving.
-Among them, 1870 of sentences are transcribed to speech by a native speaker. 700 of them are used as testing. Two speech recognition engines are used to recognize the speech to text: Google and Vocon. Both the two engines give N-Best outputs with confidence scores.
+This data is collected by Amazon Mechanical Turk by the Bosch Research and Technology Center. %what does the task look like?
+The turkers’ task is to response what they want to say when given a topic\footnote{A topic is described as a frame}. Totally, there are 3,364 distinct ways\footnote{A way to say something about a topic is a sentence.} for 11 topics and their frequencies follow the power law. The number of ways for each topic is shown in Table \ref{table:corpus_bosch} and the topics are grouped into four domains. These topics are chosen because they believe these are the most popular scenarios when people driving.
+Among them, 1,870 of sentences are transcribed to speech by a native speaker. 700 of them are used as testing. Two speech recognition engines are used to recognize the speech to text: Google and Vocon. Both the two engines give N-Best outputs with confidence scores.
 
-The topic and slots in this dataset are annotated by human. 
+The topics and slots in this dataset are annotated by human. 
 
 \begin{table}[!htb] 
 \centering 
@@ -87,7 +87,7 @@ The topic and slots in this dataset are annotated by human.
 \end{table} 
  
 \section{Methodology}
-All the results below are based on experiments on the Bosch Corpus, but I believe the results can be reproduced on other data also.
+All the results below are based on experiments on the Bosch Corpus when I was an intern there, but I believe the results can be reproduced on other data too.
 \subsection{Basic NLU}
 For each frame, we have several slots associated with it. The NLU task is to identify slots given an utterance, which can be formed as a sequence labeling problem. For example, ``where is the best taco bell in palo alto" will be annotated as ``where/O is/O the/O best/B-psrh taco/B-ppn bell/I-ppn in/O palo/B-lcn alto/I-lcn". The BIO tags are used here, where `B' indicates the beginning of a slot; `I' means the inside of a slot; `O' means the ending of a slot. The slot name ``psrh" is short of ``property sorting rating high", ``ppn" is short of ``poiname" and ``lcn" is short for ``locationconstraint cityname".
 
@@ -105,7 +105,7 @@ As shown in Table \ref{table:crf_basic}, the accuracy on manual transcriptions i
 
 Thus, it is reasonable to combine N-Best ASR to improve the performance.
 
-We have tried four voting methods to combine the N-Best Results.
+We have tried three voting methods to combine the N-Best results.
  
 {\bf Upper Bound}: 
 If the correct one appears in any of the N-Best, it is a correct prediction. 
@@ -120,9 +120,9 @@ The results are shown in Table \ref{table:slot_nbest_nodummy}. As we can see, th
 
 The basic idea is to re-rank the N-Best with the objective function of maximizing the semantic meaning of sentences. Moreover, we are not trying to find the best recognition result which has the least word error rate, but to find a recognition that has a better semantics. Furthermore, we are not trying to find one sentence, but to select possible slot combination among the N-Best which maximizes the semantic meaning.
 
-Possible solution might be Slot N-Gram, train an n-gram model on the slot only to see which candidate in the N-Best has the lowest perplexity.
+A possible solution might be Slot N-Gram. Train an n-gram model on the slot only, and select the candidate in the N-Best which has the lowest perplexity.
 
-Another idea might be Probabilistic frame-semantic parsing \cite{Das:2010}.
+Another idea might be probabilistic frame-semantic parsing proposed in \cite{Das:2010}.
 
 \begin{table*}[!htb] 
 \centering 
@@ -153,7 +153,7 @@ Another idea might be Probabilistic frame-semantic parsing \cite{Das:2010}.
 
 \noindent \emph{Nov 10 - Dec 12}
 \begin{itemize}
-  \item try other model such as probabilistic frame-semantic
+  \item try other models such as probabilistic frame-semantic
 \end{itemize}
 
 \section*{Acknowledgments}
