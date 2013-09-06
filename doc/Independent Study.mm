@@ -50,7 +50,7 @@
 </node>
 <node CREATED="1378168859448" ID="ID_115737202" MODIFIED="1378168862018" TEXT="Related Work">
 <node CREATED="1378169860043" ID="ID_1161480987" MODIFIED="1378169870958" TEXT="Word Clustering">
-<node CREATED="1378177703713" ID="ID_1362775609" LINK="http://www.cs.columbia.edu/~cs4705/lectures/brown.pdf" MODIFIED="1378177918214" TEXT="Brown et al., 1992">
+<node CREATED="1378177703713" ID="ID_1362775609" LINK="http://www.cs.columbia.edu/~cs4705/lectures/brown.pdf" MODIFIED="1378431858467" TEXT="Brown et al., 1992">
 <node CREATED="1378178254100" ID="ID_585865036" LINK="https://github.com/percyliang/brown-cluster" MODIFIED="1378178258223" TEXT="implementation"/>
 </node>
 <node CREATED="1378178320983" ID="ID_297419438" LINK="http://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance" MODIFIED="1378178328358" TEXT="Damerau&#x2013;Levenshtein distance">
