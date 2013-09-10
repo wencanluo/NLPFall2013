@@ -1,0 +1,99 @@
+%
+% File naaclhlt2012.tex
+%
+
+\documentclass[11pt,letterpaper]{article}
+\usepackage{naaclhlt2012}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\setlength\titlebox{6.5cm}    % Expanding the titlebox
+
+\title{Modeling Conflict in Multi-part Dialogue}
+
+\author{Wencan Luo\\
+	    Department of Computer Science\\
+	    University of Pittsburgh\\
+	    PA 15260, USA\\
+	    {\tt wencan@cs.pitt.edu}
+	  }
+
+\date{September 9, 2013}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We will propose a model to model conflict for multi-part dialogue.
+
+\end{abstract}
+
+\section{Introduction}
+
+\section{Related Work}
+
+\section{The Corpus}
+
+We are going to use the Eng data \cite{Jang:2012,Friedberg:2012}, collected in University of Pittsburgh.
+It is a collection of natural dialogues among teams of college undergraduates working on their semester-long product design projects.
+The conversations involve 2-6 individuals. Most of the students were engineering majors (e.g., electrical, mechanical, and industrial), but some teams also had marketing students as members.
+
+\section{Data Preprocessing}
+
+\section{Methodology}
+
+\subsection{Classification Model}
+\begin{itemize}
+
+\end{itemize}
+
+\subsection{Sequence Labeling Model}
+
+\subsection{Event-Graph Model}
+
+\section{Timeline}
+
+\noindent \emph{Sep 09 - Sep 22}
+\begin{itemize}
+  \item survey the related work regarding role recognition
+  \item understanding the data, know how to extract and use the data
+\end{itemize}
+
+\noindent \emph{Sep 23 -  Oct 20}
+\begin{itemize}
+  \item implement the method in \cite{Garg:2008} using the manual transcription, the lexical model will be used as the local model
+  \item do Automatical Speech Recognition (ASR)
+  \item run the local model on ASR results
+\end{itemize}
+
+\noindent \emph{Oct 21 - Nov 9}
+\begin{itemize}
+  \item implement ILP global model, using the manual speaker segmentation
+\end{itemize}
+
+\noindent \emph{Nov 10 - Dec 12}
+\begin{itemize}
+  \item propose a model without the manual speaker segmentation
+  \item try other global model such as Bayes network, improved social network
+\end{itemize}
+
+\section*{Acknowledgments}
+
+Do not number the acknowledgment section.
+
+\begin{thebibliography}{}
+
+\bibitem[\protect\citename{Tischler}1990]{Tischler:1990}
+H. Tischler.
+\newblock 1990. 
+\newblock {\em Introduction to Sociology}. 
+\newblock Harcourt Brace College Publishers.
+
+\bibitem[\protect\citename{Friedberg et al.}1990]{Friedberg:2012}
+H. Friedberg, D. Litman, and S. B. F. Paletz.
+\newblock 2012. 
+\newblock {\em Lexical Entrainment and Success in Student Engineering Groups}. 
+\newblock Proceedings Fourth IEEE Workshop on Spoken Language Technology (SLT), pages 404-409, Miami, Florida, December.
+
+\end{thebibliography}
+
+\end{document}

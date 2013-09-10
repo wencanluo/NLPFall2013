@@ -1,0 +1,80 @@
+%
+% File naaclhlt2012.tex
+%
+
+\documentclass[11pt,letterpaper]{article}
+\usepackage{naaclhlt2012}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\setlength\titlebox{6.5cm}    % Expanding the titlebox
+
+\title{Dialog State Tracking Challenge}
+
+\author{Wencan Luo\\
+	    Department of Computer Science\\
+	    University of Pittsburgh\\
+	    PA 15260, USA\\
+	    {\tt wencan@cs.pitt.edu}
+	  }
+
+\date{September 9, 2013}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We will propose a model to model conflict for multi-part dialogue.
+
+\end{abstract}
+
+\section{Introduction}
+In dialog systems, "state tracking" – sometimes also called "belief tracking" – refers to accurately estimating the user’s goal as a dialog progresses. Accurate state tracking is desirable because it provides robustness to errors in speech recognition, and helps reduce ambiguity inherent in language within a temporal process like dialog. Dialog state tracking is an important problem for both traditional uni-modal dialog systems, as well as speech-enabled multi-modal dialog systems on mobile devices, on tablet computers, and in automobiles.
+
+Recently, a host of models have been proposed for dialog state tracking. However, comparisons among models are rare, and different research groups use different data from disparate domains. Moreover, there is currently no common dataset which enables off-line dialog state tracking experiments, so newcomers to the area must first collect dialog data, which is expensive and time-consuming, or resort to simulated dialog data, which can be unreliable. All of these issues hinder advancing the state-of-the-art.
+\section{Related Work}
+
+
+\section{The Corpus}
+
+
+\section{Timeline}
+
+\noindent \emph{Sep 09 - Sep 22}
+\begin{itemize}
+  \item survey the related work regarding role recognition
+  \item understanding the data, know how to extract and use the data
+\end{itemize}
+
+\noindent \emph{Sep 23 -  Oct 20}
+\begin{itemize}
+  \item implement the method in \cite{Garg:2008} using the manual transcription, the lexical model will be used as the local model
+  \item do Automatical Speech Recognition (ASR)
+  \item run the local model on ASR results
+\end{itemize}
+
+\noindent \emph{Oct 21 - Nov 9}
+\begin{itemize}
+  \item implement ILP global model, using the manual speaker segmentation
+\end{itemize}
+
+\noindent \emph{Nov 10 - Dec 12}
+\begin{itemize}
+  \item propose a model without the manual speaker segmentation
+  \item try other global model such as Bayes network, improved social network
+\end{itemize}
+
+\section*{Acknowledgments}
+
+Do not number the acknowledgment section.
+
+\begin{thebibliography}{}
+
+\bibitem[\protect\citename{Tischler}1990]{Tischler:1990}
+H. Tischler.
+\newblock 1990. 
+\newblock {\em Introduction to Sociology}. 
+\newblock Harcourt Brace College Publishers.
+
+\end{thebibliography}
+
+\end{document}
