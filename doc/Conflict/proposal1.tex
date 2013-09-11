@@ -9,7 +9,7 @@
 \usepackage{amsmath}
 \setlength\titlebox{6.5cm}    % Expanding the titlebox
 
-\title{Modeling Conflict in Multi-part Dialogue}
+\title{Modeling Conflicts in Multi-part Dialogue}
 
 \author{Wencan Luo\\
 	    Department of Computer Science\\
@@ -23,11 +23,16 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-We will propose a model to model conflict for multi-part dialogue.
+We will propose a model to predict conflicts for multi-part dialogue.
 
 \end{abstract}
 
 \section{Introduction}
+Conflict is defined as disagreement between two or more people \cite{Paletz:2011}. In this paper, only short-term conflicts are considered. In other words, conflicts happen only in minutes but not a couple of days and not even longer.
+
+The conflicts can be categorized by task, process, and relationship type \cite{Jehn:1995,Jehn:1997}. Linguistic researchers have argued that task conflict, under certain circumstances, can be beneficial, particularly for innovation \cite{Jehn:1997,West:2002}, whereas relationship and process conflict should hurt performance \cite{Jehn:1997}.
+
+Thus, modeling conflicts in dialogues can be benefit to team development, 
 
 \section{Related Work}
 
@@ -50,6 +55,9 @@ The conversations involve 2-6 individuals. Most of the students were engineering
 \subsection{Sequence Labeling Model}
 
 \subsection{Event-Graph Model}
+
+\section{Future Work}
+Predict conflict on speech.
 
 \section{Timeline}
 
@@ -83,17 +91,35 @@ Do not number the acknowledgment section.
 
 \begin{thebibliography}{}
 
-\bibitem[\protect\citename{Tischler}1990]{Tischler:1990}
-H. Tischler.
-\newblock 1990. 
-\newblock {\em Introduction to Sociology}. 
-\newblock Harcourt Brace College Publishers.
+\bibitem[\protect\citename{Paletz at el.}2011]{Paletz:2011}
+S. B. F. Paletz, C. D. Schunn, and K. H. Kim
+\newblock 2011. 
+\newblock {\em Conflict under the microscope: Micro-conflicts in naturalistic team discussions}. 
+\newblock Negotiation and Conflict Management Research, 4, 314-351.
 
 \bibitem[\protect\citename{Friedberg et al.}1990]{Friedberg:2012}
 H. Friedberg, D. Litman, and S. B. F. Paletz.
 \newblock 2012. 
 \newblock {\em Lexical Entrainment and Success in Student Engineering Groups}. 
 \newblock Proceedings Fourth IEEE Workshop on Spoken Language Technology (SLT), pages 404-409, Miami, Florida, December.
+
+\bibitem[\protect\citename{Jehn}1995]{Jehn:1995}
+Jehn, K. A.
+\newblock 1995. 
+\newblock {\em A multimethod examination of the benefits and detriments of intragroup conflict}. 
+\newblock Administrative Science Quarterly, 40, 256–282.
+
+\bibitem[\protect\citename{Jehn}1997]{Jehn:1997}
+Jehn, K. A.
+\newblock 1997. 
+\newblock {\em A qualitative analysis of conflict types and dimensions in organizational groups}. 
+\newblock Administrative Science Quarterly, 42, 530–557.
+
+\bibitem[\protect\citename{West}2002]{West:2002}
+West, M. A.
+\newblock 2002. 
+\newblock {\em Sparkling fountains or stagnant ponds: An integrative model of creativity and innovation implementation in work groups}. 
+\newblock Applied Psychology: An International Review, 51, 355–424.
 
 \end{thebibliography}
 
