@@ -23,7 +23,7 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-We will propose a model to predict conflicts for multi-part dialogue.
+We will propose a model to predict conflicts for multi-part dialogue. Conflicts are disagreements between two or more people. It includes task, process, and relationship conflicts.
 
 \end{abstract}
 
@@ -32,24 +32,42 @@ Conflict is defined as disagreement between two or more people \cite{Paletz:2011
 
 The conflicts can be categorized by task, process, and relationship type \cite{Jehn:1995,Jehn:1997}. Linguistic researchers have argued that task conflict, under certain circumstances, can be beneficial, particularly for innovation \cite{Jehn:1997,West:2002}, whereas relationship and process conflict should hurt performance \cite{Jehn:1997}.
 
-Thus, modeling conflicts in dialogues can be benefit to team development, 
+Modeling conflicts in dialogues can be benefit to team development, dialog understanding, dialog managment, etc. Conflicts in general can also help credibility-based summarization \cite{Kaneko:2009}.
 
 \section{Related Work}
+Bracewell et al. \shortcite{Bracewell:2012} classified 11 social acts including agreement and disagreement on social medial based on gappy patterns with 50.4\% f-measure. A gappy pattern consists of one or more words in between which there can exist gaps, or wildcards, which match any word. Acturally, the disagreement in this paper is not exactly as the same as conflict. Disagreement Act is defined as ``statements a group member makes to indicate that he/she does not share the same
+view about something another member has said or done". Conflict should also include the relationship conflict act defined as ``personal, heated disagreement between individuals".
+
+Classifying agree/disagree opinions in conversational debates using Bayesian networks was presented in \cite{Galley:2004} based on adjacency pairs features.
+
+Agree/disagree classification is formulized as a max cut problem in \cite{Murakami:2010} for online debates.
+
+Paletz et al. \shortcite{Paletz:2011} presented an extensive work on coding conflicts in natrual multi-part dialogues.
 
 \section{The Corpus}
-
 We are going to use the Eng data \cite{Jang:2012,Friedberg:2012}, collected in University of Pittsburgh.
 It is a collection of natural dialogues among teams of college undergraduates working on their semester-long product design projects.
 The conversations involve 2-6 individuals. Most of the students were engineering majors (e.g., electrical, mechanical, and industrial), but some teams also had marketing students as members.
 
+Among 45687 uttrances, 1401 of them are annotated as conflict. The conflict level is ``low" or ``high". Their counts are shown in Table \ref{table:corpus_level}.
+
+\begin{table}
+\centering
+\input{corpus_level.tex}
+\caption{number of conflicts and conflict level in the Eng corpus}
+\label{table:corpus_level}
+\end{table}
 
 \section{Data Preprocessing}
 
 \section{Methodology}
 
 \subsection{Classification Model}
-\begin{itemize}
+Features I will use:
 
+\begin{itemize}
+	\item Ngram
+	\item Negative/Positive
 \end{itemize}
 
 \subsection{Sequence Labeling Model}
@@ -57,7 +75,7 @@ The conversations involve 2-6 individuals. Most of the students were engineering
 \subsection{Event-Graph Model}
 
 \section{Future Work}
-Predict conflict on speech.
+Relying only on transcriptions might not be very good for this problem. During the annotation, for over half the dataset, coders listen while watching. The latter definitely changed perceived conflict a little. In the annotation, the coders are also told that ``if you are unsure and/or curious, be sure to watch/listen to the video. Watch for body language gestures, facial expression; listen to vocal changes, tone, etc."
 
 \section{Timeline}
 
@@ -69,7 +87,7 @@ Predict conflict on speech.
 
 \noindent \emph{Sep 23 -  Oct 20}
 \begin{itemize}
-  \item implement the method in \cite{Garg:2008} using the manual transcription, the lexical model will be used as the local model
+  \item implement the method in using the manual transcription, the lexical model will be used as the local model
   \item do Automatical Speech Recognition (ASR)
   \item run the local model on ASR results
 \end{itemize}
@@ -90,12 +108,17 @@ Predict conflict on speech.
 Do not number the acknowledgment section.
 
 \begin{thebibliography}{}
-
-\bibitem[\protect\citename{Paletz at el.}2011]{Paletz:2011}
-S. B. F. Paletz, C. D. Schunn, and K. H. Kim
+\bibitem[\protect\citename{Abbott et al.}2011]{Abbott:2011}
+R. Abbott, M. Walker, P. Anand, J. E. F. Tree, R. Bowmani, and J. King.
 \newblock 2011. 
-\newblock {\em Conflict under the microscope: Micro-conflicts in naturalistic team discussions}. 
-\newblock Negotiation and Conflict Management Research, 4, 314-351.
+\newblock {\em How can you say such things?!?: Recognizing disagreement in informal political argument}. 
+\newblock In Proceedings of the Workshop on Languages in Social Media, LSM ’11, pages 2–11.
+
+\bibitem[\protect\citename{Bracewell et al.}2012]{Bracewell:2012}
+D. Bracewell, M. Tomlinson, H. Wang.
+\newblock 2012. 
+\newblock {\em Identiﬁcation of social acts in dialogue}. 
+\newblock In 24th International Conference on Computational Linguistics, COLING (2012)
 
 \bibitem[\protect\citename{Friedberg et al.}1990]{Friedberg:2012}
 H. Friedberg, D. Litman, and S. B. F. Paletz.
@@ -103,20 +126,50 @@ H. Friedberg, D. Litman, and S. B. F. Paletz.
 \newblock {\em Lexical Entrainment and Success in Student Engineering Groups}. 
 \newblock Proceedings Fourth IEEE Workshop on Spoken Language Technology (SLT), pages 404-409, Miami, Florida, December.
 
+\bibitem[\protect\citename{Galley et al.}2004]{Galley:2004}
+M. Galley, K. McKeown, J. Hirschberg, and E. Shriberg.
+\newblock 2004. 
+\newblock {\em Identifying agreement and disagreement in conversational speech: use of bayesian networks to model pragmatic dependencies}. 
+\newblock In ACL ’04: Proceedings of the 42nd Annual Meeting on Association for Computational Linguistics, pages 669–676, Morristown, NJ, USA. Association for Computational Linguistics.
+
+\bibitem[\protect\citename{Murakami and Raymond}2010]{Murakami:2010}
+A. Murakami and R. Raymond.
+\newblock 2010. 
+\newblock {\em Support or oppose?: classifying positions in online debates from reply activities and opinion expressions}. 
+\newblock In Proceedings of Coling 2010: Poster Volume.
+
+\bibitem[\protect\citename{Jang and Schunn}2012]{Jang:2012}
+Jooyoung Jang and Christian Schunn.
+\newblock 2012.
+\newblock {\em Physical design tools support and hinder innovative engineering design}.
+\newblock Journal of Mechanical Design, vol. 134, no. 4, pp. 041001-1-041001-9.
+
 \bibitem[\protect\citename{Jehn}1995]{Jehn:1995}
-Jehn, K. A.
+K. A. Jehn.
 \newblock 1995. 
 \newblock {\em A multimethod examination of the benefits and detriments of intragroup conflict}. 
 \newblock Administrative Science Quarterly, 40, 256–282.
 
 \bibitem[\protect\citename{Jehn}1997]{Jehn:1997}
-Jehn, K. A.
+K. A. Jehn.
 \newblock 1997. 
 \newblock {\em A qualitative analysis of conflict types and dimensions in organizational groups}. 
 \newblock Administrative Science Quarterly, 42, 530–557.
 
+\bibitem[\protect\citename{Kaneko et al.}2009]{Kaneko:2009}
+K. Kaneko, H. Shibuki, M. Nakano, R. Miyazaki, M. Ishioroshi, and T. Mori.
+\newblock 2009. 
+\newblock {\em Mediatory summary generation: Summary-passage extraction for information credibility on the web}. 
+\newblock In Proceedings of the 23rd Pacific Asia Conference on Language, Information and Computation (PACLIC 23), pages 240--249.
+
+\bibitem[\protect\citename{Paletz et al.}2011]{Paletz:2011}
+S. B. F. Paletz, C. D. Schunn, and K. H. Kim
+\newblock 2011. 
+\newblock {\em Conflict under the microscope: Micro-conflicts in naturalistic team discussions}. 
+\newblock Negotiation and Conflict Management Research, 4, 314-351.
+
 \bibitem[\protect\citename{West}2002]{West:2002}
-West, M. A.
+M. A. West.
 \newblock 2002. 
 \newblock {\em Sparkling fountains or stagnant ponds: An integrative model of creativity and innovation implementation in work groups}. 
 \newblock Applied Psychology: An International Review, 51, 355–424.
