@@ -1,4 +1,4 @@
-This is TeX, Version 3.14159 (Web2C 7.4.5) (format=latex 2006.1.9)  11 SEP 2013 15:41
+This is TeX, Version 3.14159 (Web2C 7.4.5) (format=latex 2006.1.9)  11 SEP 2013 16:06
 **proposal1.tex
 (./proposal1.tex
 LaTeX2e <2001/06/01>
@@ -127,25 +127,26 @@ Underfull \hbox (badness 1365) in paragraph at lines 43--44
 \OT1/ptm/m/n/10.95 max cut prob-lem in (Mu-rakami and Ray-mond,
  []
 
-(./corpus_level.tex)
+(./corpus_level.tex) (./corpus_type.tex) (./corpus_examples.tex)
+Overfull \hbox (13.66507pt too wide) in paragraph at lines 1--72
+ [][] 
+ []
+
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 65.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [1
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 80.
+[1
 
 
 
 
 ]
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 69.
-
-(/usr/share/texmf/tex/latex/psnfss/omsptm.fd
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 84.
+ (/usr/share/texmf/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 69.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 84.
+ [2]
 Missing character: There is no ^^e2 in font ptmr7t!
 Missing character: There is no ^^80 in font ptmr7t!
 Missing character: There is no ^^99 in font ptmr7t!
@@ -167,20 +168,17 @@ Missing character: There is no ^^93 in font ptmr7t!
 Missing character: There is no ^^e2 in font ptmr7t!
 Missing character: There is no ^^80 in font ptmr7t!
 Missing character: There is no ^^93 in font ptmr7t!
- [2]
 Missing character: There is no ^^e2 in font ptmr7t!
 Missing character: There is no ^^80 in font ptmr7t!
 Missing character: There is no ^^93 in font ptmr7t!
- [3
-
-] (./proposal1.aux) ) 
+ [3] (./proposal1.aux) ) 
 Here is how much of TeX's memory you used:
- 991 strings out of 95847
- 11437 string characters out of 1193753
- 62429 words of memory out of 1000001
- 3949 multiletter control sequences out of 10000+50000
+ 999 strings out of 95847
+ 11577 string characters out of 1193753
+ 64429 words of memory out of 1000001
+ 3951 multiletter control sequences out of 10000+50000
  13511 words of font info for 44 fonts, out of 500000 for 1000
  14 hyphenation exceptions out of 1000
  27i,9n,20p,519b,364s stack positions out of 1500i,500n,5000p,200000b,5000s
 
-Output written on proposal1.dvi (3 pages, 9972 bytes).
+Output written on proposal1.dvi (3 pages, 12692 bytes).
