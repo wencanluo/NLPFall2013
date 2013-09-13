@@ -9,7 +9,7 @@
 \usepackage{amsmath}
 \setlength\titlebox{6.5cm}    % Expanding the titlebox
 
-\title{Dialog State Tracking Challenge}
+\title{Tackling Dialog State Tracking Challenge}
 
 \author{Wencan Luo\\
 	    Department of Computer Science\\
@@ -23,18 +23,45 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-We will propose a model to model conflict for multi-part dialogue.
+We will propose a model to tackle the Dialog State Tracking Challenge \cite{Williams:2013}.
 
 \end{abstract}
 
 \section{Introduction}
-In dialog systems, "state tracking" – sometimes also called "belief tracking" – refers to accurately estimating the user’s goal as a dialog progresses. Accurate state tracking is desirable because it provides robustness to errors in speech recognition, and helps reduce ambiguity inherent in language within a temporal process like dialog. Dialog state tracking is an important problem for both traditional uni-modal dialog systems, as well as speech-enabled multi-modal dialog systems on mobile devices, on tablet computers, and in automobiles.
+In dialog systems, "state tracking" – sometimes also called "belief tracking" – refers to accurately estimating the user’s goal as a dialog progresses. Accurate state tracking is desirable because it provides robustness to errors in speech recognition, and helps reduce ambiguity inherent in language within a temporal process like dialog. Dialog state tracking is an important problem for both traditional uni-modal dialog systems, as well as speech-enabled multi-modal dialog systems on mobile devices, on tablet computers, and in automobiles \cite{Williams:2012}. 
 
-Recently, a host of models have been proposed for dialog state tracking. However, comparisons among models are rare, and different research groups use different data from disparate domains. Moreover, there is currently no common dataset which enables off-line dialog state tracking experiments, so newcomers to the area must first collect dialog data, which is expensive and time-consuming, or resort to simulated dialog data, which can be unreliable. All of these issues hinder advancing the state-of-the-art.
-\section{Related Work}
+The ``Dialog State Tracking Challenge"(DSTC) provided a good test bank for this task. This challenge 2013 has completed. 9 teams entered a total of 27 entries. Results has been shown at SigDial 2013.
 
+The data is still public available \footnote{http://research.microsoft.com/en-us/events/dstc/. This link was broken a few days ago, but it is fixed up after I request}.
+
+\section{Task Description}
+DSTC data is taken from several different spoken dialog systems. All of them provide bus schedule information for Pittsburgh, Pennsylvania, USA \cite{Black:2011}. Different dialog system might have differen ASR, NLU and dialog control components. In this challenge, only 9 slots are evaluated: route, from.desc, from.neighborhood, from.monument, to.desc, to.neighborhood, to.monument, date, and time. The approximate number of distinck values for slots are shown in Table \ref{table:slot_num}. The number of values for each slot varies a lot.
+
+The dialog tracker logs SLU N-best hypotheses for each user turn with confidence scores. As they claimed, the coverage of N-best hypotheses is good, so the challenge confines consideration of goals to slots and values that have been observed in an SLU output. The task of a dialog state tracker is to generate a set of observed slot and value pairs, with a score between 0 and 1. The sum of all scores should be 1.
+
+For evaluation, there are 11 different metric, 4 test tests under 3 different schedules \cite{Williams:2013} for 9 slots.
+
+\begin{table}[!htb] 
+\centering
+\input{slot_num.tex}
+\caption{Approximate number of distinct values for slots}
+\label{table:slot_num}
+\end{table}
 
 \section{The Corpus}
+The data is divided into 4 training sets and 4 test sets. They come from different sources. The basic statistical information for the corpus is shown in Table \ref{table:corpus}
+
+\begin{table*}[!htb] 
+\centering
+\input{corpus.tex}
+\caption{Dataset description}
+\label{table:corpus}
+\end{table*}
+
+\section{Related Work}
+\subsection{Overall Results}
+
+\subsection{Methodalogy}
 
 
 \section{Timeline}
@@ -69,11 +96,23 @@ Do not number the acknowledgment section.
 
 \begin{thebibliography}{}
 
-\bibitem[\protect\citename{Tischler}1990]{Tischler:1990}
-H. Tischler.
-\newblock 1990. 
-\newblock {\em Introduction to Sociology}. 
-\newblock Harcourt Brace College Publishers.
+\bibitem[\protect\citename{Williams et al.}2012]{Williams:2012}
+Jason D Williams, Antoine Raux, Deepak Ramachandran, and Alan W Black.
+\newblock 2012. 
+\newblock {\em Dialog state tracking challenge handbook}. 
+\newblock Technical report, Microsoft Research.
+
+\bibitem[\protect\citename{Black et al.}2013]{Black:2011}
+A. Black et al.
+\newblock 2011. 
+\newblock {\em Spoken dialog challenge 2010: Comparison of live and control test results}. 
+\newblock In Proceedings of SIGDIAL.
+
+\bibitem[\protect\citename{Williams et al.}2013]{Williams:2013}
+Jason D. Williams, Antoine Raux, Deepak Ramachandran, and Alan Black.
+\newblock 2013. 
+\newblock {\em The Dialog State Tracking Challenge}. 
+\newblock In Proceedings 14th Annual Meeting of the Special Interest Group on Discourse and Dialogue (SIGDIAL), Metz, France. 
 
 \end{thebibliography}
 
