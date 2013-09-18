@@ -1,4 +1,7 @@
 
+*.csv
 *.gz
 *.zip
 *.tgz
+\raw-results
+\entries
