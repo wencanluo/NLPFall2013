@@ -1,0 +1,78 @@
+%
+% File naaclhlt2012.tex
+%
+
+\documentclass[11pt,letterpaper]{article}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{color}
+
+\title{A Summary of the Dialog State Tracking Challenge Results}
+
+\author{Wencan Luo\\
+	  }
+
+\date{September 19, 2013}
+
+\begin{document}
+\maketitle
+
+\section{Results}
+9 teams entered the DSTC, submitting a total of 27 trackers.
+
+There are three schedules for determining which turns to include in each evaluation.
+
+{\bf Schedule 1}: Include all turns.
+
+{\bf Schedule 2}: Include a turn for a given concept only if that concept either appears on the SLU N-Best list in that turn, or if the system’s action references that concept in that turn.
+
+{\bf Schedule 3}: Include only the turn before the system starts over from the beginning, and the last turn of the dialog.
+
+It evluated in 5 different data sets. The number of turns under different schedules are shown in Table \ref{table:counts}
+
+\begin{table*}[!htb]
+\centering
+\input{counts.tex}
+\caption{Number of turns under different schedules and different data sets}
+\label{table:counts}
+\end{table*}
+
+\begin{table}[!htb]
+\centering
+\input{s1.tex}
+\caption{Accuracy of all entries on schedule 1}
+\label{table:s1}
+\end{table}
+
+\begin{table}[!htb]
+\centering
+\input{s2.tex}
+\caption{Accuracy of all entries on schedule 2}
+\label{table:s2}
+\end{table}
+
+\begin{table}[!htb]
+\centering
+\input{s3.tex}
+\caption{Accuracy of all entries on schedule 3}
+\label{table:s3}
+\end{table}
+
+\section{Features}
+
+The features are shown in Table \ref{table:feature}.
+\begin{table}[!htb]
+\centering
+\input{feature.tex}
+\caption{Features}
+\label{table:feature}
+\end{table}
+
+\section{TODO}
+
+\begin{itemize}
+	\item Get the Upper Bound of N-Best
+\end{itemize}
+
+\end{document}
