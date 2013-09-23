@@ -66,12 +66,12 @@ def main(argv):
         for schedule in SCHEDULES:
             stats[meta_slot][schedule] = {
                 'accuracy': Stat_Accuracy(),
-                'mrr':      Stat_MRR(),
-                'roc':      Stat_ROC(bins=args.rocbins),
-                'l2':       Stat_L2(),
-                'avgp':     Stat_AverageProb(),
-                'nonempty': Stat_NonEmpty(),
-                'hypcount': Stat_HypCount(),
+                #'mrr':      Stat_MRR(),
+                #'roc':      Stat_ROC(bins=args.rocbins),
+                #'l2':       Stat_L2(),
+                #'avgp':     Stat_AverageProb(),
+                #'nonempty': Stat_NonEmpty(),
+                #'hypcount': Stat_HypCount(),
                 }
 
     # mark each label hyp as being correct or not
