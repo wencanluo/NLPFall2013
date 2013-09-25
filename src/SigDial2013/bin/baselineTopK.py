@@ -1,0 +1,134 @@
+#! D:\Python27\python.exe
+import sys,os,argparse,shutil,glob,json,copy,time
+
+SLOTS = ['route','from.desc','from.neighborhood','from.monument','to.desc','to.neighborhood','to.monument','date','time']
+
+def main(argv):
+	#
+	# CMD LINE ARGS
+	# 
+	install_path = os.path.abspath(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+	utils_dirname = os.path.join(install_path,'lib')
+	sys.path.append(utils_dirname)
+	from dataset_walker import dataset_walker
+	list_dir = os.path.join(install_path,'config')
+
+	parser = argparse.ArgumentParser(description='Simple hand-crafted dialog state tracker baseline.')
+	parser.add_argument('--dataset', dest='dataset', action='store', metavar='DATASET', required=True,
+						help='The dataset to analyze, for example train1 or test2 or train3a')
+	parser.add_argument('--dataroot',dest='dataroot',action='store',required=True,metavar='PATH',
+						help='Will look for corpus in <destroot>/<dataset>/...')
+	parser.add_argument('--trackfile',dest='scorefile',action='store',required=True,metavar='JSON_FILE',
+						help='File to write with tracker output')
+	parser.add_argument('--null',dest='null',action='store_true',
+						help='Always output "None of the above" for all slots with score 1.0')
+	parser.add_argument('--ignorescores',dest='ignorescores',action='store_true',
+						help='Ignore score in data; always use a score of 1.0 (nop if --null also specified)')
+	args = parser.parse_args()
+
+	sessions = dataset_walker(args.dataset,dataroot=args.dataroot,labels=False)	
+	start_time = time.time()
+	r = {
+		'sessions': [],
+		'dataset': args.dataset,
+		}
+	
+	for session in sessions:
+		r['sessions'].append( { 'turns': [], 'session-id': session.log['session-id'], } )
+		state = _InitState()		
+		if (args.null == True):
+			state['joint'] = { 'hyps': [], }
+		for turn_index,(log_turn,scratch) in enumerate(session):
+			if (args.null == True):
+				r['sessions'][-1]['turns'].append(state)
+				continue
+			# check whether to initialize state or copy
+			if (log_turn['restart'] == True or turn_index == 0):
+				state = _InitState()
+			else:
+				state = copy.deepcopy(state)
+			r['sessions'][-1]['turns'].append(state)
+			if (len(log_turn['input']['live']['slu-hyps']) == 0):
+				# no recognition results; skip
+				continue
+			  
+			if 'batch' in log_turn['input']:
+				slu_hyps = log_turn['input']['batch']['slu-hyps'] #for Group A
+				if len(slu_hyps)==0:
+					slu_hyps = log_turn['input']['live']['slu-hyps']
+			else:
+				slu_hyps = log_turn['input']['live']['slu-hyps']
+				
+			#print len(slu_hyps)
+			slu_hyp = slu_hyps[0]
+			
+			joint = {}
+			joint_scores = []			
+			for slot in SLOTS:
+				
+				for slu_hyp in slu_hyps:#for all hyp
+					#print ".",
+					for act_hyp in slu_hyp['slu-hyp']:
+						this_pairset = {}
+						for found_slot,val in act_hyp['slots']:
+							if (found_slot.startswith(slot)):
+								this_pairset[found_slot] = val
+						if (len(this_pairset) == 0):
+							continue
+						#if (len(state[slot]['hyps']) == 0 or state[slot]['hyps'][0]['score-save'] < slu_hyp['score']):
+						if True:#keep all stuff
+							#TODO: check duplicate
+							score = slu_hyp['score'] if (args.ignorescores == False) else 1.0
+							
+							found_duplicate = False
+							for i, state_slot_hyp in enumerate(state[slot]['hyps']):
+								if state_slot_hyp['slots'] == this_pairset:#duplicate
+									found_duplicate = True
+									if state_slot_hyp['score-save'] < slu_hyp['score']:
+										state[slot]['hyps'][i]['score-save'] = slu_hyp['score']
+								
+							if not found_duplicate:
+								state[slot]['hyps'].append({
+											'score-save': slu_hyp['score'],
+											'score': score,
+											'slots': this_pairset,
+											})
+				#print
+				if (len(state[slot]['hyps']) > 0):
+					#pick up the slot with max score
+					
+					joint_scores.append( state[slot]['hyps'][0]['score'] )
+					for (my_slot,my_val) in state[slot]['hyps'][0]['slots'].items():
+						joint[my_slot] = my_val
+			state['joint'] = { 'hyps': [], }
+			if (len(joint_scores) > 0):
+				state['joint']['hyps'].append( {
+						'score': sum(joint_scores) / len(joint_scores),
+						'slots': joint,
+						} )
+		print "."
+		#for turn in r['sessions'][-1]['turns']:
+		#	for slots_entry in turn.values():
+		#		for hyp_entry in slots_entry['hyps']:
+		#			if ('score-save' in hyp_entry):
+		#				del hyp_entry['score-save']
+	end_time = time.time()
+	elapsed_time = end_time - start_time
+	r['wall-time'] = elapsed_time
+
+	f = open(args.scorefile,'w')
+	json.dump(r,f,indent=2)
+	f.close()
+
+def _InitState():
+	state = {}
+	for slot in SLOTS:
+		state[slot] = {'hyps': [], }	
+	return state
+
+if (__name__ == '__main__'):
+	main(sys.argv)
+	print "Done"
+
+
+
