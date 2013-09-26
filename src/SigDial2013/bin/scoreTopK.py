@@ -55,6 +55,7 @@ def main(argv):
 	args = parser.parse_args()
 
 	print args.topK
+	global topK
 	topK = args.topK
 	
 	sessions = dataset_walker(args.dataset,dataroot=args.dataroot,labels=True)	
@@ -149,6 +150,14 @@ def main(argv):
 				# compute offlist score
 				offlist_score = 1.0
 				total = 0.0
+				
+				#normalized the score, add the minimal score
+				if len(tracker_turn_slot['hyps']) > 0:
+					min_score = tracker_turn_slot['hyps'][-1]['score']
+					
+					for i,tracker_hyp in enumerate(tracker_turn_slot['hyps']):
+						tracker_turn_slot['hyps'][i]['score'] = tracker_turn_slot['hyps'][i]['score'] - min_score
+					
 				for i,tracker_hyp in enumerate(tracker_turn_slot['hyps']):
 					if (tracker_hyp['score'] < 0.0):
 						print >>sys.stderr,'WARNING: Score is less than 0.0 (%s); changing to 0.0 (session %s, turn %s, slot %s, hyp %s)' % (
@@ -175,6 +184,9 @@ def main(argv):
 				for i,tracker_hyp in enumerate(tracker_turn_slot['hyps']):
 					try:
 						tracker_hyp['label'] = AssignLabelToTrackerHyp(tracker_hyp['slots'],labels,meta_slot,tracker_turn)
+						if i==1 and tracker_hyp['label'] == True:
+							_debug = 2
+						#print session_id, "\t", turn_index, "\t", meta_slot,"\t", i, "\t", tracker_hyp['label'], "\t"
 					except ScoreError as e:
 						print sys.stderr,'WARNING: %s (session %s, turn %s, slot %s, hyp %s); assigning incorrect' % (e.msg,
 																										   session.log['session-id'],
@@ -197,6 +209,10 @@ def main(argv):
 							'score': tracker_hyp['score'],
 							})
 				tracker_turn_slot['all-hyps'].sort(key=lambda x: x['score'],reverse=True)
+				
+				for i,tracker_hyp in enumerate(tracker_turn_slot['all-hyps']):
+					if i == 1 and tracker_hyp['label'] == True:
+						_debug = 3
 
 				# compute stats according to each schedule
 				for schedule in SCHEDULES:
@@ -345,9 +361,12 @@ class Stat_AccuracyTopK(object):
 	def AddTurn(self,tracker_turn_slot,log_turn):
 		self.N += 1
 		
-		for k in range(topK):
-			if (tracker_turn_slot['all-hyps'][k]['label'] == True):
+		for i, tracker_trun in enumerate(tracker_turn_slot['all-hyps']):
+			if i >= topK: continue
+			
+			if tracker_trun['label'] == True:
 				self.correct += 1
+				break
 
 	def Result(self):
 		if (self.N == 0):
