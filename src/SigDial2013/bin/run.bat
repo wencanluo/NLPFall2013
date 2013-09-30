@@ -1,14 +1,16 @@
 set root=../../data
 set m=topline
+set outdir=res/
 
-goto after_test
-set t=test4
-set k=2
-python scoreTopK.py --dataset=%%t --dataroot=%root% --trackfile=%m%_%%t_track.json --scorefile=%m%_%%t_score_%%k.csv --topK=%%k
-python report.py --scorefile=%m%_%t%_score_%k%.csv > %m%_%t%_score_%k%.txt
-:after_test
+rem goto after_summary
+for %%t in (test4) do (
+python getSummary.py --dataset=%%t --dataroot=%root% --logfile=%outdir%%%t_summary.txt
+rem python scoreTopK.py --dataset=%%t --dataroot=%root% --trackfile=%m%_%%t_track.json --scorefile=%m%_%%t_score_%%k.csv --topK=%%k
+rem python report.py --scorefile=%m%_%t%_score_%k%.csv > %m%_%t%_score_%k%.txt
+)
+:after_summary
 
-rem goto after_topline
+goto after_topline
 set root=../../data
 set m=topline
 for %%t in (test1 test2 test3 test4) do (
