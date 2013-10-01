@@ -3,7 +3,8 @@ set m=topline
 set outdir=res/
 
 rem goto after_summary
-for %%t in (test4) do (
+rem for %%t in (train1a train2 train3) do (
+for %%t in (test1 test2 test3 test4 train1a train2 train3) do (
 python getSummary.py --dataset=%%t --dataroot=%root% --logfile=%outdir%%%t_summary.txt
 rem python scoreTopK.py --dataset=%%t --dataroot=%root% --trackfile=%m%_%%t_track.json --scorefile=%m%_%%t_score_%%k.csv --topK=%%k
 rem python report.py --scorefile=%m%_%t%_score_%k%.csv > %m%_%t%_score_%k%.txt
@@ -35,22 +36,21 @@ for %%t in (test1 test2 test3 test4) do (
 
 goto after_baseline
 set root=../../data
-set m=baseline
+set m=baseline_allmetrics
 for %%t in (test1 test2 test3 test4) do (
-	python baseline.py --dataset=%%t --dataroot=%root% --trackfile=%m%_%%t_track.json
-	python score.py --dataset=%%t --dataroot=%root% --trackfile=%m%_%%t_track.json --scorefile=%m%_%%t_score.csv
-	python report.py --scorefile=%m%_%%t_score.csv > %m%_%%t_score.txt
+	python baseline.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json
+	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
 )
 :after_baseline
 
-goto comment_no_history
-rem run no_history
+goto after_nohistory
 set root=../../data
-set m=nohistory
+set m=nohistory_allmetrics
 for %%t in (test1 test2 test3 test4) do (
-	python baselineNohistroy.py --dataset=%%t --dataroot=%root% --trackfile=%m%_%%t_track.json
-	python score.py --dataset=%%t --dataroot=%root% --trackfile=%m%_%%t_track.json --scorefile=%m%_%%t_score.csv
-	python report.py --scorefile=%m%_%%t_score.csv > %m%_%%t_score.txt
+	python baselineNohistroy.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json
+	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
 )
 
-:comment_no_history
+:after_nohistory
