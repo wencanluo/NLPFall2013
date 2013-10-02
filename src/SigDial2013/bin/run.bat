@@ -2,7 +2,7 @@ set root=../../data
 set m=topline
 set outdir=res/
 
-rem goto after_summary
+goto after_summary
 rem for %%t in (train1a train2 train3) do (
 for %%t in (test1 test2 test3 test4 train1a train2 train3) do (
 python getSummary.py --dataset=%%t --dataroot=%root% --logfile=%outdir%%%t_summary.txt
@@ -11,15 +11,14 @@ rem python report.py --scorefile=%m%_%t%_score_%k%.csv > %m%_%t%_score_%k%.txt
 )
 :after_summary
 
-goto after_topline
+rem goto after_topline
 set root=../../data
 set m=topline
 for %%t in (test1 test2 test3 test4) do (
-	rem python baselineTopK.py --dataset=%%t --dataroot=%root% --trackfile=%m%_%%t_track.json
-	
-	for %%k in (1 2 3 4 5 6 7 8 9 10) do ( 
-		python scoreTopK.py --dataset=%%t --dataroot=%root% --trackfile=%m%_%%t_track.json --scorefile=%m%_%%t_score_%%k.csv --topK=%%k
-		python report.py --scorefile=%m%_%%t_score_%%k.csv > %m%_%%t_score_%%k.txt
+	for %%k in (-1 0 1 2 3 4 5 6 7 8 9 10) do (
+		python topLineTopK.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track_%%k.json --topK=%%k
+		python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track_%%k.json --scorefile=%outdir%%m%_%%t_score_%%k.csv
+		python report.py --scorefile=%outdir%%m%_%%t_score_%%k.csv > %outdir%%m%_%%t_score_%%k.txt
 	)
 )
 :after_topline
