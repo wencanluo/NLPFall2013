@@ -5,30 +5,28 @@ Created on Sep 30, 2013
 '''
 import fio
 
-def getActList():
-	tests = ['train1a']
-	
+def getActList(test):
 	dict = {}
+
+	filename = "res/"+test+"_summary.txt"
+	head, body = fio.readMatrix(filename, True)
 	
-	for test in tests:
-		filename = "res/"+test+"_summary.txt"
-		head, body = fio.readMatrix(filename, True)
-		
-		out_index = head.index('output acts')
-		in_index = head.index('top slu')
-		
-		for row in body:
-			out_act = row[out_index][1:-1]
-			in_act = row[in_index][1:-1]
-			
-			acts = set( list(getAct(out_act)) + list(getAct(in_act)))
-			
-			for act in acts:
-				if act not in dict:
-					dict[act] = 0
-				dict[act] = dict[act] + 1
+	out_index = head.index('output acts')
+	in_index = head.index('top slu')
 	
-	fio.SaveDict(dict, "res/train1a.dict")
+	for row in body:
+		out_act = row[out_index][1:-1]
+		in_act = row[in_index][1:-1]
+		
+		acts = set( list(getAct(out_act)) + list(getAct(in_act)))
+		
+		for act in acts:
+			if act not in dict:
+				dict[act] = 0
+			dict[act] = dict[act] + 1
+	
+	outfile = "res/"+test+".dict"
+	fio.SaveDict(dict, outfile)
 
 def getAct(slu):#parse the action from the slu string
 	tokens = slu.split('&')
@@ -41,10 +39,11 @@ def getAct(slu):#parse the action from the slu string
 		actions.append(token[:k])
 	return set(actions)
 	
-def getWekaTrain():
-	features = fio.LoadDict("res/train1a.dict")
+def getWekaTrain(featurefile, tests):
+	#features = fio.LoadDict("res/train1a.dict")
+	features = fio.LoadDict("res/"+featurefile+".dict")
 	
-	tests = ['train1a', 'test1', 'test2', 'test3', 'test4']
+	#tests = ['train1a', 'test1', 'test2', 'test3', 'test4']
 	
 	for test in tests:
 		data = []
@@ -88,6 +87,6 @@ def getWekaTrain():
 		fio.ArffWriter("res/"+test+".arff", header, types, "dstc", data)	
 	
 if (__name__ == '__main__'):
-	#getActList()
-	getWekaTrain()
+	getActList("train3")
+	getWekaTrain("train3", ["train3"])
 	print "Done"
