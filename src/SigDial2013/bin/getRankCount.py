@@ -8,11 +8,13 @@ import fio
 def getRankDistribution():
 	tests = ['test1', 'test2', 'test3', 'test4', 'train1a', 'train2', 'train3']
 	
+	total = []
 	dicts = []
 	for test in tests:
 		filename = "res/"+test+"_summary.txt"
 		head, body = fio.readMatrix(filename, True)
 		
+		total.append(len(body))
 		index = head.index('rank')
 		
 		dict = {}
@@ -26,7 +28,10 @@ def getRankDistribution():
 		dicts.append(dict)
 		#fio.PrintDict(dict)
 		#print
-		
+	
+	fio.PrintListwithName(tests, "data")
+	fio.PrintListwithName(total, "total")
+	
 	for key in range(-1, 100):
 		key = str(key)
 		print key, "\t",

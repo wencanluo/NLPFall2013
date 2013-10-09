@@ -1,5 +1,27 @@
 import fio
 
+def extractScore():
+	tests = ['test1', 'test2', 'test3', 'test4']
+	
+	for L in [[5], [12], [19]]:
+		score = []
+		
+		for mode in ['baseline', 'nohistory', 'majoritybaseline', '3way', 'topline']:
+			s = []
+			for test in tests:
+				filename = "res/"+mode +"_"+test+"_score.txt"
+				lines = fio.readfile(filename)
+				for i in L:
+					line = lines[i].strip()
+					nums = line.split()
+					s.append(nums[11])
+			score.append(s)
+		
+		for row in score:
+			for col in row:
+				print col,"\t",
+			print
+			
 def extractScoreTopK():
 	tests = ['test1', 'test2', 'test3', 'test4']
 	
@@ -7,14 +29,16 @@ def extractScoreTopK():
 		score = []
 		for k in range(-1, 9):
 			s = []
-			for test in tests:
+			for mode in ['baseline', 'nohistory', 'majoritybaseline', '3way', 'topline']:
 				#filename = "res/topline_"+test+"_score_"+str(k)+".txt"
-				filename = "res/baseline_"+test+"_score.txt"
-				lines = fio.readfile(filename)
-				for i in L:
-					line = lines[i].strip()
-					nums = line.split()
-					s.append(nums[10])
+				#filename = "res/baseline_"+test+"_score.txt"
+				for test in tests:
+					filename = "res/"+mode +"_"+test+"_score.txt"
+					lines = fio.readfile(filename)
+					for i in L:
+						line = lines[i].strip()
+						nums = line.split()
+						s.append(nums[10])
 			score.append(s)
 		
 		for row in score:
@@ -60,4 +84,4 @@ def extractScoreAllMetrics():
 			
 
 if (__name__ == '__main__'):
-	extractScoreTopK()
+	extractScore()

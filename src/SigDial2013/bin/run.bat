@@ -2,6 +2,18 @@ set root=../../data
 set m=topline
 set outdir=res/
 
+rem after_3waymodel
+set root=../../data
+set m=3way
+for %%t in (test1 test2 test3 test4) do (
+rem for %%t in (test1) do (
+	python 3wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_ngram.label
+	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
+	
+)
+:after_3waymodel
+
 goto after_summary
 rem for %%t in (train1a train2 train3) do (
 for %%t in (test1 test2 test3 test4 train1a train2 train3) do (
@@ -11,7 +23,7 @@ rem python report.py --scorefile=%m%_%t%_score_%k%.csv > %m%_%t%_score_%k%.txt
 )
 :after_summary
 
-rem goto after_topline
+goto after_topline
 set root=../../data
 set m=topline
 for %%t in (test1 test2 test3 test4) do (

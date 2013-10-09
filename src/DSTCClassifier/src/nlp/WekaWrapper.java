@@ -4,6 +4,7 @@ package nlp;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -54,6 +55,19 @@ public class WekaWrapper {
 		data = Filter.useFilter(data, addid);
 		
 		return data;
+	}
+	
+	public static Instances applyCostMatrix(Instances dataset, String costmatrix){
+		CostMatrix matrix;
+		Instances newData = null;
+		try {
+			matrix = new CostMatrix(new BufferedReader(new FileReader(costmatrix)));
+			newData = matrix.applyCostMatrix(dataset, new Random(1));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return newData;
 	}
 	
 	public static void SaveInstances(Instances dataset, String file) throws IOException{
@@ -243,10 +257,7 @@ public class WekaWrapper {
 			double weight = ins_w.value(wid);
 			dataset.instance(i).setWeight(weight);
 		}
-		
-		//for(int i=0;i<weights.numInstances();i++){
-		//	System.out.println(dataset.instance(i).weight());
-		//}
+
 		return dataset;
 	}
 	
