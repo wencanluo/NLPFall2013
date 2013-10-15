@@ -1,0 +1,15 @@
+//invited talk
+A hierarchical Bayesian Approach to Language Comprehension in the Brain (Predicting Meaning: What the Brain tells us about the Architecture of Language Comprehension)
+Natural Language Applications from Fact to Fiction 
+
+
+//best papers
+The Life and Death of Discourse Entities: Identifying Singleton Mentions
+Automatic Generation of English Respellings
+
+//some best papers
+Relation Extraction with Matrix Factorization and Universal Schemas
+Learning a Part-of-Speech Tagger From Two Hours of Annotation
+Minimally Supervised Method for Multilingual Paraphrase Extraction from Definition
+Named Entity Recognition with Bilingual Constraints 
+Generating Expressions that Refer to Visible Objects
