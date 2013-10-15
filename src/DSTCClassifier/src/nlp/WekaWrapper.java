@@ -186,8 +186,8 @@ public class WekaWrapper {
 		//new IBk(3),
 		//new IBk(5),
 		//new NaiveBayes(),
-		//new J48(),
-		new SMO(),
+		new J48(),
+		//new SMO(),
 		//newVote(),
 		};
 		
@@ -195,6 +195,7 @@ public class WekaWrapper {
 		{
 			Classifier classifier = classifiers[i];
 			classifier.buildClassifier(trainset);
+			System.out.println(classifier);
 		
 			System.out.println("Classifier is done!");
 			
