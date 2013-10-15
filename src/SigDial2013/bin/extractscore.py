@@ -3,10 +3,12 @@ import fio
 def extractScore():
 	tests = ['test1', 'test2', 'test3', 'test4']
 	
+	print "method","\t", 'test1',"\t", 'test2',"\t", 'test3',"\t", 'test4'
+	modes = ['baseline', 'majoritybaseline','bestbyother', '3way', '3way_actngram', 'topline']
 	for L in [[5], [12], [19]]:
 		score = []
 		
-		for mode in ['baseline', 'nohistory', 'majoritybaseline', '3way', 'topline']:
+		for mode in modes:
 			s = []
 			for test in tests:
 				filename = "res/"+mode +"_"+test+"_score.txt"
@@ -14,10 +16,12 @@ def extractScore():
 				for i in L:
 					line = lines[i].strip()
 					nums = line.split()
-					s.append(nums[11])
+					s.append(nums[10])#11 for all, 10 for joint
 			score.append(s)
 		
-		for row in score:
+		
+		for i, row in enumerate(score):
+			print modes[i],"\t",
 			for col in row:
 				print col,"\t",
 			print

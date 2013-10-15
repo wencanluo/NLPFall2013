@@ -347,7 +347,7 @@ def getWekaARFF_Enrich(featurefile, tests):
 			slurank = 1
 			
 			restart = row[restart_index]
-			if restart == 'True' or turn_id == 0:
+			if restart == 'True' or turn_id == '0':
 				confirmedslot = {}
 				negateslot = {}
 			
