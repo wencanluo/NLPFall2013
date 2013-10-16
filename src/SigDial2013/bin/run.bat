@@ -1,16 +1,56 @@
 set root=../../data
 set m=topline
 set outdir=res/
+set CRFDir=D:/NLP/CRF++-0.58/
 
-rem goto after_CRF
+goto after_CRF_ActNgram
+set root=../../data
+set m=3way_crf_actngram
+for %%t in (test1 test2 test3 test4) do (
+	python 3wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram_crf.label
+	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
+)
+:after_CRF_ActNgram
+
+goto after_CRF_Train_ActNGram
+set train=train2
+%CRFDir%crf_learn -c 4.0 %outdir%template.unigram %outdir%%train%_actngram.crf %outdir%model_%train%_actngram
+
+for %%t in (test1 test2 test3 test4) do (
+	%CRFDir%crf_test -m %outdir%model_%train%_actngram %outdir%%%t_actngram.crf > %outdir%%%t_actngram.out
+)
+:after_CRF_Train_ActNGram
+
+rem goto after_CRF_Act
+set root=../../data
+set m=3way_crf_act
+for %%t in (test1 test2 test3 test4) do (
+	python 3wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_crf.label
+	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
+)
+:after_CRF_Act
+
+goto after_CRF
+set root=../../data
+set m=3way_crf_act_scoreall
+for %%t in (test1 test2 test3 test4) do (
+	python 3wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_crf.label
+	python scoreAll.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
+)
+:after_CRF
+
+got after_CRF_Train
 set CRFDir=D:/NLP/CRF++-0.58/
 set train=train2
-rem %CRFDir%crf_learn -c 4.0 %outdir%template.default %outdir%%train%.crf %outdir%model_%train%
+%CRFDir%crf_learn -c 4.0 %outdir%template.default %outdir%%train%.crf %outdir%model_%train%
 
 for %%t in (test1 test2 test3 test4) do (
 	%CRFDir%crf_test -m %outdir%model_%train% %outdir%%%t.crf > %outdir%%%t.out
 )
-:after_CRF
+:after_CRF_Train
 
 goto after_3waymodel
 set root=../../data
@@ -19,7 +59,6 @@ for %%t in (test1 test2 test4) do (
 	rem python 3wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label
 	rem python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv
 	rem python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
-	
 )
 
 for %%t in (test3) do (

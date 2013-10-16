@@ -4,7 +4,8 @@ def extractScore():
 	tests = ['test1', 'test2', 'test3', 'test4']
 	
 	print "method","\t", 'test1',"\t", 'test2',"\t", 'test3',"\t", 'test4'
-	modes = ['baseline', 'majoritybaseline','bestbyother', '3way', '3way_actngram', 'topline']
+	#modes = ['baseline', 'majoritybaseline','bestbyother', '3way', '3way_actngram', '3way_crf_act', '3way_crf_act', 'topline']
+	modes = ['baseline', 'bestbyother', '3way', '3way_actngram', '3way_crf_act', '3way_crf_actngram', 'topline']
 	for L in [[5], [12], [19]]:
 		score = []
 		
