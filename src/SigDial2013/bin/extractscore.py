@@ -56,37 +56,31 @@ def extractScoreAllMetrics():
 	
 	score = []
 	
-	#L = range(43,56)
-	#L = range(43,56)
-	L = range(43,56)
+	schedules = ['schedule1','schedule2','schedule3']
+	modes = ['baseline_allmetrics', 'bestbyother_allmetrics', '3way_actngram_allmetrics']
 	
-	for test in data:
-		filename = "res/baseline_allmetrics_"+test+"_score.txt"
-		lines1 = fio.readfile(filename)
-		
-		filename = "res/nohistory_allmetrics_"+test+"_score.txt"
-		lines2 = fio.readfile(filename)
-
-		s = []
-		for i in L:
-			line = lines1[i].strip()
-			nums = line.split()
-			s.append(nums[11])
-			
-		score.append(s)
-		
-		s = []
-		for i in L:			
-			line = lines2[i].strip()
-			nums = line.split()
-			s.append(nums[11])
-		score.append(s)
+	header = ['test', 'method', 'accuracy', 'avgp', 'l2', 'mrr']
+	fio.PrintListwithName(header, 'schedule')
+	for k, L in enumerate([range(5,9),range(15,19),range(25,29)]):
+		for test in data:
+			for mode in modes:
+				filename = "res/"+mode+"_"+test+"_score.txt"
+				lines = fio.readfile(filename)
+				
+				s = []
+				for i in L:
+					line = lines[i].strip()
+					nums = line.split()
+					s.append(nums[11])
+					
+				score.append([schedules[k]]+[test]+[mode] + s)
 	
-	for j in range(len(score[0])):
-		for i in range(len(score)):
+	for i in range(len(score)):
+		for j in range(len(score[0])):
 			print score[i][j], "\t",
 		print
 			
 
 if (__name__ == '__main__'):
-	extractScore()
+	#extractScore()
+	extractScoreAllMetrics()

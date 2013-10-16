@@ -70,8 +70,8 @@ def main(argv):
 				#'roc':	  Stat_ROC(bins=args.rocbins),
 				'l2':	   Stat_L2(),
 				'avgp':	 Stat_AverageProb(),
-				'nonempty': Stat_NonEmpty(),
-				'hypcount': Stat_HypCount(),
+				#'nonempty': Stat_NonEmpty(),
+				#'hypcount': Stat_HypCount(),
 				}
 
 	# mark each label hyp as being correct or not
