@@ -205,7 +205,8 @@ public class WekaWrapper {
 		
 			PrintResult(eval);
 			
-			GetPridiction(classifier, testset, test + ".label");
+			//GetPridiction(classifier, testset, test + ".label");
+			GetPridictionDistribution(classifier, testset, test + ".dis.label");
 		}
 	}
 	

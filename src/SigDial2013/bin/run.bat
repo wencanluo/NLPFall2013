@@ -3,7 +3,25 @@ set m=topline
 set outdir=res/
 set CRFDir=D:/NLP/CRF++-0.58/
 
-after_SummaryError
+goto after_3way_actngram_dis
+set m=3way_actngram_dis
+rem set m=3way_actngram
+for %%t in (test1 test2 test4) do (
+rem for %%t in (test1) do (
+	python 3wayDistModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.dis.label
+	rem python 3wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label
+	python scoreAll.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_allmetrics_%%t_score.txt
+)
+
+for %%t in (test3) do (
+ 	python 3wayDistModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram_train3.dis.label
+ 	python scoreAll.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv
+ 	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_allmetrics_%%t_score.txt
+ )
+:after_3way_actngram_dis
+
+goto after_SummaryError
 set m=actngram
 for %%t in (test1 test2 test3 test4) do (
 	python get3wayError.py --summaryfile=res/%%t_summary.txt --labelfile=res/%%t_%m%.label --logfile=res/%%t_%m%_summary_label.txt
@@ -75,7 +93,7 @@ for %%t in (test3) do (
 )
 :after_3waymodel
 
-goto after_summary
+rem goto after_summary
 rem for %%t in (train1a train2 train3) do (
 for %%t in (test1 test2 test3 test4 train1a train2 train3) do (
 python getSummary.py --dataset=%%t --dataroot=%root% --logfile=%outdir%%%t_summary.txt

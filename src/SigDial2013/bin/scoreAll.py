@@ -98,8 +98,8 @@ def main(argv):
 				for meta_slot in SLOT_GROUPS + ['joint']:
 					offlist_flag[meta_slot] = True
 
-			# accumulate labels
-			for slu_label_entry in label_turn['slu-labels']:
+			# accumulate labels, create a dictionary for each slu in the correct one to say whether it is True
+			for slu_label_entry in label_turn['slu-labels']: #label_trun is the correct one
 				try:
 					slot_group,pairset_key = _MakePairsetKey(slu_label_entry['slots'])
 				except ScoreError as e:

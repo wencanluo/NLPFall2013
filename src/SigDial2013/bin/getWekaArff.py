@@ -432,4 +432,5 @@ if (__name__ == '__main__'):
 	#getWekaARFF("train2", ["train2", "test1", "test2", "test3", "test4"])
 	#getWekaARFF_Ngram(["train2", "test1", "test2", "test3", "test4"])
 	getWekaARFF_Enrich("train2", ["train2", "test1", "test2", "test3", "test4"])
+	#getWekaARFF_ActNgram
 	print "Done"
