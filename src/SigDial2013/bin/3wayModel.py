@@ -81,7 +81,7 @@ def main(argv):
 			if slu_hyp == None: continue
 			
 			joint = {}
-			joint_scores = []			
+			joint_scores = []		
 			for slot in SLOTS:
 				for act_hyp in slu_hyp['slu-hyp']:
 					this_pairset = {}

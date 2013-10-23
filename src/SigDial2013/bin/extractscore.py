@@ -59,6 +59,7 @@ def extractScoreAllMetrics():
 	schedules = ['schedule1','schedule2','schedule3']
 	#modes = ['baseline_allmetrics', 'bestbyother_allmetrics', '3way_actngram_allmetrics', '3way_actngram_train23_allmetrics']
 	modes = ['bestbyother_allmetrics', '3way_actngram_allmetrics', '3way_actngram_dis_allmetrics']
+	#modes = ['3way_actngram_allmetrics']
 	
 	header = ['test', 'method', 'accuracy', 'avgp', 'l2', 'mrr']
 	fio.PrintListwithName(header, 'schedule')

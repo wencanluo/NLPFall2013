@@ -4,6 +4,8 @@ Created on Sep 30, 2013
 @author: wencan
 '''
 import fio
+import Cosin
+from SlotTracker import *
 
 def getActList(test):
 	dict = {}
@@ -18,6 +20,7 @@ def getActList(test):
 		out_act = row[out_index][1:-1]
 		in_act = row[in_index][1:-1]
 		
+		#acts = set( list(getAct(out_act, "out_")) + list(getAct(in_act, "in_")))
 		acts = set( list(getAct(out_act)) + list(getAct(in_act)))
 		
 		for act in acts:
@@ -81,7 +84,7 @@ def getSluActDict(slu):#return to=pitt
 		actions[name] = value
 	return actions
 
-def getAct(slu):#parse the action from the slu string
+def getAct(slu, prefix = ""):#parse the action from the slu string
 	tokens = slu.split('&')
 	
 	actions = []
@@ -89,7 +92,7 @@ def getAct(slu):#parse the action from the slu string
 		k = token.find('(')
 		if k == -1: continue
 		
-		actions.append(token[:k])
+		actions.append(prefix + token[:k])
 	return set(actions)
 	
 def getWekaARFF_Act(featurefile, tests):
@@ -233,12 +236,8 @@ def IsRequestedSlot(out_act, in_act):
 			return True
 	return False
 
-def AddConfirmedSlot(confirmedslot, out_act, in_act):
-	acts = getAct(in_act)
-	
-	if 'affirm' not in acts: return
-	
-	#extract the first expl-conf from out_act
+def getOutActExplConfDict(out_act):
+	dict = {}
 	tokens = out_act.split('&')
 	for token in tokens:
 		k = token.find('(')
@@ -248,11 +247,27 @@ def AddConfirmedSlot(confirmedslot, out_act, in_act):
 		
 		k2 = token.find(')')
 		if k2 == -1: continue
-		t2 = token[k+1:k2].split('=')
-		if len(t2)!=2: continue
-		slotname = t2[0]
-		value = t2[1]
-		confirmedslot[slotname] = value #update the confirmed dict
+		
+		#another split
+		t2 = token[k+1:k2].split(';')
+		for tt in t2:
+			t3 = tt.split('=')
+			if len(t3)!=2: continue
+			slotname = t3[0]
+			value = t3[1]
+			dict[slotname] = value
+	return dict
+
+def AddConfirmedSlot(confirmedslot, out_act, in_act):
+	acts = getAct(in_act)
+	
+	if 'affirm' not in acts: return
+	
+	#extract the first expl-conf from out_act
+	dict = getOutActExplConfDict(out_act)
+	
+	for key,value in dict.items():
+		confirmedslot[key] = value
 
 def AddNegateSlot(negateslot, out_act, in_act):
 	acts = getAct(in_act)
@@ -280,19 +295,59 @@ def IsConfirmed(confirmedslot, in_act):
 	
 	dict = getSluSlotValueDict(in_act)
 	
+	if len(dict) == 0: return False
+	
 	for key, value in dict.items():
-		if key in confirmedslot:
-			if confirmedslot[key] == value:
-				return True
-	return False
+		if key not in confirmedslot: return False
+		if confirmedslot[key] != value: return False
+	return True
+
+def IsConfirmedOut(confirmedslot, out_act):
+	if len(confirmedslot) == 0: return False
+	
+	dict = getOutActExplConfDict(out_act)
+	if len(dict) == 0: return False
+	
+	for key, value in dict.items():
+		if key not in confirmedslot: return False
+		if confirmedslot[key] != value: return False
+	return True
 	
 def IsNegated(negateslot, in_act):
-	return IsConfirmed(negateslot, in_act)
+	if len(negateslot) == 0: return False
+	
+	dict = getSluSlotValueDict(in_act)
+	
+	for key, value in dict.items():
+		if key not in negateslot: continue
+		if negateslot[key] == value: return True
+	return False
+
+def IsNegatedOut(negateslot, out_act):
+	if len(negateslot) == 0: return False
+	
+	dict = getOutActExplConfDict(out_act)
+	
+	for key, value in dict.items():
+		if key not in negateslot: continue
+		if negateslot[key] == value: return True
+	return False
 
 def IsGeneralNegated(confirmedslot, in_act):
 	if len(confirmedslot) == 0: return False
 	
 	dict = getSluSlotValueDict(in_act)
+	
+	for key, value in dict.items():
+		if key in confirmedslot:
+			if confirmedslot[key] != value:
+				return True
+	return False
+
+def IsGeneralNegatedOut(confirmedslot, out_act):
+	if len(confirmedslot) == 0: return False
+	
+	dict = getOutActExplConfDict(out_act)
 	
 	for key, value in dict.items():
 		if key in confirmedslot:
@@ -316,7 +371,11 @@ def getWekaARFF_Enrich(featurefile, tests):
 		rank_index = head.index('rank')
 		out_index = head.index('output acts')
 		in_index = head.index('top slu')
+		
 		asr_index = head.index('top asr')
+		asr_score_index = head.index('asr_score')
+		
+		out_trans_index = head.index('output trans')
 		
 		sluscore_index = head.index('top slu score')
 		restart_index = head.index('restart')
@@ -329,14 +388,21 @@ def getWekaARFF_Enrich(featurefile, tests):
 		confirmedslot = {}
 		negateslot = {}
 		
-		for row in body:
+		for rid, row in enumerate(body):
 			rank = int( row[rank_index] )
 			label = rank if rank <= 1 else -1
 			
 			out_act = row[out_index][1:-1]
 			in_act = row[in_index][1:-1]
 			asr = row[asr_index][1:-1]
+			asr_score = row[asr_score_index]
+			
+			out_trans = row[out_trans_index]
+			
+			cos = Cosin.compare(asr, out_trans)
+			
 			turn_id = row[turn_index]
+			cos2 = Cosin.compare(asr, body[rid-1][asr_index][1:-1]) if float(turn_id) > 0 and rid > 0 else 0
 			
 			acts = set( list(getAct(out_act)) + list(getAct(in_act)))
 			
@@ -350,6 +416,7 @@ def getWekaARFF_Enrich(featurefile, tests):
 			if restart == 'True' or turn_id == '0':
 				confirmedslot = {}
 				negateslot = {}
+				tracker = CSlotTracker()
 			
 			input_duration = float(row[input_end_index]) - float(row[input_start_index]) if row[input_end_index] != '-1' and row[input_start_index] != '-1' else -1
 			output_duration = float(row[output_end_index]) - float(row[output_start_index]) if row[output_end_index] != '-1' and row[output_start_index] != '-1' else -1
@@ -364,9 +431,24 @@ def getWekaARFF_Enrich(featurefile, tests):
 			isnegated = IsNegated(negateslot, in_act)
 			isgeneralNegated = IsGeneralNegated(confirmedslot, in_act)
 			
+			isconfirmedOut = IsConfirmedOut(confirmedslot, out_act)
+			isnegatedOut = IsNegatedOut(negateslot, out_act)
+			isgeneralNegatedOut = IsGeneralNegatedOut(confirmedslot, out_act)
+			
+			tracker.addInform(in_act, float(sluscore))
+			tracker.addAffirm(out_act, in_act, float(sluscore))
+			tracker.addNegate(out_act, in_act, float(sluscore))
+			
+			bins = tracker.getBins(out_act, in_act)
+			maxScore = tracker.getMax()
+			acc = tracker.getAcc(out_act, in_act)
+			
 			frow = []
 			
 			frow.append(asr)
+			frow.append(asr_score)
+			frow.append(cos)
+			frow.append(cos2)
 			for key in features.keys():
 				if key in acts:
 					frow.append(1)
@@ -385,11 +467,22 @@ def getWekaARFF_Enrich(featurefile, tests):
 			frow.append(isnegated)
 			frow.append(isgeneralNegated)
 			
+			frow.append(isconfirmedOut)
+			frow.append(isnegatedOut)
+			frow.append(isgeneralNegatedOut)
+			
+			#frow.append(maxScore)
+			frow.append(acc)
+			
 			frow.append(label)
 			data.append(frow)
 		
 		header =[]
 		header.append("ASR")
+		header.append("ASR_Score")
+		header.append("Cosin")
+		header.append("Cosin2") #cosin between current input and previous input
+		
 		for key in features.keys():
 			header.append(key)
 			
@@ -404,11 +497,20 @@ def getWekaARFF_Enrich(featurefile, tests):
 		header.append('isconfirmed')
 		header.append('isnegated')
 		header.append('isgeneralNegated')
+		header.append('isconfirmedOut')
+		header.append('isnegatedOut')
+		header.append('isgeneralNegatedOut')
+		
+		#header.append('MaxScore')
+		header.append('Acc')
 			
 		header = header + ['@@Class@@']
 		
 		types = []
 		types.append("String")
+		types.append("Continuous")
+		types.append("Continuous")
+		types.append("Continuous")
 		for key in features.keys():
 			types.append('Category')
 		
@@ -425,12 +527,24 @@ def getWekaARFF_Enrich(featurefile, tests):
 		types.append('Category')
 		
 		types.append('Category')
+		types.append('Category')
+		types.append('Category')
+		
+		#types.append('Continuous') #maxScore
+		types.append('Continuous') #Acc
+		
+		types.append('Category') #Label
+		
 		fio.ArffWriter("res/"+test+"_enrich.arff", header, types, "dstc", data)
+		fio.writeMatrix('res/' + test + "_enrich.body", data, header)
 				
 if (__name__ == '__main__'):
 	#getActList("train2")
 	#getWekaARFF("train2", ["train2", "test1", "test2", "test3", "test4"])
 	#getWekaARFF_Ngram(["train2", "test1", "test2", "test3", "test4"])
-	getWekaARFF_Enrich("train2", ["train2", "test1", "test2", "test3", "test4"])
+	getWekaARFF_Enrich("train2", ["test1"])
+	#getWekaARFF_Enrich("train2", ["train2", "test1", "test2", "test3", "test4"])
+	#getWekaARFF_Enrich("train3", ["train3", "test3"])
+	#getWekaARFF_Enrich("train2", ["test1"])
 	#getWekaARFF_ActNgram
 	print "Done"
