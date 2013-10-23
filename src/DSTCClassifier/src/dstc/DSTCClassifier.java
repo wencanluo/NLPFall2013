@@ -88,12 +88,12 @@ public class DSTCClassifier {
 		DSTCClassifier classifier = new DSTCClassifier();
 		
 		//Act
-		//String train = "../SigDial2013/bin/res/train1a";
-		//String train = "../SigDial2013/bin/res/train2";
-		//String test1 = "../SigDial2013/bin/res/test1";
-		//String test2 = "../SigDial2013/bin/res/test2";
-		//String test3 = "../SigDial2013/bin/res/test3";
-		//String test4 = "../SigDial2013/bin/res/test4";
+		String train = "../SigDial2013/bin/res/train2_act";
+		String train3 = "../SigDial2013/bin/res/train3_act";
+		String test1 = "../SigDial2013/bin/res/test1_act";
+		String test2 = "../SigDial2013/bin/res/test2_act";
+		String test3 = "../SigDial2013/bin/res/test3_act";
+		String test4 = "../SigDial2013/bin/res/test4_act";
 		
 		//classifier.Classifier(train, test1);
 		//classifier.Classifier(train, test2);
@@ -126,12 +126,19 @@ public class DSTCClassifier {
 		//String test4 = "../SigDial2013/bin/res/test4_actngram";
 		
 		//Enrich
-		String train = "../SigDial2013/bin/res/train2_enrich";
-		String test1 = "../SigDial2013/bin/res/test1_enrich";
-		String test2 = "../SigDial2013/bin/res/test2_enrich";
-		String test3 = "../SigDial2013/bin/res/test3_enrich";
-		String test4 = "../SigDial2013/bin/res/test4_enrich";
-		String train3 = "../SigDial2013/bin/res/train3_enrich";
+		//String train = "../SigDial2013/bin/res/train2_enrich";
+		//String test1 = "../SigDial2013/bin/res/test1_enrich";
+		//String test2 = "../SigDial2013/bin/res/test2_enrich";
+		//String test3 = "../SigDial2013/bin/res/test3_enrich";
+		//String test4 = "../SigDial2013/bin/res/test4_enrich";
+		//String train3 = "../SigDial2013/bin/res/train3_enrich";
+		
+		//String train = "../SigDial2013/bin/res/train2_bins";
+		//String test1 = "../SigDial2013/bin/res/test1_bins";
+		//String test2 = "../SigDial2013/bin/res/test2_bins";
+		//String test3 = "../SigDial2013/bin/res/test3_bins";
+		//String test4 = "../SigDial2013/bin/res/test4_bins";
+		//String train3 = "../SigDial2013/bin/res/train3_bins";
 		
 		//Train on train3
 		//String train3 = "../SigDial2013/bin/res/train3_actngram_train3";
