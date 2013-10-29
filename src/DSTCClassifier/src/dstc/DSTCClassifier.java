@@ -88,12 +88,12 @@ public class DSTCClassifier {
 		DSTCClassifier classifier = new DSTCClassifier();
 		
 		//Act
-		String train = "../SigDial2013/bin/res/train2_act";
-		String train3 = "../SigDial2013/bin/res/train3_act";
-		String test1 = "../SigDial2013/bin/res/test1_act";
-		String test2 = "../SigDial2013/bin/res/test2_act";
-		String test3 = "../SigDial2013/bin/res/test3_act";
-		String test4 = "../SigDial2013/bin/res/test4_act";
+		//String train = "../SigDial2013/bin/res/train2_act";
+		//String train3 = "../SigDial2013/bin/res/train3_act";
+		//String test1 = "../SigDial2013/bin/res/test1_act";
+		//String test2 = "../SigDial2013/bin/res/test2_act";
+		//String test3 = "../SigDial2013/bin/res/test3_act";
+		//String test4 = "../SigDial2013/bin/res/test4_act";
 		
 		//classifier.Classifier(train, test1);
 		//classifier.Classifier(train, test2);
@@ -133,12 +133,23 @@ public class DSTCClassifier {
 		//String test4 = "../SigDial2013/bin/res/test4_enrich";
 		//String train3 = "../SigDial2013/bin/res/train3_enrich";
 		
-		//String train = "../SigDial2013/bin/res/train2_bins";
-		//String test1 = "../SigDial2013/bin/res/test1_bins";
-		//String test2 = "../SigDial2013/bin/res/test2_bins";
-		//String test3 = "../SigDial2013/bin/res/test3_bins";
-		//String test4 = "../SigDial2013/bin/res/test4_bins";
-		//String train3 = "../SigDial2013/bin/res/train3_bins";
+		//String train = "../SigDial2013/bin/res/train2_train2_enrich";
+		//String test1 = "../SigDial2013/bin/res/test1_train2_enrich";
+		//String test2 = "../SigDial2013/bin/res/test2_train2_enrich";
+		//String test3 = "../SigDial2013/bin/res/test3_train2_enrich";
+		//String test4 = "../SigDial2013/bin/res/test4_train2_enrich";
+		
+		//String train = "../SigDial2013/bin/res/train3_train3_enrich";
+		//String test1 = "../SigDial2013/bin/res/test1_train3_enrich";
+		//String test2 = "../SigDial2013/bin/res/test2_train3_enrich";
+		//String test3 = "../SigDial2013/bin/res/test3_train3_enrich";
+		//String test4 = "../SigDial2013/bin/res/test4_train3_enrich";
+		
+		String train = "../SigDial2013/bin/res/train23_train23_enrich";
+		String test1 = "../SigDial2013/bin/res/test1_train23_enrich";
+		String test2 = "../SigDial2013/bin/res/test2_train23_enrich";
+		String test3 = "../SigDial2013/bin/res/test3_train23_enrich";
+		String test4 = "../SigDial2013/bin/res/test4_train23_enrich";
 		
 		//Train on train3
 		//String train3 = "../SigDial2013/bin/res/train3_actngram_train3";
@@ -157,7 +168,7 @@ public class DSTCClassifier {
 		//classifier.ClassifierNgram(train, train);
 		classifier.ClassifierNgram(train, test1);
 		classifier.ClassifierNgram(train, test2);
-		classifier.ClassifierNgram(train3, test3);
+		classifier.ClassifierNgram(train, test3);
 		classifier.ClassifierNgram(train, test4);
 		
 		System.setOut(oldout);

@@ -1,0 +1,80 @@
+train:../SigDial2013/bin/res/train2_bins
+test:../SigDial2013/bin/res/test1_bins
+Train: 9345
+Test: 10085
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.962     0.459      0.8       0.962     0.874      0.752    -1
+                 0.921     0.033      0.873     0.921     0.896      0.943    0
+                 0         0          0         0         0          0.618    1
+Weighted Avg.    0.816     0.308      0.7       0.816     0.753      0.771
+
+=== Confusion Matrix ===
+
+    a    b    c   <-- classified as
+ 6372  250    0 |    a = -1
+  160 1854    0 |    b = 0
+ 1429   20    0 |    c = 1
+
+train:../SigDial2013/bin/res/train2_bins
+test:../SigDial2013/bin/res/test2_bins
+Train: 9345
+Test: 10857
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.953     0.411      0.835     0.953     0.89       0.771    -1
+                 0.903     0.055      0.797     0.903     0.846      0.925    0
+                 0         0          0         0         0          0.57     1
+Weighted Avg.    0.826     0.292      0.725     0.826     0.772      0.776
+
+=== Confusion Matrix ===
+
+    a    b    c   <-- classified as
+ 7089  351    0 |    a = -1
+  202 1883    0 |    b = 0
+ 1202  130    0 |    c = 1
+
+train:../SigDial2013/bin/res/train3_bins
+test:../SigDial2013/bin/res/test3_bins
+Train: 8639
+Test: 13264
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.946     0.409      0.851     0.946     0.896      0.776    -1
+                 0.248     0.004      0.875     0.248     0.386      0.819    0
+                 0.595     0.085      0.61      0.595     0.602      0.787    1
+Weighted Avg.    0.809     0.308      0.81      0.809     0.789      0.783
+
+=== Confusion Matrix ===
+
+    a    b    c   <-- classified as
+ 8941   46  465 |    a = -1
+  578  342  461 |    b = 0
+  982    3 1446 |    c = 1
+
+train:../SigDial2013/bin/res/train2_bins
+test:../SigDial2013/bin/res/test4_bins
+Train: 9345
+Test: 4754
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.992     0.747      0.837     0.992     0.908      0.622    -1
+                 0.772     0.008      0.875     0.772     0.82       0.882    0
+                 0         0          0         0         0          0.531    1
+Weighted Avg.    0.839     0.594      0.723     0.839     0.776      0.627
+
+=== Confusion Matrix ===
+
+    a    b    c   <-- classified as
+ 3745   32    0 |    a = -1
+   72  244    0 |    b = 0
+  658    3    0 |    c = 1
+

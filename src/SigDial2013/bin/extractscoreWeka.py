@@ -1,7 +1,7 @@
 import fio
 
 def extractScoreWeka():
-	tests = ['res_act',]# 'res_enrich_asr', ]#'res_actngram_train3',]#'res_3way_train3',] #'res_enrich-train2',]#'res_actngram_train2',]#'res_acts_train2', 'res_acts_train2_cost', 'res_ngram_train2']
+	tests = ['res_enrich3_train2','res_enrich3_train3','res_enrich3_train23']# 'res_enrich_asr', ]#'res_actngram_train3',]#'res_3way_train3',] #'res_enrich-train2',]#'res_actngram_train2',]#'res_acts_train2', 'res_acts_train2_cost', 'res_ngram_train2']
 	
 	score = []
 	for test in tests:

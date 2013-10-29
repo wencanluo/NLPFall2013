@@ -7,28 +7,29 @@ import fio
 import Cosin
 from SlotTracker import *
 
-def getActList(test):
+def getActList(tests, fout):
 	dict = {}
 
-	filename = "res/"+test+"_summary.txt"
-	head, body = fio.readMatrix(filename, True)
-	
-	out_index = head.index('output acts')
-	in_index = head.index('top slu')
-	
-	for row in body:
-		out_act = row[out_index][1:-1]
-		in_act = row[in_index][1:-1]
+	for test in tests:
+		filename = "res/"+test+"_summary.txt"
+		head, body = fio.readMatrix(filename, True)
 		
-		#acts = set( list(getAct(out_act, "out_")) + list(getAct(in_act, "in_")))
-		acts = set( list(getAct(out_act)) + list(getAct(in_act)))
+		out_index = head.index('output acts')
+		in_index = head.index('top slu')
 		
-		for act in acts:
-			if act not in dict:
-				dict[act] = 0
-			dict[act] = dict[act] + 1
+		for row in body:
+			out_act = row[out_index][1:-1]
+			in_act = row[in_index][1:-1]
+			
+			#acts = set( list(getAct(out_act, "out_")) + list(getAct(in_act, "in_")))
+			acts = set( list(getAct(out_act)) + list(getAct(in_act)))
+			
+			for act in acts:
+				if act not in dict:
+					dict[act] = 0
+				dict[act] = dict[act] + 1
 	
-	outfile = "res/"+test+".dict"
+	outfile = "res/"+fout+".dict"
 	fio.SaveDict(dict, outfile)
 
 def getOutActDict(slu):
@@ -500,8 +501,9 @@ def getWekaARFF_Enrich(featurefile, tests):
 			
 		types.append('Category') #Label
 		
-		fio.ArffWriter("res/"+test+"_enrich.arff", header, types, "dstc", data)
-		fio.writeMatrix('res/' + test + "_enrich.body", data, header)
+		#fio.ArffWriter("res/"+test+"_enrich.arff", header, types, "dstc", data)
+		fio.ArffWriter("res/"+test+"_"+featurefile+"_enrich.arff", header, types, "dstc", data)
+		#fio.writeMatrix('res/' + test + "_enrich.body", data, header)
 				
 def getWekaARFF_Bin(featurefile, tests):
 	#features = fio.LoadDict("res/train1a.dict")
@@ -622,18 +624,21 @@ def getWekaARFF_Bin(featurefile, tests):
 			
 		types.append('Category') #Label
 		
-		fio.ArffWriter("res/"+test+"_bins.arff", header, types, "dstc", data)
-		fio.writeMatrix('res/' + test + "_bins.body", data, header)
+		fio.ArffWriter("res/"+test+"_"+featurefile+"_bins.arff", header, types, "dstc", data)
+		#fio.writeMatrix('res/' + test + "_"+featurefile"_bins.body", data, header)
 		
 if (__name__ == '__main__'):
-	#getActList("train2")
-	getWekaARFF_Act("train2", ["train2", "test1", "test2", "test4"])
-	getWekaARFF_Act("train3", ["train3", "test3"])
+	#getActList(["train2", "train3"], "train23")
+	#getActList(["train3"], "train3")
+	#getWekaARFF_Act("train2", ["train2", "test1", "test2", "test4"])
+	#getWekaARFF_Act("train3", ["train3", "test3"])
 	#getWekaARFF_Ngram(["train2", "test1", "test2", "test3", "test4"])
 	#getWekaARFF_Enrich("train2", ["test1"])
 	#getWekaARFF_Enrich("train2", ["train2", "test1", "test2", "test3", "test4"])
 	#getWekaARFF_Enrich("train3", ["train3", "test3"])
-	#getWekaARFF_Bin("train2", ["train2", "test1", "test2", "test3", "test4"])
+	getWekaARFF_Enrich("train2", ["train2", "test1", "test2", "test3", "test4"])
+	getWekaARFF_Enrich("train3", ["train3", "test1", "test2", "test3", "test4"])
+	getWekaARFF_Enrich("train23", ["train2", "train3", "test1", "test2", "test3", "test4"])
 	#getWekaARFF_Bin("train3", ["train3", "test3"])
 	
 	#getWekaARFF_Enrich("train2", ["test1"])

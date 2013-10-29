@@ -3,11 +3,39 @@ set m=topline
 set outdir=res/
 set CRFDir=D:/NLP/CRF++-0.58/
 
+rem goto after_3waymodel_train23
+set root=../../data
+set m=3way_enrich_train23
+for %%t in (test1 test2 test3 test4) do (
+	python 3wayDistModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_train23_enrich.dis.label
+	python scoreAll.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_allmetrics_%%t_score.txt
+)
+:after_3waymodel_train23
+
+goto after_3waymodel_train3
+set root=../../data
+set m=3way_enrich_train3
+for %%t in (test1 test2 test3 test4) do (
+	python 3wayDistModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_train3_enrich.dis.label
+	python scoreAll.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_allmetrics_%%t_score.txt
+)
+:after_3waymodel_train3
+
+goto after_3waymodel_train2
+set root=../../data
+set m=3way_enrich_train2
+for %%t in (test1 test2 test3 test4) do (
+	python 3wayDistModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_train2_enrich.dis.label
+	python scoreAll.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_allmetrics_%%t_score.txt
+)
+:after_3waymodel_train2
+
 goto after_3way_actngram_dis
 set m=3way_actngram_dis
-rem set m=3way_actngram
 for %%t in (test1 test2 test4) do (
-rem for %%t in (test1) do (
 	python 3wayDistModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.dis.label
 	rem python 3wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label
 	python scoreAll.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv
@@ -77,7 +105,7 @@ for %%t in (test1 test2 test3 test4) do (
 )
 :after_CRF_Train
 
-rem goto after_3waymodel
+goto after_3waymodel
 set root=../../data
 set m=3way_enrich3
 for %%t in (test1 test2 test3 test4) do (

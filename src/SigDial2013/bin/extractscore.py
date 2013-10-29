@@ -59,14 +59,14 @@ def extractScoreAllMetrics():
 	schedules = ['schedule1','schedule2','schedule3']
 	#modes = ['baseline_allmetrics', 'bestbyother_allmetrics', '3way_actngram_allmetrics', '3way_actngram_train23_allmetrics']
 	#modes = ['bestbyother_allmetrics', '3way_actngram_allmetrics', '3way_actngram_dis_allmetrics']
-	modes = ['bestbyother_allmetrics', '3way_actngram_allmetrics', '3way_enrich3_allmetrics']
-	#modes = ['3way_actngram_allmetrics']
+	#modes = ['bestbyother_allmetrics', '3way_enrich3_allmetrics', '3way_enrich_train2_allmetrics', '3way_enrich_train3_allmetrics', '3way_enrich_train23_allmetrics']
+	modes = ['3way_actngram_allmetrics']
 	
 	header = ['test', 'method', 'accuracy', 'avgp', 'l2', 'mrr']
 	fio.PrintListwithName(header, 'schedule')
-	for k, L in enumerate([range(5,9),range(15,19),range(25,29)]):
-		for test in data:
-			for mode in modes:
+	for mode in modes:
+		for k, L in enumerate([range(5,9),range(15,19),range(25,29)]):
+			for test in data:
 				filename = "res/"+mode+"_"+test+"_score.txt"
 				lines = fio.readfile(filename)
 				
@@ -76,7 +76,7 @@ def extractScoreAllMetrics():
 					nums = line.split()
 					s.append(nums[11])
 					
-				score.append([schedules[k]]+[test]+[mode] + s)
+				score.append([mode]+[schedules[k]]+[test] + s)
 	
 	for i in range(len(score)):
 		for j in range(len(score[0])):
