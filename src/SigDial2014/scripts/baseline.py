@@ -311,7 +311,7 @@ def main() :
                         help='Will look for corpus in <destroot>/<dataset>/...')
     parser.add_argument('--trackfile',dest='trackfile',action='store',required=True,metavar='JSON_FILE',
                         help='File to write with tracker output')
-    parser.add_argument('--focus',dest='focus',action='store',required=False,metavar='FOCUS',
+    parser.add_argument('--focus',dest='focus',action='store',nargs='?',default="False",const="True",
                         help='Use focus node tracker')
     args = parser.parse_args()
     dataset = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot)
@@ -319,10 +319,13 @@ def main() :
     track = {"sessions":[]}
     track["dataset"]  = args.dataset
     start_time = time.time()
-    if args.focus and args.focus == "True" :
+
+    if args.focus.lower() == "true":
         tracker = FocusTracker()
-    else :
+    elif args.focus.lower() == "false":
         tracker = Tracker()
+    else:
+        raise RuntimeError,'Dont recognize focus=%s (must be True or False)' % (args.focus)    
     for call in dataset :
         this_session = {"session-id":call.log["session-id"], "turns":[]}
         tracker.reset()

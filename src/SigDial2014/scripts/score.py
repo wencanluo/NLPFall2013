@@ -45,7 +45,8 @@ def main(argv):
     
     # what stats are there?
     stats = []
-    stat_classes = [Stat_Accuracy, Stat_Probs, Stat_MRR, Stat_Updates, lambda : Stat_ROC(args.rocbins)]
+    #stat_classes = [Stat_Accuracy, Stat_Probs, Stat_MRR, Stat_Updates, lambda : Stat_ROC(args.rocbins)]
+    stat_classes = [Stat_Accuracy, Stat_Probs, Stat_MRR]
     
     for schedule in SCHEDULES:
         for label_scheme in LABEL_SCHEMES:

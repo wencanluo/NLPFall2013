@@ -16,8 +16,10 @@ def S(turn, ontology=None) :
         mact = turn["output"]["dialog-acts"]
     this_slot = None
     for act in mact :
-        if act["act"] in ["request", "expl-conf", "select"]:
+        if act["act"] in ["request"]:
             this_slot = act["slots"][0][1]
+        elif act["act"] in ["expl-conf", "select"]:
+            this_slot = act["slots"][0][0]
     # return a dict of informable slots to mentioned values in a turn
     out = defaultdict(set)
     for act in mact :
@@ -35,6 +37,7 @@ def S(turn, ontology=None) :
                     out[slot].add(value)
 
     return out
+
 
 def S_requested(turn):
     # which slots are hypothesised to be requested in this turn?
