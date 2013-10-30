@@ -101,13 +101,18 @@ public class DSTCClassifier {
 		//classifier.Classifier(train, test4);
 		
 		//Cost Matrix
-		//String cm1 = "../SigDial2013/bin/res/cm.txt";
-		//String cm2 = "../SigDial2013/bin/res/cm2.txt";
-		//String cm5 = "../SigDial2013/bin/res/cm5.txt";
-		//String cm0 = "../SigDial2013/bin/res/cm0.txt";
+		/*
+		String train = "../SigDial2013/bin/res/train2_actngram";
+		String test1 = "../SigDial2013/bin/res/test1_actngram";
 		
-		//classifier.ClassifierwithCostMatrix(train, test1, cm1);
-		//classifier.ClassifierwithCostMatrix(train, test1, cm2);
+		String cm1 = "../SigDial2013/bin/res/cm.txt";
+		String cm2 = "../SigDial2013/bin/res/cm2.txt";
+		String cm5 = "../SigDial2013/bin/res/cm5.txt";
+		
+		
+		classifier.ClassifierwithCostMatrix(train, test1, cm1);
+		classifier.ClassifierwithCostMatrix(train, test1, cm2);
+		*/
 		//classifier.ClassifierwithCostMatrix(train, test1, cm5);
 		//classifier.ClassifierwithCostMatrix(train, test1, cm0);
 		
@@ -126,12 +131,12 @@ public class DSTCClassifier {
 		//String test4 = "../SigDial2013/bin/res/test4_actngram";
 		
 		//Enrich
-		//String train = "../SigDial2013/bin/res/train2_enrich";
-		//String test1 = "../SigDial2013/bin/res/test1_enrich";
-		//String test2 = "../SigDial2013/bin/res/test2_enrich";
-		//String test3 = "../SigDial2013/bin/res/test3_enrich";
-		//String test4 = "../SigDial2013/bin/res/test4_enrich";
-		//String train3 = "../SigDial2013/bin/res/train3_enrich";
+		String train = "../SigDial2013/bin/res/train2_enrich";
+		String test1 = "../SigDial2013/bin/res/test1_enrich";
+		String test2 = "../SigDial2013/bin/res/test2_enrich";
+		String test3 = "../SigDial2013/bin/res/test3_enrich";
+		String test4 = "../SigDial2013/bin/res/test4_enrich";
+		String train3 = "../SigDial2013/bin/res/train3_enrich";
 		
 		//String train = "../SigDial2013/bin/res/train2_train2_enrich";
 		//String test1 = "../SigDial2013/bin/res/test1_train2_enrich";
@@ -145,11 +150,11 @@ public class DSTCClassifier {
 		//String test3 = "../SigDial2013/bin/res/test3_train3_enrich";
 		//String test4 = "../SigDial2013/bin/res/test4_train3_enrich";
 		
-		String train = "../SigDial2013/bin/res/train23_train23_enrich";
-		String test1 = "../SigDial2013/bin/res/test1_train23_enrich";
-		String test2 = "../SigDial2013/bin/res/test2_train23_enrich";
-		String test3 = "../SigDial2013/bin/res/test3_train23_enrich";
-		String test4 = "../SigDial2013/bin/res/test4_train23_enrich";
+		//String train = "../SigDial2013/bin/res/train23_train23_enrich";
+		//String test1 = "../SigDial2013/bin/res/test1_train23_enrich";
+		//String test2 = "../SigDial2013/bin/res/test2_train23_enrich";
+		//String test3 = "../SigDial2013/bin/res/test3_train23_enrich";
+		//String test4 = "../SigDial2013/bin/res/test4_train23_enrich";
 		
 		//Train on train3
 		//String train3 = "../SigDial2013/bin/res/train3_actngram_train3";
@@ -165,10 +170,26 @@ public class DSTCClassifier {
 		//String test3 = "../SigDial2013/bin/res/test3_actngram_train23";
 		//String test4 = "../SigDial2013/bin/res/test4_actngram_train23";
 		
-		//classifier.ClassifierNgram(train, train);
+		//Self Training
+		/*String train1 = "../SigDial2013/bin/res/test1_actngram_selftraining";
+		String train2 = "../SigDial2013/bin/res/test2_actngram_selftraining";
+		String train3 = "../SigDial2013/bin/res/test3_actngram_selftraining";
+		String train4 = "../SigDial2013/bin/res/test4_actngram_selftraining";
+		
+		String test1 = "../SigDial2013/bin/res/test1_actngram";
+		String test2 = "../SigDial2013/bin/res/test2_actngram";
+		String test3 = "../SigDial2013/bin/res/test3_actngram";
+		String test4 = "../SigDial2013/bin/res/test4_actngram";
+		
+		classifier.ClassifierNgram(train1, test1);
+		classifier.ClassifierNgram(train2, test2);
+		classifier.ClassifierNgram(train3, test3);
+		classifier.ClassifierNgram(train4, test4);*/
+		
+		classifier.ClassifierNgram(train, train);
 		classifier.ClassifierNgram(train, test1);
 		classifier.ClassifierNgram(train, test2);
-		classifier.ClassifierNgram(train, test3);
+		classifier.ClassifierNgram(train3, test3);
 		classifier.ClassifierNgram(train, test4);
 		
 		System.setOut(oldout);

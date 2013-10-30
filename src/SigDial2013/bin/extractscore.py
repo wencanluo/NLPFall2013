@@ -60,10 +60,10 @@ def extractScoreAllMetrics():
 	#modes = ['baseline_allmetrics', 'bestbyother_allmetrics', '3way_actngram_allmetrics', '3way_actngram_train23_allmetrics']
 	#modes = ['bestbyother_allmetrics', '3way_actngram_allmetrics', '3way_actngram_dis_allmetrics']
 	#modes = ['bestbyother_allmetrics', '3way_enrich3_allmetrics', '3way_enrich_train2_allmetrics', '3way_enrich_train3_allmetrics', '3way_enrich_train23_allmetrics']
-	modes = ['3way_actngram_allmetrics']
+	modes = ['3way_enrich_voting_allmetrics']
 	
-	header = ['test', 'method', 'accuracy', 'avgp', 'l2', 'mrr']
-	fio.PrintListwithName(header, 'schedule')
+	header = ['schedule', 'test', 'accuracy', 'avgp', 'l2', 'mrr']
+	fio.PrintListwithName(header, 'method')
 	for mode in modes:
 		for k, L in enumerate([range(5,9),range(15,19),range(25,29)]):
 			for test in data:

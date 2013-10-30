@@ -187,8 +187,8 @@ public class WekaWrapper {
 		//new IBk(5),
 		//new NaiveBayes(),
 		//new J48(),
-		new SMO(),
-		//newVote(),
+		//new SMO(),
+		newVote(),
 		};
 		
 		for(int i = 0; i < classifiers.length; i++)
@@ -205,8 +205,8 @@ public class WekaWrapper {
 		
 			PrintResult(eval);
 			
-			//GetPridiction(classifier, testset, test + ".label");
-			GetPridictionDistribution(classifier, testset, test + ".dis.label");
+			GetPridiction(classifier, testset, test + ".label");
+			//GetPridictionDistribution(classifier, testset, test + ".dis.label");
 		}
 	}
 	

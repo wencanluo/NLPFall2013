@@ -147,6 +147,58 @@ def getWekaARFF_Ngram(tests):
 		
 		fio.ArffWriter("res/"+test+"_ngram.arff", header, types, "dstc", data)	
 
+def getWekaARFFOneTest_ActNgram(featurefile, test):
+	#features = fio.LoadDict("res/train1a.dict")
+	features = fio.LoadDict("res/"+featurefile+".dict")
+	
+	
+	data = []
+	
+	filename = "res/"+test+"_summary.txt"
+	head, body = fio.readMatrix(filename, True)
+	
+	rank_index = head.index('rank')
+	out_index = head.index('output acts')
+	in_index = head.index('top slu')
+	asr_index = head.index('top asr')
+	
+	for row in body:
+		rank = int( row[rank_index] )
+		label = rank if rank <= 1 else -1
+		
+		out_act = row[out_index][1:-1]
+		in_act = row[in_index][1:-1]
+		asr = row[asr_index][1:-1]
+		
+		acts = set( list(getAct(out_act)) + list(getAct(in_act)))
+		
+		row = []
+		
+		row.append(asr)
+		
+		for key in features.keys():
+			if key in acts:
+				row.append(1)
+			else:
+				row.append(0)
+
+		row.append(label)
+		data.append(row)
+		
+	header =[]
+	header.append("ASR")
+	for key in features.keys():
+		header.append(key)
+	header = header + ['@@Class@@']
+	
+	types = []
+	types.append("String")
+	for key in features.keys():
+		types.append('Category')
+	types = types + ['Category']
+	#fio.ArffWriter("res/"+test+"_actngram.arff", header, types, "dstc", data)
+	return header, types, data
+		
 def getWekaARFF_ActNgram(featurefile, tests):
 	#features = fio.LoadDict("res/train1a.dict")
 	features = fio.LoadDict("res/"+featurefile+".dict")
@@ -199,6 +251,8 @@ def getWekaARFF_ActNgram(featurefile, tests):
 			types.append('Category')
 		types = types + ['Category']
 		fio.ArffWriter("res/"+test+"_actngram.arff", header, types, "dstc", data)
+		
+		#return header, types, data
 
 def IsRequestedSlot(out_act, in_act):
 	act_out = getOutActDict(out_act)
@@ -636,11 +690,12 @@ if (__name__ == '__main__'):
 	#getWekaARFF_Enrich("train2", ["test1"])
 	#getWekaARFF_Enrich("train2", ["train2", "test1", "test2", "test3", "test4"])
 	#getWekaARFF_Enrich("train3", ["train3", "test3"])
-	getWekaARFF_Enrich("train2", ["train2", "test1", "test2", "test3", "test4"])
-	getWekaARFF_Enrich("train3", ["train3", "test1", "test2", "test3", "test4"])
-	getWekaARFF_Enrich("train23", ["train2", "train3", "test1", "test2", "test3", "test4"])
+	#getWekaARFF_Enrich("train2", ["train2", "test1", "test2", "test3", "test4"])
+	#getWekaARFF_Enrich("train3", ["train3", "test1", "test2", "test3", "test4"])
+	#getWekaARFF_Enrich("train23", ["train2", "train3", "test1", "test2", "test3", "test4"])
 	#getWekaARFF_Bin("train3", ["train3", "test3"])
 	
 	#getWekaARFF_Enrich("train2", ["test1"])
-	#getWekaARFF_ActNgram
+	getWekaARFF_ActNgram("train2", ["train2", "test1", "test2", "test3", "test4"])
+	getWekaARFF_ActNgram("train3", ["train3", "test3"])
 	print "Done"

@@ -3,7 +3,7 @@ set m=topline
 set outdir=res/
 set CRFDir=D:/NLP/CRF++-0.58/
 
-rem goto after_3waymodel_train23
+goto after_3waymodel_train23
 set root=../../data
 set m=3way_enrich_train23
 for %%t in (test1 test2 test3 test4) do (
@@ -105,9 +105,9 @@ for %%t in (test1 test2 test3 test4) do (
 )
 :after_CRF_Train
 
-goto after_3waymodel
+rem goto after_3waymodel
 set root=../../data
-set m=3way_enrich3
+set m=3way_enrich_voting
 for %%t in (test1 test2 test3 test4) do (
 	python 3wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_enrich.label
 	python scoreAll.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv
