@@ -1,5 +1,39 @@
 import fio
 
+def extractScoreAllMetrics():
+	data = ["test1", "test2", "test3", "test4"]
+	
+	score = []
+	
+	schedules = ['schedule1','schedule2','schedule3']
+	#modes = ['baseline_allmetrics', 'bestbyother_allmetrics', '3way_actngram_allmetrics', '3way_actngram_train23_allmetrics']
+	#modes = ['bestbyother_allmetrics', '3way_actngram_allmetrics', '3way_actngram_dis_allmetrics']
+	#modes = ['bestbyother_allmetrics', '3way_enrich3_allmetrics', '3way_enrich_train2_allmetrics', '3way_enrich_train3_allmetrics', '3way_enrich_train23_allmetrics']
+	#modes = ['bestbyother_allmetrics', '3way_enrich_voting_allmetrics']
+	modes = ['3way_enrich_voting_rawslu_allmetrics', '3way_enrich_voting_rawslu5_allmetrics']
+	
+	header = ['schedule', 'test', 'accuracy', 'l2', 'roc.v2_ca05']
+	fio.PrintListwithName(header, 'method')
+	for mode in modes:
+		#for k, L in enumerate([range(5,9),range(15,19),range(25,29)]):
+		for k, L in enumerate([[5,7,13],[22,24,30],[39,41,47]]):
+			for test in data:
+				filename = "res/"+mode+"_"+test+"_score.txt"
+				lines = fio.readfile(filename)
+				
+				s = []
+				for i in L:
+					line = lines[i].strip()
+					nums = line.split()
+					s.append(nums[11])
+					
+				score.append([mode]+[schedules[k]]+[test] + s)
+	
+	for i in range(len(score)):
+		for j in range(len(score[0])):
+			print score[i][j], "\t",
+		print
+		
 def extractScore():
 	tests = ['test1', 'test2', 'test3', 'test4']
 	
@@ -50,39 +84,6 @@ def extractScoreTopK():
 			for col in row:
 				print col,"\t",
 			print
-
-def extractScoreAllMetrics():
-	data = ["test1", "test2", "test3", "test4"]
-	
-	score = []
-	
-	schedules = ['schedule1','schedule2','schedule3']
-	#modes = ['baseline_allmetrics', 'bestbyother_allmetrics', '3way_actngram_allmetrics', '3way_actngram_train23_allmetrics']
-	#modes = ['bestbyother_allmetrics', '3way_actngram_allmetrics', '3way_actngram_dis_allmetrics']
-	#modes = ['bestbyother_allmetrics', '3way_enrich3_allmetrics', '3way_enrich_train2_allmetrics', '3way_enrich_train3_allmetrics', '3way_enrich_train23_allmetrics']
-	modes = ['3way_enrich_voting_allmetrics']
-	
-	header = ['schedule', 'test', 'accuracy', 'avgp', 'l2', 'mrr']
-	fio.PrintListwithName(header, 'method')
-	for mode in modes:
-		for k, L in enumerate([range(5,9),range(15,19),range(25,29)]):
-			for test in data:
-				filename = "res/"+mode+"_"+test+"_score.txt"
-				lines = fio.readfile(filename)
-				
-				s = []
-				for i in L:
-					line = lines[i].strip()
-					nums = line.split()
-					s.append(nums[11])
-					
-				score.append([mode]+[schedules[k]]+[test] + s)
-	
-	for i in range(len(score)):
-		for j in range(len(score[0])):
-			print score[i][j], "\t",
-		print
-			
 
 if (__name__ == '__main__'):
 	#extractScore()

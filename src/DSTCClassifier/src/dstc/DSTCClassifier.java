@@ -186,7 +186,7 @@ public class DSTCClassifier {
 		classifier.ClassifierNgram(train3, test3);
 		classifier.ClassifierNgram(train4, test4);*/
 		
-		classifier.ClassifierNgram(train, train);
+		//classifier.ClassifierNgram(train, train);
 		classifier.ClassifierNgram(train, test1);
 		classifier.ClassifierNgram(train, test2);
 		classifier.ClassifierNgram(train3, test3);

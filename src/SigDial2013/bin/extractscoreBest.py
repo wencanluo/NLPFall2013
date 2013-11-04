@@ -41,7 +41,8 @@ def extractScoreBest():
 	
 	tests = ["test1", "test2", "test3", "test4"]
 	schedules = ['schedule1','schedule2','schedule3']
-	metrics = ['accuracy', 'avgp', 'l2', 'mrr']
+	#metrics = ['accuracy', 'avgp', 'l2', 'mrr', 'roc.v1_ca05', 'roc.v2_ca05']
+	metrics = ['roc.v1_ca05', 'roc.v2_ca05']
 	slots = ['joint', 'all']
 	
 	for test in tests:

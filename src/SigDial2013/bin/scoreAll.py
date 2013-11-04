@@ -67,7 +67,7 @@ def main(argv):
 			stats[meta_slot][schedule] = {
 				'accuracy': Stat_Accuracy(),
 				'mrr':	  Stat_MRR(),
-				#'roc':	  Stat_ROC(bins=args.rocbins),
+				'roc':	  Stat_ROC(bins=args.rocbins),
 				'l2':	   Stat_L2(),
 				'avgp':	 Stat_AverageProb(),
 				#'nonempty': Stat_NonEmpty(),
@@ -266,6 +266,9 @@ def main(argv):
 				stats[meta_slot][schedule]['roc'].DumpROCToFile(rocfile)
 				rawfile = args.rocdump + '.' + schedule + '.' + meta_slot + '.scores.csv'
 				stats[meta_slot][schedule]['roc'].DumpScoresToFile(rawfile)
+			
+			if meta_slot == 'all':
+				debug = 1
 			for stat_type in sorted(stats[meta_slot][schedule]):
 				R = stats[meta_slot][schedule][stat_type].Result()
 				N = stats[meta_slot][schedule][stat_type].N

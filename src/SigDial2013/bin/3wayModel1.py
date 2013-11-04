@@ -75,8 +75,8 @@ def main(argv):
 			if rank == '1':#top slu
 				slu_hyp = log_turn['input']['live']['slu-hyps'][0]
 			if rank == '0':#get the output slu
-				slu_output = getSummary.getFirstExplConf(log_turn)
-				slu_hyp = getSummary.formatSlottoLive(slu_output, 0)
+				slu_output, slu_score = getSummary.getFirstExplConf(log_turn)
+				slu_hyp = getSummary.formatSlottoLive(slu_output, 0, slu_score)
 			
 			if slu_hyp == None: continue
 			
@@ -92,7 +92,7 @@ def main(argv):
 						continue
 					if (True):
 						#score = slu_hyp['score'] if (args.ignorescores == False) else 1.0
-						score = 1.0
+						score = slu_hyp['score']/2 + 0.5
 						state[slot]['hyps'] = [ {
 								'score-save': slu_hyp['score'],
 								'score': score,

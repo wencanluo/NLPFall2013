@@ -27,7 +27,7 @@ def main(argv):
 						help='File to write with CSV scoring data')
 	parser.add_argument('--ontology',dest='ontology',action='store',metavar='JSON_FILE',required=True,
 						help='JSON Ontology file')
-	parser.add_argument('--rocbins',dest='rocbins',action='store',metavar='INT',default=10000,type=int,
+	parser.add_argument('--rocbins',dest='rocbins',action='store',metavar='INT',default=200,type=int,
 						help='ROC bins to use (default 10000).  Lower numbers make the script run faster, but produce less accurate ROC results.')
 	parser.add_argument('--rocdump',dest='rocdump',action='store',metavar='FILE_STEM',
 						help='If present, use this file stem to write out ROC plot data: filestem.<schedule>.<slot>.<type>.csv, where type is either roc (which contains the ROC curve coordinates) or scores (which contains the raw scores used to compute the ROC curves).')
@@ -46,7 +46,8 @@ def main(argv):
 	# what stats are there?
 	stats = []
 	#stat_classes = [Stat_Accuracy, Stat_Probs, Stat_MRR, Stat_Updates, lambda : Stat_ROC(args.rocbins)]
-	stat_classes = [Stat_Accuracy, Stat_Probs, Stat_MRR]
+	#stat_classes = [Stat_Accuracy, Stat_Probs, lambda : Stat_ROC(args.rocbins)]
+	stat_classes = [Stat_Accuracy, Stat_Probs]
 	
 	for schedule in SCHEDULES:
 		for label_scheme in LABEL_SCHEMES:
@@ -90,6 +91,7 @@ def main(argv):
 		session_length = len(session)
 		
 		goal_labels_b, method_labels_b = misc.LabelsB(session, ontology)
+		method_schedule_2 = False # whether schedule 2 is active for method
 		
 		for turn_num, ((log_turn,label_turn),_tracker_turn) in enumerate(zip(session,session_tracker['turns'])):
 			turn_counter += 1.0
@@ -141,6 +143,19 @@ def main(argv):
 				tracker_requested_slots[slot] = normalise_dist(dist, (session_id, turn_num, "requested."+slot))
 			
 			tracker_method_label = normalise_dist(_tracker_turn["method-label"].items(), (session_id, turn_num,"method"))
+			
+			# for method schedule 2, work out whether any slu-hyp has been given
+			# which informs the method:
+			
+			if not method_schedule_2 :
+				mact = log_turn["output"]["dialog-acts"]
+				for slu_hyp in log_turn["input"]["live"]["slu-hyps"] :
+					user_act = slu_hyp["slu-hyp"]
+					method_label = misc.MethodLabel(user_act, mact)
+					if method_label != "none" :
+						method_schedule_2 = True
+						break
+					
 			
 			for component, (schedule, label_scheme), stat_class in stats:
 				if component[0] == "goal" and (component[1] == "joint" or  component[1] == "joint_independent"):
@@ -202,10 +217,8 @@ def main(argv):
 						
 						
 				if component[0] == "method" or component[0] == "all":
-					if schedule == 2 :
-						if label_turn["method-label"] == None :
-							# means no info about method yet
-							continue
+					if schedule == 2 and not method_schedule_2:
+						continue # no slu hyp informing the method has been given yet.
 					dist = tracker_method_label
 					true_label =  label_turn["method-label"]
 					if label_scheme == "b" :
@@ -240,7 +253,8 @@ def main(argv):
 
 	csvfile.close()
 	
-			
+
+
 def normalise_dist(dist, this_id=None):
 	# take dist , convert to a new list of tuples, ordered and made to sum up to
 	# no more than 1
@@ -348,7 +362,7 @@ class Stat_MRR(Stat):
 			("mrr", self.N, mrr)
 		]
 	
-class Stat_Probs(Stat):
+class Stat_Probs(Stat):#L2
 	def __init__(self, ):
 		self.N = 0.0
 		self.numerator_l2 = 0.0

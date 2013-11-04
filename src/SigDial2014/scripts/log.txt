@@ -1,0 +1,69 @@
+SYS  > Hello , welcome to the Cambridge restaurant system? You can ask for restaurants by area , price range or food type . How may I help you?
+DAct > welcomemsg()
+SLU  >                      [0.80]
+SLU  > affirm()             [0.13]
+SLU  > hello()              [0.03]
+SLU  > ack()                [0.02]
+SLU  > repeat()             [0.01]
+ASR  > 
+Tran > hello and welcome to the cambridge
+ 
+SYS  > What kind of food would you like?
+DAct > request(slot=food)
+SLU  > inform(food=swedish)|inform(pricerange=moderate) [0.61]
+SLU  > inform(food=swedish) [0.34]
+SLU  > inform(pricerange=moderate) [0.05]
+ASR  > moderately priced swedish food
+Tran > moderately priced swedish food
+ 
+SYS  > Sorry there is no swedish restaurant in the moderate price range
+DAct > canthelp(pricerange=moderate,food=swedish)
+SLU  > reqalts()|inform(food=asian oriental) [0.63]
+SLU  > reqalts()            [0.29]
+SLU  > inform(food=asian oriental) [0.03]
+SLU  > confirm(food=asian oriental) [0.02]
+SLU  >                      [0.02]
+SLU  > ack()                [0.01]
+ASR  > how about asian oriental
+Tran > how about asian oriental
+ 
+SYS  > yippee noodle bar is a great restaurant serving asian oriental food and it is in the moderate price range
+DAct > offer(name=yippee noodle bar)|inform(food=asian oriental)|inform(pricerange=moderate)
+SLU  >                      [0.44]
+SLU  > reqalts()            [0.33]
+SLU  > inform(this=dontcare) [0.08]
+SLU  > ack()                [0.06]
+SLU  > negate()             [0.02]
+SLU  > repeat()             [0.02]
+SLU  > affirm()             [0.02]
+SLU  > request(slot=area)   [0.01]
+SLU  > affirm()|inform(this=dontcare) [0.01]
+ASR  > is there anything else
+Tran > is there anything else
+ 
+SYS  > Can I help you with anything else?
+DAct > reqmore()
+SLU  > request(slot=addr)   [0.73]
+SLU  > request(slot=phone)|request(slot=addr) [0.27]
+ASR  > could i have the address and phone number
+Tran > could i have the address and phone number
+ 
+SYS  > Sure , yippee noodle bar is on 40428 King Street City Centre
+DAct > offer(name=yippee noodle bar)|inform(addr=40428 king street city centre)
+SLU  > request(slot=phone)  [0.70]
+SLU  >                      [0.17]
+SLU  > reqalts()            [0.05]
+SLU  > ack()                [0.02]
+SLU  > affirm()             [0.02]
+SLU  > hello()              [0.02]
+SLU  > thankyou()           [0.01]
+SLU  > repeat()             [0.01]
+ASR  > phone number
+Tran > phone number
+ 
+SYS  > The phone number of yippee noodle bar is 01223 518111 .
+DAct > offer(name=yippee noodle bar)|inform(phone=01223 518111)
+SLU  > bye()                [1.00]
+ASR  > thank you good bye
+Tran > thank you good bye
+ 

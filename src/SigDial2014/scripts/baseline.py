@@ -197,6 +197,7 @@ class Tracker(object):
 		hyps["method-label"] = normalise_dict(method_stats)
 		self.hyps = hyps 
 		return self.hyps
+	
 	def reset(self):
 		self.hyps = {"goal-labels":{}, "goal-labels-joint":[], "requested-slots":{}, "method-label":{}}
 	

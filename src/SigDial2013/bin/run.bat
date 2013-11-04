@@ -105,12 +105,25 @@ for %%t in (test1 test2 test3 test4) do (
 )
 :after_CRF_Train
 
-rem goto after_3waymodel
+rem goto after_3waymodel1
+set root=../../data
+set m=3way_enrich_voting_rawslu5
+for %%t in (test1 test2 test3 test4) do (
+rem for %%t in (test1) do (
+	python 3wayModel1.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_enrich_voting.label
+	python scoreAll.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv  --rocbins=200
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_allmetrics_%%t_score.txt
+)
+
+:after_3waymodel1
+
+goto after_3waymodel
 set root=../../data
 set m=3way_enrich_voting
-for %%t in (test1 test2 test3 test4) do (
-	python 3wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_enrich.label
-	python scoreAll.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv
+rem for %%t in (test1 test2 test3 test4) do (
+for %%t in (test1) do (
+	python 3wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_enrich_voting.label
+	python scoreAll.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv  --rocbins=200
 	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_allmetrics_%%t_score.txt
 )
 
@@ -150,8 +163,9 @@ for %%t in (test1 test2 test3 test4) do (
 goto after_baseline
 set root=../../data
 set m=baseline_allmetrics
-for %%t in (test1 test2 test3 test4) do (
-	rem python baseline.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json
+rem for %%t in (test1 test2 test3 test4) do (
+for %%t in (test1) do (
+	python baseline.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ignorescores
 	python scoreAll.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv
 	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
 )

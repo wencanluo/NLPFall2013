@@ -92,7 +92,7 @@ def main(argv):
 						continue
 					if (True):
 						#score = slu_hyp['score'] if (args.ignorescores == False) else 1.0
-						score = 1.0
+						score = slu_hyp['score']/2 + 0.5
 						state[slot]['hyps'] = [ {
 								'score-save': slu_hyp['score'],
 								'score': score,
