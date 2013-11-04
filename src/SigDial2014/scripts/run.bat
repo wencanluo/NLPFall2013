@@ -3,14 +3,14 @@ set ontology=config/ontology_dstc2.json
 set outdir=res/
 set CRFDir=D:/NLP/CRF++-0.58/
 
-goto after_summary
+rem goto after_summary
 set m=summary
 for %%t in (dstc2_train dstc2_dev) do (
 	python getSummary.py --dataset=%%t --dataroot=%root% --logfile=%outdir%%m%_%%t.txt
 )
 :after_summary
 
-rem goto after_HWUbaseline
+goto after_HWUbaseline
 set m=HWUbaseline
 for %%t in (dstc2_train dstc2_dev) do (
 	python baseline_HWU.py --dataset=%%t --dataroot=%root% --ontology=%ontology% --trackfile=%outdir%%m%_%%t_track.json
@@ -19,7 +19,7 @@ for %%t in (dstc2_train dstc2_dev) do (
 )
 :after_HWUbaseline
 
-rem goto after_baseline
+goto after_baseline
 set m=baseline
 for %%t in (dstc2_train dstc2_dev) do (
 	python baseline.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json
@@ -28,7 +28,7 @@ for %%t in (dstc2_train dstc2_dev) do (
 )
 :after_baseline
 
-rem goto after_baseline_focus
+goto after_baseline_focus
 set m=baseline_focus
 for %%t in (dstc2_train dstc2_dev) do (
 	python baseline.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --focus=True
