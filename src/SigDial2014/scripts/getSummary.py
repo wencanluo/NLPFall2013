@@ -43,7 +43,36 @@ def strslu(slu_hyp):#format the slu hyp into a line; input is an array of slot=v
 	
 	return '&'.join(rhyp)
 								
-											
+def checkValueDict(dict, key, value):
+	if key not in dict: return False
+	if dict[key] != value: return False
+	return True
+	
+def fixedThis(log_turn):
+	mact = []
+	if "dialog-acts" in log_turn["output"] :
+		mact = log_turn["output"]["dialog-acts"]
+	
+	this_slot = None
+	
+	for act in mact :
+		if act["act"] == "request" :
+			this_slot = act["slots"][0][1]
+		elif act["act"] == "select" :
+			this_slot = act["slots"][0][0]
+		elif act["act"] == "expl-conf" :
+			this_slot = act["slots"][0][0]
+	
+	for k, hyps in enumerate(log_turn['input']['live']['slu-hyps']):
+		for hyp in hyps['slu-hyp']:
+			for slot in hyp["slots"]:
+				if len(slot) != 2: continue
+				if slot[0] == 'this':
+					if this_slot != None:
+						slot[0] = this_slot
+			
+	return log_turn
+									
 #H1: assume that the SLU is correct if and only if all the SLU hyps (slot,value) appear in the correct answer
 #assume NONE is -1
 #assume slu that doesn't do anything is -1
@@ -51,19 +80,25 @@ def getCorrectSLUHypRank_H1(log_turn, label_turn):
 	goal_label = label_turn['goal-labels']
 	method_label = label_turn['method-label']
 	request_slots = label_turn['requested-slots']
-				
+	
+	#fixed this first
+	log_turn = fixedThis(log_turn)
+	
 	for k, hyps in enumerate(log_turn['input']['live']['slu-hyps']):
 		correct = True
 		hasInfo = False
 		for hyp in hyps['slu-hyp']:
 			if hyp['act'] == 'inform':
 				hasInfo = True
-				if hyp['slot'] not in goal_label: 
-					correct = False	
-					break
+				for slot in hyp['slots']:
+					if len(slot) != 2: continue
+					
+					if not checkValueDict(goal_label, slot[0], slot[1]): 
+						correct = False
+						break
 			if hyp['act'] == 'request':
 				hasInfo = True
-				if hyp['slot'] not in request_slots: 
+				if hyp['slots'][0][1] not in request_slots: 
 					correct = False	
 					break
 			if hyp['act'] == 'bye':
@@ -73,10 +108,10 @@ def getCorrectSLUHypRank_H1(log_turn, label_turn):
 					break
 			if hyp['act'] == 'reqalts':
 				hasInfo = True
-				if method_label != 'by_alternatives': 
+				if method_label != 'byalternatives': 
 					correct = False	
 					break
-		if hasInfo and 	correct: return k
+		if hasInfo and correct: return k
 		
 	return -1
 
@@ -152,7 +187,7 @@ def main(argv):
 				request_slots = label_turn['requested-slots']
 				
 				#get the rank of correct slu
-				rank = getCorrectSLUHyp(log_turn, label_turn)
+				rank = getCorrectSLUHypRank_H1(log_turn, label_turn)
 				
 				#has correct slu label
 				#hasTrueLabel = hasCorrectSLULabel(label_turn)
@@ -191,7 +226,7 @@ def main(argv):
 				#row.append(hasTrueLabel)
 				#row.append(quote(correctSLULabel))
 				
-				#row.append(rank)
+				row.append(rank)
 				#row.append(quote(correct_slu))
 				
 				sum.append(row)
@@ -231,7 +266,7 @@ def main(argv):
 	#header.append("hasCorrectLabel")
 	#header.append("CorrectLabel")
 	
-	#header.append("rank")
+	header.append("rank")
 	#header.append("correct_slu")
 	
 	fio.writeMatrix(args.logfile, sum, header)

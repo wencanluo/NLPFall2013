@@ -1,0 +1,48 @@
+train:../SigDial2014/scripts/res/dstc2_train_method_actngram
+test:../SigDial2014/scripts/res/dstc2_train_method_actngram
+Train: 11677
+Test: 11677
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.409     0.006      0.925     0.409     0.567      0.858    byalternatives
+                 0.986     0.322      0.864     0.986     0.921      0.832    byconstraints
+                 0.182     0          1         0.182     0.308      0.89     byname
+                 0.952     0.002      0.989     0.952     0.97       0.994    finished
+                 0.683     0.004      0.84      0.683     0.754      0.943    none
+Weighted Avg.    0.885     0.219      0.891     0.885     0.869      0.863
+
+=== Confusion Matrix ===
+
+    a    b    c    d    e   <-- classified as
+  713 1027    0    2    0 |    a = byalternatives
+   53 7763    0   15   42 |    b = byconstraints
+    0   18    4    0    0 |    c = byname
+    4   76    0 1620    2 |    d = finished
+    1  105    0    1  231 |    e = none
+
+train:../SigDial2014/scripts/res/dstc2_train_method_actngram
+test:../SigDial2014/scripts/res/dstc2_dev_method_actngram
+Train: 11677
+Test: 3934
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.328     0.008      0.885     0.328     0.479      0.821    byalternatives
+                 0.976     0.397      0.83      0.976     0.897      0.789    byconstraints
+                 0         0          0         0         0          0.719    byname
+                 0.949     0.004      0.975     0.949     0.962      0.989    finished
+                 0.552     0.007      0.759     0.552     0.639      0.909    none
+Weighted Avg.    0.85      0.266      0.851     0.85      0.826      0.825
+
+=== Confusion Matrix ===
+
+    a    b    c    d    e   <-- classified as
+  201  409    0    2    0 |    a = byalternatives
+   26 2555    0   10   27 |    b = byconstraints
+    0   19    0    0    0 |    c = byname
+    0   27    0  504    0 |    d = finished
+    0   68    0    1   85 |    e = none
+

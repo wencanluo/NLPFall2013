@@ -69,7 +69,7 @@ def main(argv):
 	print_row(["","Joint Goals","Requested","Method"],header=True)
 	print_row(["Accuracy",tables["goal.joint"]["eval_2a"]["acc"],tables["requested.all"]["eval_2a"]["acc"],tables["method"]["eval_2a"]["acc"] ])
 	print_row(["l2",tables["goal.joint"]["eval_2a"]["l2"],tables["requested.all"]["eval_2a"]["l2"],tables["method"]["eval_2a"]["l2"] ])
-	print_row(["roc.v2_ca05",tables["goal.joint"]["eval_2a"]["roc.v2_ca05"],tables["requested.all"]["eval_2a"]["roc.v2_ca05"],tables["method"]["eval_2a"]["roc.v2_ca05"] ])
+	#print_row(["roc.v2_ca05",tables["goal.joint"]["eval_2a"]["roc.v2_ca05"],tables["requested.all"]["eval_2a"]["roc.v2_ca05"],tables["method"]["eval_2a"]["roc.v2_ca05"] ])
 	
 	
 	print "\n\n"

@@ -1,16 +1,14 @@
 import fio
 
 def extractScoreWeka():
-	#tests = ['res_enrich3_train2','res_enrich3_train3','res_enrich3_train23']# 'res_enrich_asr', ]#'res_actngram_train3',]#'res_3way_train3',] #'res_enrich-train2',]#'res_actngram_train2',]#'res_acts_train2', 'res_acts_train2_cost', 'res_ngram_train2']
-	tests = ['res_voting', 'res_selftraining']
+	tests = ['res_act_remove_this',]
 	score = []
 	for test in tests:
-
 		filename = "res/"+test+".txt"
 		lines = fio.readfile(filename)
 		n = len(lines)
 		
-		i = 11
+		i = 10
 		while(i<n):
 			s = []
 			line = lines[i].strip()
@@ -18,7 +16,31 @@ def extractScoreWeka():
 			for k in [4,5,6]:
 				s.append(nums[k])
 			score.append(s)
-			i = i + 20
+			i = i + 18
+	
+	print "Precision\tRecall\tF-Measure"				
+	for row in score:
+		for col in row:
+			print col,"\t",
+		print
+
+def extractScoreWekaMethod():
+	tests = ['res_method_actngram',]
+	score = []
+	for test in tests:
+		filename = "res/"+test+".txt"
+		lines = fio.readfile(filename)
+		n = len(lines)
+		
+		i = 13
+		while(i<n):
+			s = []
+			line = lines[i].strip()
+			nums = line.split()
+			for k in [4,5,6]:
+				s.append(nums[k])
+			score.append(s)
+			i = i + 38-14
 	
 	print "Precision\tRecall\tF-Measure"				
 	for row in score:
@@ -28,3 +50,4 @@ def extractScoreWeka():
 			
 if (__name__ == '__main__'):
 	extractScoreWeka()
+	#extractScoreWekaMethod()
