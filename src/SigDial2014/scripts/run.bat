@@ -3,8 +3,9 @@ set ontology=config/ontology_dstc2.json
 set outdir=res/
 set CRFDir=D:/NLP/CRF++-0.58/
 
-goto after_2waymodel_act
-set m=2waymodel_actngram_topline
+rem goto after_2waymodel_act
+rem set m=2waymodel_actngram_topline
+set m=2waymodel_actngram
 for %%t in (dstc2_train dstc2_dev) do (
 rem for %%t in (dstc2_train) do (
 	python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label
@@ -22,7 +23,7 @@ rem for %%t in (dstc2_train) do (
 )
 :after_2waymodel_error
 
-rem goto after_2waymodel_topline
+goto after_2waymodel_topline
 set m=2waymodel_topline
 for %%t in (dstc2_train dstc2_dev) do (
 	for %%k in (0 1 2 3 4 5 6 7 8 9 10) do (
