@@ -85,6 +85,45 @@ def extractScoreTopK():
 				print col,"\t",
 			print
 
+def extractWeightScoreMetrics():
+	data = ["test1"]
+	
+	score = []
+	
+	schedules = ['schedule1','schedule2','schedule3']
+	#modes = ['baseline_allmetrics', 'bestbyother_allmetrics', '3way_actngram_allmetrics', '3way_actngram_train23_allmetrics']
+	#modes = ['bestbyother_allmetrics', '3way_actngram_allmetrics', '3way_actngram_dis_allmetrics']
+	#modes = ['bestbyother_allmetrics', '3way_enrich3_allmetrics', '3way_enrich_train2_allmetrics', '3way_enrich_train3_allmetrics', '3way_enrich_train23_allmetrics']
+	#modes = ['bestbyother_allmetrics', '3way_enrich_voting_allmetrics']
+	modes = ['3way_enrich_voting_allmetrics']
+	
+	header = ['schedule', 'test', 'accuracy', 'l2', 'roc.v2_ca05']
+	fio.PrintListwithName(header, 'method')
+	for mode in modes:
+		#for k, L in enumerate([range(5,9),range(15,19),range(25,29)]):
+		#for k, L in enumerate([[5,7,13],[22,24,30],[39,41,47]]):
+		for k, L in enumerate([[13],[30],[47]]):
+			for test in data:
+				for w1 in [0, 0.2, 0.4, 0.6, 0.8, 1.0]:
+					for w2 in [0, 0.2, 0.4, 0.6, 0.8, 1.0]:
+						for w3 in [0, 0.2, 0.4, 0.6, 0.8, 1.0]:
+							filename = "res/score/"+mode+"_"+test+"_"+str(w1)+'_'+str(w2)+'_'+str(w3)+"_score.txt"
+							lines = fio.readfile(filename)
+							
+							s = []
+							for i in L:
+								line = lines[i].strip()
+								nums = line.split()
+								s.append(nums[11])
+					
+							score.append([mode]+[schedules[k]]+[test] + [w1, w2, w3] + s)
+	
+	for i in range(len(score)):
+		for j in range(len(score[0])):
+			print score[i][j], "\t",
+		print
+		
 if (__name__ == '__main__'):
 	#extractScore()
-	extractScoreAllMetrics()
+	#extractScoreAllMetrics()
+	extractWeightScoreMetrics()

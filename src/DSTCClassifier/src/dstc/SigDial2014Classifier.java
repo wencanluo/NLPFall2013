@@ -88,19 +88,21 @@ public class SigDial2014Classifier {
 		SigDial2014Classifier classifier = new SigDial2014Classifier();
 		
 		//Act
-		///*
+		/*
 		String train = "../SigDial2014/scripts/res/dstc2_train_act";
 		String dev = "../SigDial2014/scripts/res/dstc2_dev_act";
 		classifier.Classifier(train, train);
 		classifier.Classifier(train, dev);
-		//*/
+		*/
 		
 		//Act + Ngram
-		/*String train = "../SigDial2014/scripts/res/dstc2_train_actngram";
-		String dev = "../SigDial2014/scripts/res/dstc2_dev_actngram";
+		///*
+		String train = "../SigDial2014/scripts/res/dstc2_train_H3_actngram";
+		String dev = "../SigDial2014/scripts/res/dstc2_dev_H3_actngram";
 		
 		classifier.ClassifierNgram(train, train);
-		classifier.ClassifierNgram(train, dev);*/
+		classifier.ClassifierNgram(train, dev);
+		//*/
 		
 		//String test2 = "../SigDial2013/bin/res/test2_actngram";
 		//String test3 = "../SigDial2013/bin/res/test3_actngram";

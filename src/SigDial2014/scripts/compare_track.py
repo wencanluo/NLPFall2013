@@ -1,13 +1,11 @@
 import sys, os, json
 
 def main():
-	track1 = "res/topline_dstc2_dev_track_3.json"
-	track2 = "res/topline_dstc2_dev_track_9.json"
+	track1 = "res/2waymodel_topline_H3_dstc2_train_track_10.json"
+	track2 = "res/2waymodel_topline_dstc2_train_track_10.json"
 	
 	tracker1 = json.load(open(track1))
 	tracker2 = json.load(open(track2))
-	
-	
 	
 	for session1, session2 in zip(tracker1['sessions'], tracker2['sessions']):
 		turn_count = 0

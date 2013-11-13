@@ -1,6 +1,8 @@
 import sys,os,argparse,shutil,glob,json,copy,time
 import fio
 import dataset_walker
+import utility
+import baseline
 
 def quote(s):
 	if s == None:
@@ -73,10 +75,12 @@ def fixedThis(log_turn):
 			
 	return log_turn
 									
-#H1: assume that the SLU is correct if and only if all the SLU hyps (slot,value) appear in the correct answer
-#assume NONE is -1
-#assume slu that doesn't do anything is -1
 def getCorrectSLUHypRank_H1(log_turn, label_turn):
+	'''
+	#H1: assume that the SLU is correct if and only if all the SLU hyps (slot,value) appear in the correct answer
+	#assume NONE is -1
+	#assume slu that doesn't do anything is -1
+	'''
 	goal_label = label_turn['goal-labels']
 	method_label = label_turn['method-label']
 	request_slots = label_turn['requested-slots']
@@ -115,17 +119,140 @@ def getCorrectSLUHypRank_H1(log_turn, label_turn):
 		
 	return -1
 
-#H2: assume that the SLU is correct if and only if it matches the differences between the pervious correct answer and the current one
-def getCorrectSLUHypRank_H2(log_turn, label_turn):
-	pass
+def getCorrectSLUHypRank_H2(log_turn, label_turn, last_labelturn = None):
+	'''
+	#H2: assume that the SLU is correct if and only if it matches the differences between the previous correct answer and the current one
+	only for "request" and "inform"
+	'''
+	goal_label, method_label, request_label = getLabels(label_turn)
+	p_goal_label, p_method_label, p_request_label = getLabels(last_labelturn)
+	
+	d_goal_label = utility.sub(goal_label, p_goal_label)
+	d_request_label = utility.sub(request_label, p_request_label)
+	
+	#fixed this first
+	log_turn = fixedThis(log_turn)
+	
+	for k, hyps in enumerate(log_turn['input']['live']['slu-hyps']):
+		#check x in A-B
+		correct = True
+		for hyp in hyps['slu-hyp']:
+			if hyp['act'] == 'inform':
+				for slot in hyp['slots']:
+					if len(slot) != 2: continue
+					
+					if not checkValueDict(d_goal_label, slot[0], slot[1]): 
+						correct = False
+						break
+			if hyp['act'] == 'request':
+				hasInfo = True
+				if hyp['slots'][0][1] not in d_request_label: 
+					correct = False
+					break
+			if hyp['act'] == 'bye':
+				if method_label != 'finished': 
+					correct = False
+					break
+			if hyp['act'] == 'reqalts':
+				if method_label != 'byalternatives': 
+					correct = False	
+					break
+			
+		if not correct: continue
+		
+		#check A-B in X
+		for key, value in d_goal_label.items():
+			found = False
+			
+			for hyp in hyps['slu-hyp']:
+				if hyp['act'] == 'inform':
+					for slot in hyp['slots']:
+						if len(slot) != 2: continue
+						
+						if slot[0] == key and slot[1] == value:
+							found = True
+							break
+					if found: break
+			if not found:
+				correct = False
+				break
+						
+		if not correct: continue
+		
+		for dk in d_request_label:
+			found = False
+			
+			for hyp in hyps['slu-hyp']:
+				if hyp['act'] == 'request':
+					if hyp['slots'][0][1] == dk: 
+						found = True
+						break
+					
+			if not found:
+				correct = False
+				break
+			
+		if correct:
+			return k
+		
+	return -1
 
+def CheckNewOutput(mact, slu, label_turn, last_labelturn):
+	goal_label, method_label, request_label = getLabels(label_turn)
+	p_goal_label, p_method_label, p_request_label = getLabels(last_labelturn)
+	
+	n_goal_label = p_goal_label
+	n_method_label = p_method_label
+	n_request_label = p_request_label
+	
+	# clear requested-slots that have been informed
+	for act in mact:
+		if act["act"] == "inform" :
+			for slot,value in act["slots"]:
+				if slot in n_request_label:
+					n_request_label.remove(slot)
+					
+	score, uact = slu
+	informed_goals, denied_goals, requested, method = baseline.labels(uact, mact)
+	
+	# requested	
+	for slot in requested:
+		if slot not in n_request_label:
+			n_request_label.append(slot)
+		
+	if method != "none" :
+		n_method_label = method
+	
+	# goal_labels
+	for slot in informed_goals:
+		value = informed_goals[slot]
+		n_goal_label[slot] = value
+	
+	if n_method_label != str(method_label): return False
+	if sorted(n_request_label) != sorted(request_label): return False
+	if n_goal_label != goal_label: return False
+	
+	return True
+	
 #H3: assume that the SLU is correct if and only if it will turn into the correct answer based on the previous one and the new SLU
-def getCorrectSLUHypRank_H3(log_turn, label_turn):
-	pass
+def getCorrectSLUHypRank_H3(log_turn, label_turn, last_labelturn = None):
+	
+	if "dialog-acts" in log_turn["output"] :
+		mact = log_turn["output"]["dialog-acts"]
+	else :
+		mact = []
+		
+	slu_hyps = baseline.Uacts(log_turn)
+	
+	for k, slu in enumerate(slu_hyps):
+		if CheckNewOutput(mact, slu, label_turn, last_labelturn):
+			return k
+		
+	return -1
 
 def getLabels(label_turn):#goal is a dict; method is a string; request is a list
 	if label_turn == None:
-		return None, None, None
+		return {}, u'none', []
 	
 	goal_label = label_turn['goal-labels']
 	method_label = label_turn['method-label']
@@ -148,6 +275,8 @@ def main(argv):
 	
 	for session in sessions:
 		session_id = session.log['session-id']
+		
+		last_labelturn = None
 		
 		for turn_index,(log_turn,label_turn) in enumerate(session):
 			
@@ -197,6 +326,8 @@ def main(argv):
 				
 				#get the rank of correct slu
 				rank = getCorrectSLUHypRank_H1(log_turn, label_turn)
+				rank_H2 = getCorrectSLUHypRank_H2(log_turn, label_turn, last_labelturn)
+				rank_H3 = getCorrectSLUHypRank_H3(log_turn, label_turn, last_labelturn)
 				
 				#has correct slu label
 				#hasTrueLabel = hasCorrectSLULabel(label_turn)
@@ -236,6 +367,8 @@ def main(argv):
 				#row.append(quote(correctSLULabel))
 				
 				row.append(rank)
+				row.append(rank_H2)
+				row.append(rank_H3)
 				#row.append(quote(correct_slu))
 				
 				sum.append(row)
@@ -244,7 +377,9 @@ def main(argv):
 				print str(e)
 				print row
 				exit()
-				
+			
+			
+			last_labelturn = copy.deepcopy(label_turn)
 	
 	header = ["session_id", "turn_index"]
 	header.append("aborted")
@@ -276,6 +411,8 @@ def main(argv):
 	#header.append("CorrectLabel")
 	
 	header.append("rank")
+	header.append("rank_H2")
+	header.append("rank_H3")
 	#header.append("correct_slu")
 	
 	fio.writeMatrix(args.logfile, sum, header)

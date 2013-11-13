@@ -127,7 +127,7 @@ def main():
 	topK = args.topK
 	
 	head, body = fio.readMatrix(args.labelfile, True)
-	rank_index = head.index('rank')
+	rank_index = head.index('rank_H3')
 	
 	labels = [item[rank_index] for item in body]
 	

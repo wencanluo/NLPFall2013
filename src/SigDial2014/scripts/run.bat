@@ -3,7 +3,7 @@ set ontology=config/ontology_dstc2.json
 set outdir=res/
 set CRFDir=D:/NLP/CRF++-0.58/
 
-rem goto after_topline2
+goto after_topline2
 set m=topline3
 for %%t in (dstc2_train dstc2_dev) do (
 	python TopLine.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json
@@ -41,8 +41,8 @@ for %%t in (dstc2_train dstc2_dev) do (
 )
 :after_2waymodel_error
 
-goto after_2waymodel_topline
-set m=2waymodel_topline
+rem goto after_2waymodel_topline
+set m=2waymodel_topline_H3
 for %%t in (dstc2_train dstc2_dev) do (
 	for %%k in (0 1 2 3 4 5 6 7 8 9 10) do (
 		python 2wayModelTopLine.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track_%%k.json --labelfile=%outdir%%%t_summary.txt --topK=%%k

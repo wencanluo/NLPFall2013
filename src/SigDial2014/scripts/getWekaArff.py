@@ -160,7 +160,9 @@ def getWekaARFF_ActNgram(featurefile, tests):
 		filename = "res/"+test+"_summary.txt"
 		head, body = fio.readMatrix(filename, True)
 		
-		rank_index = head.index('rank')
+		#rank_index = head.index('rank')
+		#rank_index = head.index('rank_H2')
+		rank_index = head.index('rank_H3')
 		out_index = head.index('output acts')
 		in_index = head.index('top slu')
 		asr_index = head.index('top asr')
@@ -199,7 +201,9 @@ def getWekaARFF_ActNgram(featurefile, tests):
 		for key in features.keys():
 			types.append('Category')
 		types = types + ['Category']
-		fio.ArffWriter("res/"+test+"_actngram.arff", header, types, "dstc", data)
+		#fio.ArffWriter("res/"+test+"_H2_actngram.arff", header, types, "dstc", data)
+		#fio.ArffWriter("res/"+test+"_actngram.arff", header, types, "dstc", data)
+		fio.ArffWriter("res/"+test+"_H3_actngram.arff", header, types, "dstc", data)
 		
 		#return header, types, data
 	
@@ -491,6 +495,6 @@ def getWekaARFF_Bin(featurefile, tests):
 		
 if (__name__ == '__main__'):
 	#getActList(["dstc2_train"], "dstc2_train")
-	getWekaARFF_Act("dstc2_train", ["dstc2_train", "dstc2_dev"])
-	#getWekaARFF_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	#getWekaARFF_Act("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	getWekaARFF_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	print "Done"

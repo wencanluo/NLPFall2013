@@ -15,7 +15,7 @@ def getRankDistribution():
 		head, body = fio.readMatrix(filename, True)
 		
 		total.append(len(body))
-		index = head.index('rank')
+		index = head.index('rank_H3')
 		
 		dict = {}
 		

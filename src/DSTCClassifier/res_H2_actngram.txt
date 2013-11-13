@@ -1,0 +1,36 @@
+train:../SigDial2014/scripts/res/dstc2_train_H2_actngram
+test:../SigDial2014/scripts/res/dstc2_train_H2_actngram
+Train: 11677
+Test: 11677
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.241     0.036      0.684     0.241     0.357      0.603    -1
+                 0.964     0.759      0.795     0.964     0.871      0.603    0
+Weighted Avg.    0.786     0.581      0.768     0.786     0.745      0.603
+
+=== Confusion Matrix ===
+
+    a    b   <-- classified as
+  695 2183 |    a = -1
+  321 8478 |    b = 0
+
+train:../SigDial2014/scripts/res/dstc2_train_H2_actngram
+test:../SigDial2014/scripts/res/dstc2_dev_H2_actngram
+Train: 11677
+Test: 3934
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.208     0.051      0.601     0.208     0.309      0.578    -1
+                 0.949     0.792      0.765     0.949     0.847      0.578    0
+Weighted Avg.    0.75      0.593      0.721     0.75      0.702      0.578
+
+=== Confusion Matrix ===
+
+    a    b   <-- classified as
+  220  839 |    a = -1
+  146 2729 |    b = 0
+

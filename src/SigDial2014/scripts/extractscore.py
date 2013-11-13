@@ -43,7 +43,7 @@ def extractScoreAllMetricsTopLine():
 	
 	score = []
 	
-	modes = ['topline1']
+	modes = ['2waymodel_topline_H3']
 			
 	metrics = ['Joint_Goals', 'Requested', 'Method']
 	
@@ -74,5 +74,5 @@ def extractScoreAllMetricsTopLine():
 		
 if (__name__ == '__main__'):
 	#extractScore()
-	extractScoreAllMetrics()
-	#extractScoreAllMetricsTopLine()
+	#extractScoreAllMetrics()
+	extractScoreAllMetricsTopLine()
