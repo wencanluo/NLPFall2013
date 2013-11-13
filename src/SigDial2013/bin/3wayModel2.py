@@ -30,6 +30,9 @@ def main(argv):
 						help='Ignore score in data; always use a score of 1.0 (nop if --null also specified)')
 	parser.add_argument('--labelfile',dest='labelfile',action='store',required=True,metavar='TXT',
 						help='File with 3-way prediction results')
+	parser.add_argument('--w1',dest='w1',action='store',type=float, help='w1 for nlu')
+	parser.add_argument('--w2',dest='w2',action='store',type=float, help='w2 for asr')
+	parser.add_argument('--w3',dest='w3',action='store',type=float, help='w3 for prediction')
 	args = parser.parse_args()
 
 	head, body = fio.readMatrix(args.labelfile, True)
@@ -74,10 +77,12 @@ def main(argv):
 			if rank == '-1': continue
 			if rank == '1':#top slu
 				slu_hyp = log_turn['input']['live']['slu-hyps'][0]
+				asr_score = log_turn['input']['live']['asr-hyps'][0]['score'] if len(log_turn['input']['live']['asr-hyps'])> 0 else 1.0
 			if rank == '0':#get the output slu
 				slu_output = getSummary.getFirstExplConf(log_turn)
 				slu_hyp = getSummary.formatSlottoLive(slu_output, 0)
-			
+				asr_score = 1.0
+				
 			if slu_hyp == None: continue
 			
 			joint = {}

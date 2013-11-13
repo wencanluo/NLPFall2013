@@ -30,6 +30,10 @@ def main(argv):
 						help='Ignore score in data; always use a score of 1.0 (nop if --null also specified)')
 	parser.add_argument('--labelfile',dest='labelfile',action='store',required=True,metavar='TXT',
 						help='File with 3-way prediction results')
+	parser.add_argument('--w1',dest='w1',action='store',type=float, help='w1 for nlu')
+	parser.add_argument('--w2',dest='w2',action='store',type=float, help='w2 for asr')
+	parser.add_argument('--w3',dest='w3',action='store',type=float, help='w3 for prediction')
+	
 	args = parser.parse_args()
 
 	head, body = fio.readMatrix(args.labelfile, True)
@@ -69,14 +73,17 @@ def main(argv):
 			rank = labels[turn_count]
 			
 			slu_hyp = None
+			asr_score = 0
 			
 			#replace slu_hyp with correct one
 			if rank == '-1': continue
 			if rank == '1':#top slu
 				slu_hyp = log_turn['input']['live']['slu-hyps'][0]
+				asr_score = log_turn['input']['live']['asr-hyps'][0]['score'] if len(log_turn['input']['live']['asr-hyps'])> 0 else 1.0
 			if rank == '0':#get the output slu
 				slu_output, slu_score = getSummary.getFirstExplConf(log_turn)
 				slu_hyp = getSummary.formatSlottoLive(slu_output, 0, slu_score)
+				asr_score = log_turn['input']['live']['asr-hyps'][0]['score'] if len(log_turn['input']['live']['asr-hyps'])> 0 else 1.0
 			
 			if slu_hyp == None: continue
 			
@@ -92,7 +99,9 @@ def main(argv):
 						continue
 					if (True):
 						#score = slu_hyp['score'] if (args.ignorescores == False) else 1.0
-						score = slu_hyp['score']/2 + 0.5
+						#score = slu_hyp['score']/2 + 0.5
+						score = slu_hyp['score'] * args.w1 + asr_score * args.w2 + args.w3
+						
 						state[slot]['hyps'] = [ {
 								'score-save': slu_hyp['score'],
 								'score': score,

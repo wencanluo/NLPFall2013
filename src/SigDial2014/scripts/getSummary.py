@@ -123,6 +123,15 @@ def getCorrectSLUHypRank_H2(log_turn, label_turn):
 def getCorrectSLUHypRank_H3(log_turn, label_turn):
 	pass
 
+def getLabels(label_turn):#goal is a dict; method is a string; request is a list
+	if label_turn == None:
+		return None, None, None
+	
+	goal_label = label_turn['goal-labels']
+	method_label = label_turn['method-label']
+	request_label = label_turn['requested-slots']
+	return goal_label, method_label, request_label
+				
 def main(argv):
 	parser = argparse.ArgumentParser(description='Simple hand-crafted dialog state tracker baseline.')
 	parser.add_argument('--dataset', dest='dataset', action='store', metavar='DATASET', required=True,

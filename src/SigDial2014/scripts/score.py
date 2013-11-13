@@ -94,6 +94,10 @@ def main(argv):
 		method_schedule_2 = False # whether schedule 2 is active for method
 		
 		for turn_num, ((log_turn,label_turn),_tracker_turn) in enumerate(zip(session,session_tracker['turns'])):
+			
+			if session_id == 'voip-96f43326a4-20130324_101528' and turn_num == 9:
+				debug = 1
+			
 			turn_counter += 1.0
 			S_new = misc.S(log_turn, ontology)
 			

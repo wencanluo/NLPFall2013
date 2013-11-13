@@ -1,6 +1,6 @@
 set root=../../data
 set m=topline
-set outdir=res/
+set outdir=res/score/
 set CRFDir=D:/NLP/CRF++-0.58/
 
 goto after_3waymodel_train23
@@ -107,12 +107,18 @@ for %%t in (test1 test2 test3 test4) do (
 
 rem goto after_3waymodel1
 set root=../../data
-set m=3way_enrich_voting_rawslu5
-for %%t in (test1 test2 test3 test4) do (
-rem for %%t in (test1) do (
-	python 3wayModel1.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_enrich_voting.label
-	python scoreAll.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv  --rocbins=200
-	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_allmetrics_%%t_score.txt
+set m=3way_enrich_voting
+rem for %%t in (test1 test2 test3 test4) do (
+for %%t in (test1) do (
+	for %%a in (0.2 0.4 0.6 0.8 1.0) do (
+		for %%b in (0 0.2 0.4 0.6 0.8 1.0) do (
+			for %%c in (0 0.2 0.4 0.6 0.8 1.0) do (
+				python 3wayModel1.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_enrich_voting.label --w1=%%a --w2=%%b --w3=%%c
+				python scoreAll.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --scorefile=%outdir%%m%_%%t_score.csv  --rocbins=100
+				python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_allmetrics_%%t_%%a_%%b_%%c_score.txt
+			)
+		)
+	)
 )
 
 :after_3waymodel1

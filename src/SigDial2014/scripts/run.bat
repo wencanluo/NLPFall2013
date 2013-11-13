@@ -3,11 +3,30 @@ set ontology=config/ontology_dstc2.json
 set outdir=res/
 set CRFDir=D:/NLP/CRF++-0.58/
 
-rem goto after_2waymodel_act
-rem set m=2waymodel_actngram_topline
+rem goto after_topline2
+set m=topline3
+for %%t in (dstc2_train dstc2_dev) do (
+	python TopLine.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json
+	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
+)
+:after_topline2
+
+goto after_topline
+set m=topline1
+for %%t in (dstc2_train dstc2_dev) do (
+	for %%k in (0 1 2 3 4 5 6 7 8 9 10) do (
+	rem for %%k in (0) do (
+		python TopLine.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track_%%k.json --topK=%%k
+		python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track_%%k.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score_%%k.csv
+		python report.py --scorefile=%outdir%%m%_%%t_score_%%k.csv > %outdir%%m%_%%t_score_%%k.txt
+	)
+)
+:after_topline
+
+goto after_2waymodel_act
 set m=2waymodel_actngram
 for %%t in (dstc2_train dstc2_dev) do (
-rem for %%t in (dstc2_train) do (
 	python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label
 	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
 	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
@@ -18,7 +37,6 @@ goto after_2waymodel_error
 set m=2waymodel_error
 set m2=2waymodel_actngram_topline
 for %%t in (dstc2_train dstc2_dev) do (
-rem for %%t in (dstc2_train) do (
 	python get2wayError.py --trackfile=%outdir%%m2%_%%t_track.json --summaryfile=%outdir%%%t_summary.txt --logfile=%outdir%%m2%_%%t_error.txt
 )
 :after_2waymodel_error
