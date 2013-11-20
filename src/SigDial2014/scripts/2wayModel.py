@@ -4,11 +4,13 @@ from collections import defaultdict
 from baseline import *
 import fio
 
+request_slotnames = ['area', 'food', 'name', 'pricerange', 'addr', 'phone', 'postcode', 'signature']
+
 class Tracker(object):
 	def __init__(self):
 		self.reset()
 
-	def addTurn(self, turn, rank = 0, method_label = None):
+	def addTurn(self, turn, rank = 0, method_label = None, request_label = None):
 		hyps = copy.deepcopy(self.hyps)
 		if "dialog-acts" in turn["output"] :
 			mact = turn["output"]["dialog-acts"]
@@ -43,8 +45,22 @@ class Tracker(object):
 			
 			informed_goals, denied_goals, requested, method = labels(uact, mact)
 			# requested	
-			for slot in requested:
-				requested_slot_stats[slot] += score
+			
+			if request_label == None:
+				for slot in requested:
+					requested_slot_stats[slot] += score
+			else:
+				for i in range(len(request_slotnames)):
+					slot = request_slotnames[i]
+					if request_label[i] == 1:
+						requested_slot_stats[slot] += score
+					else:
+						if slot in hyps["requested-slots"]:
+							del hyps["requested-slots"][slot]
+						
+						if slot in requested_slot_stats:
+							del requested_slot_stats[slot]
+			
 			if method == "none" :
 				method = prev_method
 			
@@ -118,7 +134,9 @@ def main():
 						help='File with 2-way prediction results')
 	parser.add_argument('--methodfile',dest='methodfile',action='store',required=False,metavar='TXT',
 						help='File with method prediction results')
-
+	parser.add_argument('--requestfile',dest='requestfile',action='store',required=False,metavar='TXT',
+						help='File with request prediction results')
+	
 	args = parser.parse_args()
 	
 	head, body = fio.readMatrix(args.labelfile, True)
@@ -126,6 +144,9 @@ def main():
 	
 	head, body = fio.readMatrix(args.methodfile, True)
 	method_labels = [item[1] for item in body]
+	
+	request_labels = fio.MulanOutReader(args.requestfile)
+	#assert(len(request_labels) == len(method_labels))
 	
 	dataset = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot)
 	track_file = open(args.trackfile, "wb")
@@ -145,8 +166,9 @@ def main():
 			
 			rank = labels[turn_count]
 			method = method_labels[turn_count]
+			requests = request_labels[turn_count]
 			
-			tracker_turn = tracker.addTurn(turn, rank, method)
+			tracker_turn = tracker.addTurn(turn, rank, method, requests)
 			this_session["turns"].append(tracker_turn)
 		
 		track["sessions"].append(this_session)

@@ -1,6 +1,5 @@
 package nlp;
 
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -31,7 +30,7 @@ import weka.classifiers.meta.AdaBoostM1;
 import weka.classifiers.meta.FilteredClassifier;
 import weka.classifiers.lazy.IBk;
 
-import weka.classifiers.functions.LibLINEAR;
+//import weka.classifiers.functions.LibLINEAR;
 import weka.classifiers.functions.Logistic;
 
 import weka.classifiers.Classifier;

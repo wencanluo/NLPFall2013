@@ -3,7 +3,24 @@ set ontology=config/ontology_dstc2.json
 set outdir=res/
 set CRFDir=D:/NLP/CRF++-0.58/
 
-rem goto after_2waymodel_method
+goto after_2waymodel_error
+set m=2waymodel_error
+set m2=2waymodel_actngram_topline
+for %%t in (dstc2_train dstc2_dev) do (
+	python get2wayError.py --trackfile=%outdir%%m2%_%%t_track.json --summaryfile=%outdir%%%t_summary.txt --logfile=%outdir%%m2%_%%t_error.txt
+)
+:after_2waymodel_error
+
+goto after_2waymodel_request
+set m=2waymodel_actngram_request
+for %%t in (dstc2_train dstc2_dev) do (
+	python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label --requestfile=%outdir%%%t_request_actngram_ngram.arff.label
+	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
+)
+:after_2waymodel_request
+
+goto after_2waymodel_method
 set m=2waymodel_actngram_method_mindchange
 for %%t in (dstc2_train dstc2_dev) do (
 	python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label
@@ -41,14 +58,6 @@ for %%t in (dstc2_train dstc2_dev) do (
 	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
 )
 :after_2waymodel_act
-
-goto after_2waymodel_error
-set m=2waymodel_error
-set m2=2waymodel_actngram_topline
-for %%t in (dstc2_train dstc2_dev) do (
-	python get2wayError.py --trackfile=%outdir%%m2%_%%t_track.json --summaryfile=%outdir%%%t_summary.txt --logfile=%outdir%%m2%_%%t_error.txt
-)
-:after_2waymodel_error
 
 goto after_2waymodel_topline
 set m=2waymodel_topline_H3

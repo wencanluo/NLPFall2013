@@ -1,0 +1,48 @@
+train:../SigDial2014/scripts/res/dstc2_train_method_actngram_topline
+test:../SigDial2014/scripts/res/dstc2_train_method_actngram_topline
+Train: 11677
+Test: 11677
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.89      0.034      0.821     0.89      0.854      0.945    byalternatives
+                 0.946     0.078      0.962     0.946     0.954      0.937    byconstraints
+                 0.5       0          1         0.5       0.667      0.816    byname
+                 0.962     0.003      0.984     0.962     0.973      0.991    finished
+                 0.843     0.007      0.779     0.843     0.81       0.956    none
+Weighted Avg.    0.936     0.058      0.939     0.936     0.937      0.947
+
+=== Confusion Matrix ===
+
+    a    b    c    d    e   <-- classified as
+ 1551  189    0    2    0 |    a = byalternatives
+  322 7449    0   22   80 |    b = byconstraints
+    0   11   11    0    0 |    c = byname
+   16   47    0 1638    1 |    d = finished
+    0   51    0    2  285 |    e = none
+
+train:../SigDial2014/scripts/res/dstc2_train_method_actngram_topline
+test:../SigDial2014/scripts/res/dstc2_dev_method_actngram_topline
+Train: 11677
+Test: 3934
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.775     0.044      0.763     0.775     0.769      0.893    byalternatives
+                 0.924     0.155      0.922     0.924     0.923      0.888    byconstraints
+                 0         0          0         0         0          0.697    byname
+                 0.953     0.004      0.975     0.953     0.964      0.985    finished
+                 0.721     0.016      0.649     0.721     0.683      0.918    none
+Weighted Avg.    0.892     0.111      0.889     0.892     0.891      0.902
+
+=== Confusion Matrix ===
+
+    a    b    c    d    e   <-- classified as
+  474  134    0    2    2 |    a = byalternatives
+  131 2419    0   10   58 |    b = byconstraints
+   10    9    0    0    0 |    c = byname
+    6   19    0  506    0 |    d = finished
+    0   42    0    1  111 |    e = none
+

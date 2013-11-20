@@ -1,0 +1,48 @@
+train:../SigDial2014/scripts/res/dstc2_train_method_actngram_mindchange
+test:../SigDial2014/scripts/res/dstc2_train_method_actngram_mindchange
+Train: 11677
+Test: 11677
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.88      0.007      0.887     0.88      0.883      0.973    byalternatives
+                 0.958     0.016      0.968     0.958     0.963      0.982    byconstraints
+                 0.556     0          1         0.556     0.714      0.978    byname
+                 0.976     0.002      0.989     0.976     0.983      0.998    finished
+                 0.968     0.038      0.955     0.968     0.962      0.966    none
+Weighted Avg.    0.96      0.024      0.96      0.96      0.96       0.976
+
+=== Confusion Matrix ===
+
+    a    b    c    d    e   <-- classified as
+  644   41    0    0   47 |    a = byalternatives
+    9 3794    0    1  158 |    b = byconstraints
+    0    0    5    0    4 |    c = byname
+    1    5    0 1617   33 |    d = finished
+   72   80    0   17 5149 |    e = none
+
+train:../SigDial2014/scripts/res/dstc2_train_method_actngram_mindchange
+test:../SigDial2014/scripts/res/dstc2_dev_method_actngram_mindchange
+Train: 11677
+Test: 3934
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.748     0.009      0.852     0.748     0.797      0.918    byalternatives
+                 0.911     0.031      0.933     0.911     0.922      0.96     byconstraints
+                 0         0          0         0         0          0.653    byname
+                 0.973     0.004      0.973     0.973     0.973      0.994    finished
+                 0.949     0.082      0.917     0.949     0.932      0.933    none
+Weighted Avg.    0.926     0.051      0.923     0.926     0.924      0.948
+
+=== Confusion Matrix ===
+
+    a    b    c    d    e   <-- classified as
+  184   23    0    0   39 |    a = byalternatives
+    5 1141    0    0  106 |    b = byconstraints
+    0    0    0    0    8 |    c = byname
+    0    2    0  501   12 |    d = finished
+   27   57    0   14 1815 |    e = none
+
