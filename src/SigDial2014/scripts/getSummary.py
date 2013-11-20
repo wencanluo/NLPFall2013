@@ -197,6 +197,38 @@ def getCorrectSLUHypRank_H2(log_turn, label_turn, last_labelturn = None):
 		
 	return -1
 
+def getNewOutput(mact, slu, label_turn, last_labelturn):
+	goal_label, method_label, request_label = getLabels(label_turn)
+	p_goal_label, p_method_label, p_request_label = getLabels(last_labelturn)
+	
+	n_goal_label = p_goal_label
+	n_method_label = p_method_label
+	n_request_label = p_request_label
+	
+	# clear requested-slots that have been informed
+	for act in mact:
+		if act["act"] == "inform" :
+			for slot,value in act["slots"]:
+				if slot in n_request_label:
+					n_request_label.remove(slot)
+					
+	score, uact = slu
+	informed_goals, denied_goals, requested, method = baseline.labels(uact, mact)
+	
+	# requested	
+	for slot in requested:
+		if slot not in n_request_label:
+			n_request_label.append(slot)
+	
+	n_method_label = method
+	
+	# goal_labels
+	for slot in informed_goals:
+		value = informed_goals[slot]
+		n_goal_label[slot] = value
+	
+	return n_goal_label, n_method_label, n_request_label
+
 def CheckNewOutput(mact, slu, label_turn, last_labelturn):
 	goal_label, method_label, request_label = getLabels(label_turn)
 	p_goal_label, p_method_label, p_request_label = getLabels(last_labelturn)
@@ -258,7 +290,31 @@ def getLabels(label_turn):#goal is a dict; method is a string; request is a list
 	method_label = label_turn['method-label']
 	request_label = label_turn['requested-slots']
 	return goal_label, method_label, request_label
-				
+
+def getRecoveryMethod(log_turn, label_turn, last_labelturn):
+	if "dialog-acts" in log_turn["output"] :
+		mact = log_turn["output"]["dialog-acts"]
+	else :
+		mact = []
+	
+	p_goal_label, p_method_label, p_request_label = getLabels(last_labelturn)
+	goal_label, method_label, request_label = getLabels(label_turn)
+	
+	if method_label != p_method_label:
+		return method_label
+	
+	slu_hyps = baseline.Uacts(log_turn)
+	if len(slu_hyps) > 0:
+		n_goal_label, n_method_label, n_request_label = getNewOutput(mact, slu_hyps[0], label_turn, last_labelturn)
+		if n_method_label == method_label:
+			return method_label
+		
+		return "none"
+	else:
+		return method_label
+	
+	return "impossible"
+					
 def main(argv):
 	parser = argparse.ArgumentParser(description='Simple hand-crafted dialog state tracker baseline.')
 	parser.add_argument('--dataset', dest='dataset', action='store', metavar='DATASET', required=True,
@@ -329,6 +385,7 @@ def main(argv):
 				rank_H2 = getCorrectSLUHypRank_H2(log_turn, label_turn, last_labelturn)
 				rank_H3 = getCorrectSLUHypRank_H3(log_turn, label_turn, last_labelturn)
 				
+				recovery_method = getRecoveryMethod(log_turn, label_turn, last_labelturn)
 				#has correct slu label
 				#hasTrueLabel = hasCorrectSLULabel(label_turn)
 				#correctSLULabel = getCorrectSLULabel(label_turn)
@@ -370,7 +427,8 @@ def main(argv):
 				row.append(rank_H2)
 				row.append(rank_H3)
 				#row.append(quote(correct_slu))
-				
+				row.append(quote(recovery_method))
+
 				sum.append(row)
 				
 			except KeyError as e:
@@ -413,6 +471,7 @@ def main(argv):
 	header.append("rank")
 	header.append("rank_H2")
 	header.append("rank_H3")
+	header.append("recovery_method")
 	#header.append("correct_slu")
 	
 	fio.writeMatrix(args.logfile, sum, header)

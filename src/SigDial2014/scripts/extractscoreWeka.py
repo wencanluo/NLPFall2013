@@ -25,7 +25,7 @@ def extractScoreWeka():
 		print
 
 def extractScoreWekaMethod():
-	tests = ['res_method_actngram',]
+	tests = ['res_method_actngram_mindchange',]
 	score = []
 	for test in tests:
 		filename = "res/"+test+".txt"
@@ -49,5 +49,5 @@ def extractScoreWekaMethod():
 		print
 			
 if (__name__ == '__main__'):
-	extractScoreWeka()
-	#extractScoreWekaMethod()
+	#extractScoreWeka()
+	extractScoreWekaMethod()

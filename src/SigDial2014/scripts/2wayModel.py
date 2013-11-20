@@ -8,7 +8,7 @@ class Tracker(object):
 	def __init__(self):
 		self.reset()
 
-	def addTurn(self, turn, rank = 0):
+	def addTurn(self, turn, rank = 0, method_label = None):
 		hyps = copy.deepcopy(self.hyps)
 		if "dialog-acts" in turn["output"] :
 			mact = turn["output"]["dialog-acts"]
@@ -48,8 +48,13 @@ class Tracker(object):
 			if method == "none" :
 				method = prev_method
 			
-			#if method != "none" :
-			method_stats[method] = score
+			if method_label == None:
+				method_stats[method] = score
+			else:
+				if method_label == "none":
+					method_stats[prev_method] = score
+				else:
+					method_stats[method_label] = score
 			
 			# goal_labels
 			for slot in informed_goals:
@@ -111,16 +116,16 @@ def main():
 						help='File to write with tracker output')
 	parser.add_argument('--labelfile',dest='labelfile',action='store',required=True,metavar='TXT',
 						help='File with 2-way prediction results')
-	#parser.add_argument('--methodfile',dest='methodfile',action='store',required=False,metavar='TXT',
-	#					help='File with method prediction results')
+	parser.add_argument('--methodfile',dest='methodfile',action='store',required=False,metavar='TXT',
+						help='File with method prediction results')
 
 	args = parser.parse_args()
 	
 	head, body = fio.readMatrix(args.labelfile, True)
 	labels = [item[1] for item in body]
 	
-	#head, body = fio.readMatrix(args.labelfile, True)
-	#labels = [item[0] for item in body]
+	head, body = fio.readMatrix(args.methodfile, True)
+	method_labels = [item[1] for item in body]
 	
 	dataset = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot)
 	track_file = open(args.trackfile, "wb")
@@ -139,8 +144,9 @@ def main():
 			turn_count = turn_count + 1
 			
 			rank = labels[turn_count]
+			method = method_labels[turn_count]
 			
-			tracker_turn = tracker.addTurn(turn, rank)
+			tracker_turn = tracker.addTurn(turn, rank, method)
 			this_session["turns"].append(tracker_turn)
 		
 		track["sessions"].append(this_session)

@@ -10,7 +10,8 @@ def extractScoreAllMetrics():
 	#modes = ['bestbyother_allmetrics', '3way_enrich3_allmetrics', '3way_enrich_train2_allmetrics', '3way_enrich_train3_allmetrics', '3way_enrich_train23_allmetrics']
 	#modes = ['baseline', 'baseline_focus', 'HWUbaseline', 'baselineTop1']
 	#modes = ['baseline', 'baseline_focus', 'HWUbaseline', '2waymodel_act', '2waymodel_actngram', '2waymodel_actngram_topline']
-	modes = ['topline2','topline3']
+	#modes = ['topline2','topline3']
+	modes = ['2waymodel_actngram_method_topline', '2waymodel_actngram_method_online', '2waymodel_actngram_method_mindchange']
 			
 	metrics = ['Joint_Goals', 'Requested', 'Method']
 	
@@ -74,5 +75,5 @@ def extractScoreAllMetricsTopLine():
 		
 if (__name__ == '__main__'):
 	#extractScore()
-	#extractScoreAllMetrics()
-	extractScoreAllMetricsTopLine()
+	extractScoreAllMetrics()
+	#extractScoreAllMetricsTopLine()

@@ -158,7 +158,137 @@ def getWekaARFF_ActNgram(featurefile, tests):
 		fio.ArffWriter("res/"+test+"_method_actngram.arff", header, types, "dstc", data)
 		
 		#return header, types, data
+def getWekaARFF_ActNgramTopline(featurefile, tests):
+	features = fio.LoadDict("res/"+featurefile+".dict")
+	
+	#tests = ['train1a', 'test1', 'test2', 'test3', 'test4']
+	
+	for test in tests:
+		data = []
+		
+		filename = "res/"+test+"_summary.txt"
+		head, body = fio.readMatrix(filename, True)
+		
+		turn_index= head.index('turn_index')
+		rank_index = head.index('rank')
+		out_index = head.index('output acts')
+		in_index = head.index('top slu')
+		asr_index = head.index('top asr')
+		
+		method_index = head.index('method_label')
+		
+		for i, row in enumerate(body):
+			rank = int( row[rank_index] )
+			method = row[method_index][1:-1]
 			
+			#label = rank if rank == 0 else -1
+			label = method
+			turn_id = int(row[turn_index])
+			plabel = body[i-1][method_index][1:-1] if turn_id >= 1 else 'none'
+			
+			firstTurn = False if turn_id >= 1 else True
+			
+			out_act = row[out_index][1:-1]
+			in_act = row[in_index][1:-1]
+			asr = row[asr_index][1:-1]
+			
+			acts = set( list(getAct(out_act)) + list(getAct(in_act)))
+			
+			row = []
+			
+			row.append(asr)
+			row.append(firstTurn)
+			
+			for key in features.keys():
+				if key in acts:
+					row.append(1)
+				else:
+					row.append(0)
+					
+			row.append(plabel)
+			row.append(label)
+			data.append(row)
+		
+		header =[]
+		header.append("ASR")
+		header.append('firstTurn')
+		for key in features.keys():
+			header.append(key)
+		header = header + ['PreviousTag']
+		header = header + ['@@Class@@']
+		
+		types = []
+		types.append("String")
+		types = types + ['Category']
+		for key in features.keys():
+			types.append('Category')
+		types = types + ['Category']
+		types = types + ['Category']
+		fio.ArffWriter("res/"+test+"_method_actngram_topline.arff", header, types, "dstc", data)
+
+def getWekaARFF_ActNgramRecovery(featurefile, tests):
+	#features = fio.LoadDict("res/train1a.dict")
+	features = fio.LoadDict("res/"+featurefile+".dict")
+	
+	#tests = ['train1a', 'test1', 'test2', 'test3', 'test4']
+	
+	for test in tests:
+		data = []
+		
+		filename = "res/"+test+"_summary.txt"
+		head, body = fio.readMatrix(filename, True)
+		
+		turn_index= head.index('turn_index')
+		rank_index = head.index('rank')
+		out_index = head.index('output acts')
+		in_index = head.index('top slu')
+		asr_index = head.index('top asr')
+		
+		method_index = head.index('recovery_method')
+		
+		for i,row in enumerate(body):
+			rank = int( row[rank_index] )
+			method = row[method_index][1:-1]
+			
+			#label = rank if rank == 0 else -1
+			label = method
+			turn_id = row[turn_index]
+			plabel = body[i-1][method_index][1:-1] if turn_id >= 1 else 'none'
+			
+			out_act = row[out_index][1:-1]
+			in_act = row[in_index][1:-1]
+			asr = row[asr_index][1:-1]
+			
+			acts = set( list(getAct(out_act)) + list(getAct(in_act)))
+			
+			row = []
+			
+			row.append(asr)
+			
+			for key in features.keys():
+				if key in acts:
+					row.append(1)
+				else:
+					row.append(0)
+					
+			#row.append()
+			row.append(label)
+			data.append(row)
+		
+		header =[]
+		header.append("ASR")
+		for key in features.keys():
+			header.append(key)
+		header = header + ['@@Class@@']
+		
+		types = []
+		types.append("String")
+		for key in features.keys():
+			types.append('Category')
+		types = types + ['Category']
+		fio.ArffWriter("res/"+test+"_method_actngram_mindchange.arff", header, types, "dstc", data)
+		
+					
 if (__name__ == '__main__'):
 	#getActList(["dstc2_train"], "dstc2_train")
 	#getWekaARFF_Act("dstc2_train", ["dstc2_train", "dstc2_dev"])
@@ -173,5 +303,7 @@ if (__name__ == '__main__'):
 	#getWekaARFF_Bin("train3", ["train3", "test3"])
 	
 	#getWekaARFF_Enrich("train2", ["test1"])
-	getWekaARFF_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	#getWekaARFF_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	#getWekaARFF_ActNgramTopline("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	getWekaARFF_ActNgramRecovery("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	print "Done"
