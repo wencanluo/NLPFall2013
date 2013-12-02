@@ -18,7 +18,7 @@ def getSluSlotValueDict(slu):#return to.desc=pitt
 		actions[name] = value
 	return actions
 
-def getAct(slu, prefix = ""):#parse the action from the slu string
+def getAct(slu, prefix = "", withname = False):#parse the action from the slu string
 	tokens = slu.split('&')
 	
 	actions = []
@@ -26,7 +26,14 @@ def getAct(slu, prefix = ""):#parse the action from the slu string
 		k = token.find('(')
 		if k == -1: continue
 		
-		actions.append(prefix + token[:k])
+		if not withname:
+			actions.append(prefix + token[:k])
+		else:
+			k2 = token.find('=')
+			if k2==-1: 
+				actions.append(prefix + token[:k])
+			else:
+				actions.append(prefix + token[:k] + '.' +token[k+1:k2])
 	return set(actions)
 
 def getOutActExplConfDict(out_act):

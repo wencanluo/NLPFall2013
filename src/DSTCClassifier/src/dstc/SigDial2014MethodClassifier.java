@@ -156,8 +156,15 @@ public class SigDial2014MethodClassifier {
 		classifier.ClassifierNgramOnline(train, dev);*/
 		
 		//Act + Ngram, MindChange
-		String train = "../SigDial2014/scripts/res/dstc2_train_method_actngram_mindchange";
+		/*String train = "../SigDial2014/scripts/res/dstc2_train_method_actngram_mindchange";
 		String dev = "../SigDial2014/scripts/res/dstc2_dev_method_actngram_mindchange";
+		
+		classifier.ClassifierNgram(train, train);
+		classifier.ClassifierNgram(train, dev);*/
+		
+		//Act with Name, in/out + Ngram, MindChange
+		String train = "../SigDial2014/scripts/res/dstc2_train_method_actwithNamengram_mindchange";
+		String dev = "../SigDial2014/scripts/res/dstc2_dev_method_actwithNamengram_mindchange";
 		
 		classifier.ClassifierNgram(train, train);
 		classifier.ClassifierNgram(train, dev);

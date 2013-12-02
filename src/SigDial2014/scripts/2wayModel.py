@@ -142,11 +142,12 @@ def main():
 	head, body = fio.readMatrix(args.labelfile, True)
 	labels = [item[1] for item in body]
 	
-	head, body = fio.readMatrix(args.methodfile, True)
-	method_labels = [item[1] for item in body]
+	if args.methodfile != None:
+		head, body = fio.readMatrix(args.methodfile, True)
+		method_labels = [item[1] for item in body]
 	
-	request_labels = fio.MulanOutReader(args.requestfile)
-	#assert(len(request_labels) == len(method_labels))
+	if args.requestfile != None:
+		request_labels = fio.MulanOutReader(args.requestfile)
 	
 	dataset = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot)
 	track_file = open(args.trackfile, "wb")
@@ -165,8 +166,8 @@ def main():
 			turn_count = turn_count + 1
 			
 			rank = labels[turn_count]
-			method = method_labels[turn_count]
-			requests = request_labels[turn_count]
+			method = method_labels[turn_count] if args.methodfile != None else None
+			requests = request_labels[turn_count] if args.requestfile != None else None
 			
 			tracker_turn = tracker.addTurn(turn, rank, method, requests)
 			this_session["turns"].append(tracker_turn)

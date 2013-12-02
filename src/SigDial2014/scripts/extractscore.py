@@ -12,7 +12,7 @@ def extractScoreAllMetrics():
 	#modes = ['baseline', 'baseline_focus', 'HWUbaseline', '2waymodel_act', '2waymodel_actngram', '2waymodel_actngram_topline']
 	#modes = ['topline2','topline3']
 	#modes = ['2waymodel_actngram_method_topline', '2waymodel_actngram_method_online', '2waymodel_actngram_method_mindchange']
-	modes = ['binaryswitch_decayhistory_topline']
+	modes = ['2waymodel_actWithNamengram_method_mindchange']
 			
 	metrics = ['Joint_Goals', 'Requested', 'Method']
 	
@@ -45,7 +45,7 @@ def extractScoreAllMetricsTopLine():
 	
 	score = []
 	
-	modes = ['2waymodel_topline_H3']
+	modes = ['binaryswitch_decay_0.5_history_topline']
 			
 	metrics = ['Joint_Goals', 'Requested', 'Method']
 	

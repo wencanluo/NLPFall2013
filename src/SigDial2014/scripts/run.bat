@@ -3,14 +3,25 @@ set ontology=config/ontology_dstc2.json
 set outdir=res/
 set CRFDir=D:/NLP/CRF++-0.58/
 
-
-
-rem goto after_binaryswitch
-set m=binaryswitch_decayhistory_topline
+goto after_binaryswitch
+set m=binaryswitch_decay_no_history_topline
 for %%t in (dstc2_train dstc2_dev) do (
 	python BinarySwitchModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_H1_actngram_binaryswitch.label
 	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
 	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
+)
+:after_binaryswitch
+
+goto after_binaryswitch
+set m=binaryswitch_decay_0.5_history_topline
+for %%t in (dstc2_train dstc2_dev) do (
+rem for %%t in (dstc2_train) do (
+	for %%k in (0 1 2 3 4 5 6 7 8 9 10) do (
+	rem for %%k in (0) do (
+		python BinarySwitchModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_H1_actngram_binaryswitch.label --topK=%%k
+		python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
+		python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score_%%k.txt
+	)
 )
 :after_binaryswitch
 
@@ -31,10 +42,10 @@ for %%t in (dstc2_train dstc2_dev) do (
 )
 :after_2waymodel_request
 
-goto after_2waymodel_method
-set m=2waymodel_actngram_method_mindchange
+rem goto after_2waymodel_method
+set m=2waymodel_actWithNamengram_method_mindchange
 for %%t in (dstc2_train dstc2_dev) do (
-	python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label
+	python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actwithNamengram_mindchange.label
 	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
 	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
 )

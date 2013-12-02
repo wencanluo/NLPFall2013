@@ -9,7 +9,7 @@ from SlotTracker import *
 import dataset_walker
 import getSummary
 
-def getActList(tests, fout):
+def getActList(tests, fout, withname = False):
 	dict = {}
 
 	for test in tests:
@@ -24,16 +24,23 @@ def getActList(tests, fout):
 			in_act = row[in_index][1:-1]
 			
 			#acts = set( list(getAct(out_act, "out_")) + list(getAct(in_act, "in_")))
-			acts = set( list(getAct(out_act)) + list(getAct(in_act)))
+			if not withname:
+				acts = set( list(getAct(out_act)) + list(getAct(in_act)))
+			else:
+				acts = set( list(getAct(out_act, "out_", True)) + list(getAct(in_act, "in_", True)))
 			
 			for act in acts:
 				if act not in dict:
 					dict[act] = 0
 				dict[act] = dict[act] + 1
 	
-	outfile = "res/"+fout+".dict"
+	if not withname:
+		outfile = "res/"+fout+".dict"
+	else:
+		outfile = "res/"+fout+"_name.dict"
+	
 	fio.SaveDict(dict, outfile)
-
+	
 def getOutActDict(slu):
 	tokens = slu.split('&')
 	

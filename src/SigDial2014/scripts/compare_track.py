@@ -1,8 +1,8 @@
 import sys, os, json
 
 def main():
-	track1 = "res/2waymodel_topline_H3_dstc2_train_track_10.json"
-	track2 = "res/2waymodel_topline_dstc2_train_track_10.json"
+	track1 = "res/binaryswitch_history_topline_dstc2_train_track.json"
+	track2 = "res/2waymodel_topline_dstc2_train_track_0.json"
 	
 	tracker1 = json.load(open(track1))
 	tracker2 = json.load(open(track2))

@@ -6,6 +6,8 @@ import fio
 
 request_slotnames = ['area', 'food', 'name', 'pricerange', 'addr', 'phone', 'postcode', 'signature']
 
+topK = 0
+
 class Tracker(object):
 	def __init__(self):
 		self.reset()
@@ -37,11 +39,13 @@ class Tracker(object):
 			prev_hyps.sort(key=lambda x:-x[1])
 			prev_method = prev_hyps[0][0]
 		
+		global topK
+		
 		#consider only the SLU if it is predited as True
 		k = -1
-		for score, uact in slu_hyps :
+		for score, uact in slu_hyps:
 			k = k + 1
-			if ranks[k] == '0': continue
+			if k > topK: continue
 			
 			informed_goals, denied_goals, requested, method = labels(uact, mact)
 			# requested
@@ -64,7 +68,8 @@ class Tracker(object):
 			curr_score = 0.0
 			if (slot in hyps["goal-labels"]) :
 				curr_score = hyps["goal-labels"][slot].values()[0] #history
-				curr_score = 0 #the score decay to half for the coming turns
+				curr_score = curr_score/2 #the score decay to half for the coming turns
+				#curr_score = 0 # no history
 			
 			for value in goal_stats[slot]:
 				score = goal_stats[slot][value]
@@ -125,7 +130,12 @@ def main():
 						help='File with method prediction results')
 	parser.add_argument('--requestfile',dest='requestfile',action='store',required=False,metavar='TXT',
 						help='File with request prediction results')
+	parser.add_argument('--topK',dest='topK',action='store',type=int, help='get topK accuracy')
+	
 	args = parser.parse_args()
+	
+	global topK
+	topK = args.topK
 	
 	head, body = fio.readMatrix(args.labelfile, True)
 	labels = [item[0] for item in body]

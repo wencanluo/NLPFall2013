@@ -113,9 +113,8 @@ def Uacts(turn) :
             these_hyps.append(hyp)
         this_output.append((score, these_hyps))
     this_output.sort(key=lambda x:x[0], reverse=True)
+    
     return this_output
-
-
 
 class Tracker(object):
     def __init__(self):
