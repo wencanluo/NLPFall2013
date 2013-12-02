@@ -96,13 +96,21 @@ public class SigDial2014Classifier {
 		*/
 		
 		//Act + Ngram
-		///*
+		/*
 		String train = "../SigDial2014/scripts/res/dstc2_train_H3_actngram";
 		String dev = "../SigDial2014/scripts/res/dstc2_dev_H3_actngram";
 		
 		classifier.ClassifierNgram(train, train);
 		classifier.ClassifierNgram(train, dev);
-		//*/
+		*/
+		
+		//Act + Ngram + BinarySwitch
+		
+		String train = "../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitch";
+		String dev = "../SigDial2014/scripts/res/dstc2_dev_H1_actngram_binaryswitch";
+		
+		classifier.ClassifierNgram(train, train);
+		classifier.ClassifierNgram(train, dev);
 		
 		//String test2 = "../SigDial2013/bin/res/test2_actngram";
 		//String test3 = "../SigDial2013/bin/res/test3_actngram";

@@ -74,7 +74,42 @@ def fixedThis(log_turn):
 						slot[0] = this_slot
 			
 	return log_turn
-									
+
+def IsCorrectSLUHypRank_H1(hyps, label_turn):
+	goal_label = label_turn['goal-labels']
+	method_label = label_turn['method-label']
+	request_slots = label_turn['requested-slots']
+	
+	correct = True
+	hasInfo = False
+	for hyp in hyps['slu-hyp']:
+		if hyp['act'] == 'inform':
+			hasInfo = True
+			for slot in hyp['slots']:
+				if len(slot) != 2: continue
+				
+				if not checkValueDict(goal_label, slot[0], slot[1]): 
+					correct = False
+					break
+		if hyp['act'] == 'request':
+			hasInfo = True
+			if hyp['slots'][0][1] not in request_slots: 
+				correct = False	
+				break
+		if hyp['act'] == 'bye':
+			hasInfo = True
+			if method_label != 'finished': 
+				correct = False	
+				break
+		if hyp['act'] == 'reqalts':
+			hasInfo = True
+			if method_label != 'byalternatives': 
+				correct = False	
+				break
+	if hasInfo and correct: 
+		return True
+	return False
+				
 def getCorrectSLUHypRank_H1(log_turn, label_turn):
 	'''
 	#H1: assume that the SLU is correct if and only if all the SLU hyps (slot,value) appear in the correct answer
@@ -314,7 +349,18 @@ def getRecoveryMethod(log_turn, label_turn, last_labelturn):
 		return method_label
 	
 	return "impossible"
-					
+
+def getTurns(sessions):# fixed this
+	log_turns = []
+	label_turns = []
+	
+	for session in sessions:
+		for turn_index,(log_turn,label_turn) in enumerate(session):
+			log_turn = fixedThis(log_turn)
+			log_turns.append(log_turn)
+			label_turns.append(label_turn)
+	return log_turns, label_turns
+						
 def main(argv):
 	parser = argparse.ArgumentParser(description='Simple hand-crafted dialog state tracker baseline.')
 	parser.add_argument('--dataset', dest='dataset', action='store', metavar='DATASET', required=True,
