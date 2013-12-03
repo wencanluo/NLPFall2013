@@ -20,6 +20,23 @@ def strlist(l):
 def strdict(slot):
 	l = [k+'='+v for k,v in slot.items()]
 	return ";".join(l)
+
+def getActText(slu):
+	tokens = slu.split('&')
+	
+	text = ""
+	for token in tokens:
+		k = token.find('(')
+		if k == -1: continue
+		k3 = token.find(')')
+		if k3 == -1: continue
+		
+		k2 = token.find('=')
+		if k2==-1: continue
+		
+		text = text + " " + token[k2+1:k3]
+		
+	return text.strip()
 	
 def strslu(slu_hyp):#format the slu hyp into a line; input is an array of slot=value
 	if slu_hyp == None: 
@@ -268,9 +285,9 @@ def CheckNewOutput(mact, slu, label_turn, last_labelturn):
 	goal_label, method_label, request_label = getLabels(label_turn)
 	p_goal_label, p_method_label, p_request_label = getLabels(last_labelturn)
 	
-	n_goal_label = p_goal_label
-	n_method_label = p_method_label
-	n_request_label = p_request_label
+	n_goal_label = copy.deepcopy(p_goal_label)
+	n_method_label = copy.deepcopy(p_method_label)
+	n_request_label = copy.deepcopy(p_request_label)
 	
 	# clear requested-slots that have been informed
 	for act in mact:
@@ -349,6 +366,17 @@ def getRecoveryMethod(log_turn, label_turn, last_labelturn):
 		return method_label
 	
 	return "impossible"
+
+def getRecoveryGoals(log_turn, label_turn, last_labelturn):
+	if "dialog-acts" in log_turn["output"] :
+		mact = log_turn["output"]["dialog-acts"]
+	else :
+		mact = []
+	
+	p_goal_label, p_method_label, p_request_label = getLabels(last_labelturn)
+	goal_label, method_label, request_label = getLabels(label_turn)
+	
+	return utility.sub(goal_label, p_goal_label)
 
 def getTurns(sessions):# fixed this
 	log_turns = []
@@ -432,6 +460,8 @@ def main(argv):
 				rank_H3 = getCorrectSLUHypRank_H3(log_turn, label_turn, last_labelturn)
 				
 				recovery_method = getRecoveryMethod(log_turn, label_turn, last_labelturn)
+				recovery_goals = getRecoveryGoals(log_turn, label_turn, last_labelturn)
+				
 				#has correct slu label
 				#hasTrueLabel = hasCorrectSLULabel(label_turn)
 				#correctSLULabel = getCorrectSLULabel(label_turn)
@@ -474,7 +504,8 @@ def main(argv):
 				row.append(rank_H3)
 				#row.append(quote(correct_slu))
 				row.append(quote(recovery_method))
-
+				row.append(quote(strdict(recovery_goals)))
+				
 				sum.append(row)
 				
 			except KeyError as e:
@@ -518,7 +549,7 @@ def main(argv):
 	header.append("rank_H2")
 	header.append("rank_H3")
 	header.append("recovery_method")
-	#header.append("correct_slu")
+	header.append("recovery_goals")
 	
 	fio.writeMatrix(args.logfile, sum, header)
 	

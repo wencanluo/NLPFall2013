@@ -1,54 +1,6 @@
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>set root=../data 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>set ontology=config/ontology_dstc2.json 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>set outdir=res/ 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>set CRFDir=D:/NLP/CRF++-0.58/ 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>rem goto after_binaryswitch 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>set m=binaryswitch_decay_no_history_topline 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>for %t in (dstc2_train dstc2_dev) do (
-python BinarySwitchModel.py --dataset=%t --dataroot=../data --trackfile=res/binaryswitch_decay_no_history_topline_%t_track.json --labelfile=res/%t_H1_actngram_binaryswitch.label  
- python score.py --dataset=%t --dataroot=../data --trackfile=res/binaryswitch_decay_no_history_topline_%t_track.json --ontology=config/ontology_dstc2.json --scorefile=res/binaryswitch_decay_no_history_topline_%t_score.csv  
- python report.py --scorefile=res/binaryswitch_decay_no_history_topline_%t_score.csv  1>res/binaryswitch_decay_no_history_topline_%t_score.txt 
-) 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>(
-python BinarySwitchModel.py --dataset=dstc2_train --dataroot=../data --trackfile=res/binaryswitch_decay_no_history_topline_dstc2_train_track.json --labelfile=res/dstc2_train_H1_actngram_binaryswitch.label  
- python score.py --dataset=dstc2_train --dataroot=../data --trackfile=res/binaryswitch_decay_no_history_topline_dstc2_train_track.json --ontology=config/ontology_dstc2.json --scorefile=res/binaryswitch_decay_no_history_topline_dstc2_train_score.csv  
- python report.py --scorefile=res/binaryswitch_decay_no_history_topline_dstc2_train_score.csv  1>res/binaryswitch_decay_no_history_topline_dstc2_train_score.txt 
-) 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>(
-python BinarySwitchModel.py --dataset=dstc2_dev --dataroot=../data --trackfile=res/binaryswitch_decay_no_history_topline_dstc2_dev_track.json --labelfile=res/dstc2_dev_H1_actngram_binaryswitch.label  
- python score.py --dataset=dstc2_dev --dataroot=../data --trackfile=res/binaryswitch_decay_no_history_topline_dstc2_dev_track.json --ontology=config/ontology_dstc2.json --scorefile=res/binaryswitch_decay_no_history_topline_dstc2_dev_score.csv  
- python report.py --scorefile=res/binaryswitch_decay_no_history_topline_dstc2_dev_score.csv  1>res/binaryswitch_decay_no_history_topline_dstc2_dev_score.txt 
-) 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>goto after_2waymodel_error 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>goto after_2waymodel_request 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>goto after_2waymodel_method 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>goto after_topline2 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>goto after_topline 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>goto after_2waymodel_act 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>goto after_2waymodel_topline 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>goto after_baselineTop1 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>goto after_summary 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>goto after_HWUbaseline 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>goto after_baseline 
-
-E:\loop\project\NLPFall2013\src\SigDial2014\scripts>goto after_baseline_focus 
+food dontcare
+pricerange dontcare
+area dontcare
+food dontcare
+pricerange dontcare
+area dontcare

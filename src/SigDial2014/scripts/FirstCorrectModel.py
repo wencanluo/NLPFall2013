@@ -42,13 +42,22 @@ class Tracker(object):
 		global topK
 		
 		#consider only the SLU if it is predited as True
+		
+		rank = -1
 		k = -1
-		for score, uact in slu_hyps:
+		for score, uact in slu_hyps:#first one
 			k = k + 1
 			if k > topK: continue
+			if ranks[k] == '1':
+				rank = k
+				break
+		
+		if rank != -1:
+			score, uact = slu_hyps[rank]
+		else:# '-1'
+			uact = []
 			
-			if ranks[k] == '0': continue
-			
+		if True:
 			score = 1.0
 			
 			informed_goals, denied_goals, requested, method = labels(uact, mact)
@@ -72,7 +81,7 @@ class Tracker(object):
 			curr_score = 0.0
 			if (slot in hyps["goal-labels"]) :
 				curr_score = hyps["goal-labels"][slot].values()[0] #history
-				#curr_score = curr_score/2 #the score decay to half for the coming turns
+				curr_score = curr_score/2 #the score decay to half for the coming turns
 				#curr_score = 0 # no history
 			
 			for value in goal_stats[slot]:

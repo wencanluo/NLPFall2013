@@ -124,6 +124,54 @@ def getWekaARFF_Act(featurefile, tests):
 		types = types + ['Category']
 		fio.ArffWriter("res/"+test+"_act.arff", header, types, "dstc", data)	
 		fio.writeMatrix('res/' + test + "_act.body", data, header)
+
+def getWekaARFF_ActWithName(featurefile, tests):
+	#features = fio.LoadDict("res/train1a.dict")
+	features = fio.LoadDict("res/"+featurefile+"_name.dict")
+	
+	#tests = ['train1a', 'test1', 'test2', 'test3', 'test4']
+	
+	for test in tests:
+		data = []
+		
+		filename = "res/"+test+"_summary.txt"
+		head, body = fio.readMatrix(filename, True)
+		
+		rank_index = head.index('rank')
+		out_index = head.index('output acts')
+		in_index = head.index('top slu')
+		
+		for row in body:
+			rank = int( row[rank_index] )
+			label = rank if rank == 0 else -1
+			
+			out_act = row[out_index][1:-1]
+			in_act = row[in_index][1:-1]
+			
+			acts = set( list(getAct(out_act, "out_", True)) + list(getAct(in_act, "in_", True)))
+			
+			row = []
+			
+			for key in features.keys():
+				if key in acts:
+					row.append(1)
+				else:
+					row.append(0)
+	
+			row.append(label)
+			data.append(row)
+		
+		header =[]
+		for key in features.keys():
+			header.append(key)
+		header = header + ['@@Class@@']
+		
+		types = [] 
+		for key in features.keys():
+			types.append('Category')
+		types = types + ['Category']
+		fio.ArffWriter("res/"+test+"_actwithname.arff", header, types, "dstc", data)	
+		fio.writeMatrix('res/' + test + "_act.body", data, header)
 	
 def getWekaARFF_Ngram(tests):
 	for test in tests:
@@ -214,8 +262,6 @@ def getWekaARFF_ActNgram(featurefile, tests):
 		#fio.ArffWriter("res/"+test+"_actngram.arff", header, types, "dstc", data)
 		fio.ArffWriter("res/"+test+"_H3_actngram.arff", header, types, "dstc", data)
 		
-		#return header, types, data
-
 def getWekaARFFBinarySwitch_ActNgram(featurefile, tests):
 	#features = fio.LoadDict("res/train1a.dict")
 	features = fio.LoadDict("res/"+featurefile+".dict")
@@ -234,9 +280,9 @@ def getWekaARFFBinarySwitch_ActNgram(featurefile, tests):
 		print len(log_turns)
 		assert(len(log_turns) == len(body))
 		
-		#rank_index = head.index('rank')
+		rank_index = head.index('rank')
 		#rank_index = head.index('rank_H2')
-		rank_index = head.index('rank_H3')
+		#rank_index = head.index('rank_H3')
 		out_index = head.index('output acts')
 		in_index = head.index('top slu')
 		asr_index = head.index('top asr')
@@ -252,6 +298,9 @@ def getWekaARFFBinarySwitch_ActNgram(featurefile, tests):
 			#in_act = row[in_index][1:-1]
 			
 			for k, hyps in enumerate(log_turn['input']['live']['slu-hyps']):
+				#only keep top 3
+				if k >= 3: continue
+				
 				#get whether it is correct for each SLU
 				label = 1 if getSummary.IsCorrectSLUHypRank_H1(hyps, label_turn) else 0
 			
@@ -286,8 +335,174 @@ def getWekaARFFBinarySwitch_ActNgram(featurefile, tests):
 		types = types + ['Category']
 		#fio.ArffWriter("res/"+test+"_H2_actngram.arff", header, types, "dstc", data)
 		#fio.ArffWriter("res/"+test+"_actngram.arff", header, types, "dstc", data)
-		fio.ArffWriter("res/"+test+"_H1_actngram_binaryswitch.arff", header, types, "dstc", data)
+		fio.ArffWriter("res/"+test+"_H1_actngram_binaryswitch_top3.arff", header, types, "dstc", data)
 			
+def getWekaARFFBinarySwitch_ActNgramWithName(featurefile, tests):
+	#Feature Set: Act with Name, System out, User Slot in
+	
+	#features = fio.LoadDict("res/train1a.dict")
+	features = fio.LoadDict("res/"+featurefile+"_name.dict")
+	
+	#tests = ['train1a', 'test1', 'test2', 'test3', 'test4']
+	
+	for test in tests:
+		data = []
+		
+		filename = "res/"+test+"_summary.txt"
+		head, body = fio.readMatrix(filename, True)
+		
+		sessions = dataset_walker.dataset_walker(test, dataroot='../data', labels=True)
+		log_turns, label_turns = getSummary.getTurns(sessions)
+		
+		print len(log_turns)
+		assert(len(log_turns) == len(body))
+		
+		rank_index = head.index('rank')
+		#rank_index = head.index('rank_H2')
+		#rank_index = head.index('rank_H3')
+		out_index = head.index('output acts')
+		in_index = head.index('top slu')
+		asr_index = head.index('top asr')
+		systemout_index = head.index('output trans')
+		for i, row in enumerate(body):
+			#rank = int( row[rank_index] )
+			out_act = row[out_index][1:-1]
+			asr = row[asr_index][1:-1]
+			
+			Trans_System = row[systemout_index][1:-1]
+			
+			log_turn = log_turns[i]
+			label_turn = label_turns[i]
+			
+			#in_act = row[in_index][1:-1]
+			
+			for k, hyps in enumerate(log_turn['input']['live']['slu-hyps']):
+				if k >= 3: continue
+				
+				#get whether it is correct for each SLU
+				label = 1 if getSummary.IsCorrectSLUHypRank_H1(hyps, label_turn) else 0
+			
+				#get acts for each input SLU
+				in_act = getSummary.strslu(hyps['slu-hyp'])
+				
+				Trans_SLU = getSummary.getActText(in_act)
+				
+				acts = set( list(getAct(out_act, "out_", True)) + list(getAct(in_act, "in_", True)))
+				
+				row = []
+				
+				#row.append(asr)
+				row.append(Trans_System)
+				row.append(Trans_SLU)
+				
+				for key in features.keys():
+					if key in acts:
+						row.append(1)
+					else:
+						row.append(0)
+		
+				row.append(label)
+				data.append(row)
+		
+		header =[]
+		header.append("Trans_System")
+		header.append("Trans_SLU")
+		for key in features.keys():
+			header.append(key)
+		header = header + ['@@Class@@']
+		
+		types = []
+		types.append("String")
+		types.append("String")
+		for key in features.keys():
+			types.append('Category')
+		types = types + ['Category']
+		#fio.ArffWriter("res/"+test+"_H2_actngram.arff", header, types, "dstc", data)
+		#fio.ArffWriter("res/"+test+"_actngram.arff", header, types, "dstc", data)
+		fio.ArffWriter("res/"+test+"_H1_actngram_binaryswitchwithName_top3.arff", header, types, "dstc", data)
+
+def getWekaARFFBinarySwitch_ActWithName(featurefile, tests):
+	#Feature Set: Act with Name, System out, User Slot in
+	
+	#features = fio.LoadDict("res/train1a.dict")
+	features = fio.LoadDict("res/"+featurefile+"_name.dict")
+	
+	#tests = ['train1a', 'test1', 'test2', 'test3', 'test4']
+	
+	for test in tests:
+		data = []
+		
+		filename = "res/"+test+"_summary.txt"
+		head, body = fio.readMatrix(filename, True)
+		
+		sessions = dataset_walker.dataset_walker(test, dataroot='../data', labels=True)
+		log_turns, label_turns = getSummary.getTurns(sessions)
+		
+		print len(log_turns)
+		assert(len(log_turns) == len(body))
+		
+		rank_index = head.index('rank')
+		#rank_index = head.index('rank_H2')
+		#rank_index = head.index('rank_H3')
+		out_index = head.index('output acts')
+		in_index = head.index('top slu')
+		asr_index = head.index('top asr')
+		systemout_index = head.index('output trans')
+		for i, row in enumerate(body):
+			#rank = int( row[rank_index] )
+			out_act = row[out_index][1:-1]
+			asr = row[asr_index][1:-1]
+			
+			Trans_System = row[systemout_index][1:-1]
+			
+			log_turn = log_turns[i]
+			label_turn = label_turns[i]
+			
+			#in_act = row[in_index][1:-1]
+			
+			for k, hyps in enumerate(log_turn['input']['live']['slu-hyps']):
+				#get whether it is correct for each SLU
+				label = 1 if getSummary.IsCorrectSLUHypRank_H1(hyps, label_turn) else 0
+			
+				#get acts for each input SLU
+				in_act = getSummary.strslu(hyps['slu-hyp'])
+				
+				Trans_SLU = getSummary.getActText(in_act)
+				
+				acts = set( list(getAct(out_act, "out_", True)) + list(getAct(in_act, "in_", True)))
+				
+				row = []
+				
+				#row.append(asr)
+				#row.append(Trans_System)
+				#row.append(Trans_SLU)
+				
+				for key in features.keys():
+					if key in acts:
+						row.append(1)
+					else:
+						row.append(0)
+		
+				row.append(label)
+				data.append(row)
+		
+		header =[]
+		#header.append("Trans_System")
+		#header.append("Trans_SLU")
+		for key in features.keys():
+			header.append(key)
+		header = header + ['@@Class@@']
+		
+		types = []
+		#types.append("String")
+		#types.append("String")
+		for key in features.keys():
+			types.append('Category')
+		types = types + ['Category']
+		#fio.ArffWriter("res/"+test+"_H2_actngram.arff", header, types, "dstc", data)
+		#fio.ArffWriter("res/"+test+"_actngram.arff", header, types, "dstc", data)
+		fio.ArffWriter("res/"+test+"_H1_actWithName_binaryswitch.arff", header, types, "dstc", data)
+					
 def getWekaARFF_Enrich(featurefile, tests):
 	#features = fio.LoadDict("res/train1a.dict")
 	features = fio.LoadDict("res/"+featurefile+".dict")
@@ -576,7 +791,10 @@ def getWekaARFF_Bin(featurefile, tests):
 		
 if (__name__ == '__main__'):
 	#getActList(["dstc2_train"], "dstc2_train")
-	#getWekaARFF_Act("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	#getWekaARFF_ActNgramWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getWekaARFF_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
-	getWekaARFFBinarySwitch_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	#getWekaARFFBinarySwitch_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	getWekaARFFBinarySwitch_ActNgramWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	#getWekaARFFBinarySwitch_ActWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	#getWekaARFF_ActWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	print "Done"

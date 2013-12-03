@@ -4,7 +4,7 @@ Created on Sep 30, 2013
 @author: wencan
 '''
 import fio
-import sys
+import sys, json
 
 def getSlotDict(file):
 	head, body = fio.readMatrix(file, True)
@@ -68,13 +68,34 @@ def getSlotValuesDistribution():
 					print 0, "\t",
 			print
 		print
+
+def checkSlotOntology():
+	ontology = json.load(open('config/ontology_dstc2.json'))
+	tests = ["dstc2_train", "dstc2_dev"]
+	
+	ontology = ontology['informable']
+	
+	dicts = []
+	for test in tests:
+		filename = "res/"+test+"_summary.txt"
+		dict = getSlotDict(filename)
 		
+		dicts.append(dict) 
+	
+	for dict in dicts:
+		for key, d in dict.items():
+			if key in ontology:
+				for k in d:
+					if k not in ontology[key]:
+						print key, k			
+			
 if (__name__ == '__main__'):
 	
 	SavedStdOut = sys.stdout
 	sys.stdout = open('log.txt', 'w')
 	
-	getSlotValuesDistribution()
+	#getSlotValuesDistribution()
+	checkSlotOntology()
 	
 	sys.stdout = SavedStdOut
 	

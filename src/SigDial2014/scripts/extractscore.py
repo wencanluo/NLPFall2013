@@ -45,7 +45,7 @@ def extractScoreAllMetricsTopLine():
 	
 	score = []
 	
-	modes = ['binaryswitch_decay_0.5_history_topline']
+	modes = ['firstcorrect']
 			
 	metrics = ['Joint_Goals', 'Requested', 'Method']
 	
@@ -76,5 +76,5 @@ def extractScoreAllMetricsTopLine():
 		
 if (__name__ == '__main__'):
 	#extractScore()
-	extractScoreAllMetrics()
-	#extractScoreAllMetricsTopLine()
+	#extractScoreAllMetrics()
+	extractScoreAllMetricsTopLine()

@@ -3,6 +3,17 @@ set ontology=config/ontology_dstc2.json
 set outdir=res/
 set CRFDir=D:/NLP/CRF++-0.58/
 
+goto after_firstCorrect
+set m=firstcorrect
+for %%t in (dstc2_train dstc2_dev) do (
+	for %%k in (0 1 2 3 4 5 6 7 8 9 10) do (
+		python FirstCorrectModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_H1_actngram_binaryswitch.label --topK=%%k
+		python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
+		python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score_%%k.txt
+	)
+)
+:after_firstCorrect
+
 goto after_binaryswitch
 set m=binaryswitch_decay_no_history_topline
 for %%t in (dstc2_train dstc2_dev) do (
@@ -12,8 +23,8 @@ for %%t in (dstc2_train dstc2_dev) do (
 )
 :after_binaryswitch
 
-goto after_binaryswitch
-set m=binaryswitch_decay_0.5_history_topline
+goto after_binaryswitch_full
+set m=binaryswitch_fullscore
 for %%t in (dstc2_train dstc2_dev) do (
 rem for %%t in (dstc2_train) do (
 	for %%k in (0 1 2 3 4 5 6 7 8 9 10) do (
@@ -23,7 +34,7 @@ rem for %%t in (dstc2_train) do (
 		python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score_%%k.txt
 	)
 )
-:after_binaryswitch
+:after_binaryswitch_full
 
 goto after_2waymodel_error
 set m=2waymodel_error
@@ -42,7 +53,7 @@ for %%t in (dstc2_train dstc2_dev) do (
 )
 :after_2waymodel_request
 
-rem goto after_2waymodel_method
+goto after_2waymodel_method
 set m=2waymodel_actWithNamengram_method_mindchange
 for %%t in (dstc2_train dstc2_dev) do (
 	python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actwithNamengram_mindchange.label
@@ -101,7 +112,7 @@ for %%t in (dstc2_train dstc2_dev) do (
 )
 :after_baselineTop1
 
-goto after_summary
+rem goto after_summary
 set m=summary
 for %%t in (dstc2_train dstc2_dev) do (
 	python getSummary.py --dataset=%%t --dataroot=%root% --logfile=%outdir%%%t_%m%.txt

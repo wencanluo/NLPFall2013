@@ -76,6 +76,35 @@ public class SigDial2014Classifier {
 		wekaWapper.TrianTest(dataTrain, dataTest, test);
 	}
 	
+	void ClassifierTwoNgram(String train, String test) throws Exception{
+		WekaWrapper wekaWapper = new WekaWrapper();
+		
+		Instances dataTrain = new Instances(new BufferedReader(new FileReader(train+".arff")));
+		dataTrain.setClassIndex(dataTrain.numAttributes()-1);
+		
+		Instances dataTest = new Instances(new BufferedReader(new FileReader(test+".arff")));
+		dataTest.setClassIndex(dataTest.numAttributes()-1);
+		
+		int n = dataTrain.numInstances();
+		System.out.println("train:" + train);
+		System.out.println("test:" + test);
+		System.out.println("Train: " + n);
+		System.out.println("Test: " + dataTest.numInstances());
+		
+		StringVectorWrapper ngramWrapper = new StringVectorWrapper();
+		InstancesPair p = ngramWrapper.ApplyStringVectorFilter(dataTrain, "Trans_System", dataTest);
+		dataTrain = p.a;
+		dataTest = p.b;
+		
+		p = ngramWrapper.ApplyStringVectorFilter(dataTrain, "Trans_SLU", dataTest);
+		dataTrain = p.a;
+		dataTest = p.b;
+		
+		wekaWapper.SaveInstances(dataTrain, train + "_bak.arff");
+		
+		wekaWapper.TrianTest(dataTrain, dataTest, test);
+	}
+	
 	/**
 	 * @param args
 	 * @throws Exception 
@@ -105,81 +134,33 @@ public class SigDial2014Classifier {
 		*/
 		
 		//Act + Ngram + BinarySwitch
-		
-		String train = "../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitch";
+		/*String train = "../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitch";
 		String dev = "../SigDial2014/scripts/res/dstc2_dev_H1_actngram_binaryswitch";
 		
 		classifier.ClassifierNgram(train, train);
-		classifier.ClassifierNgram(train, dev);
+		classifier.ClassifierNgram(train, dev);*/
 		
-		//String test2 = "../SigDial2013/bin/res/test2_actngram";
-		//String test3 = "../SigDial2013/bin/res/test3_actngram";
-		//String test4 = "../SigDial2013/bin/res/test4_actngram";
+		//Act + Ngram + BinarySwitch, Top3
+		/*String train = "../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitchwithName_top3";
+		String dev = "../SigDial2014/scripts/res/dstc2_dev_H1_actngram_binaryswitchwithName_top3";
 		
-		//Enrich
-		/*
-		String train = "../SigDial2013/bin/res/train2_enrich";
-		String test1 = "../SigDial2013/bin/res/test1_enrich";
-		String test2 = "../SigDial2013/bin/res/test2_enrich";
-		String test3 = "../SigDial2013/bin/res/test3_enrich";
-		String test4 = "../SigDial2013/bin/res/test4_enrich";
-		String train3 = "../SigDial2013/bin/res/train3_enrich";
-		*/
+		classifier.ClassifierNgram(train, train);
+		classifier.ClassifierNgram(train, dev);*/
 		
-		//String train = "../SigDial2013/bin/res/train2_train2_enrich";
-		//String test1 = "../SigDial2013/bin/res/test1_train2_enrich";
-		//String test2 = "../SigDial2013/bin/res/test2_train2_enrich";
-		//String test3 = "../SigDial2013/bin/res/test3_train2_enrich";
-		//String test4 = "../SigDial2013/bin/res/test4_train2_enrich";
+		//Act WithName + BinarySwitch
+		/*String train = "../SigDial2014/scripts/res/dstc2_train_H1_actWithName_binaryswitch";
+		String dev = "../SigDial2014/scripts/res/dstc2_dev_H1_actWithName_binaryswitch";
 		
-		//String train = "../SigDial2013/bin/res/train3_train3_enrich";
-		//String test1 = "../SigDial2013/bin/res/test1_train3_enrich";
-		//String test2 = "../SigDial2013/bin/res/test2_train3_enrich";
-		//String test3 = "../SigDial2013/bin/res/test3_train3_enrich";
-		//String test4 = "../SigDial2013/bin/res/test4_train3_enrich";
+		classifier.ClassifierNgram(train, train);
+		classifier.ClassifierNgram(train, dev);*/
 		
-		//String train = "../SigDial2013/bin/res/train23_train23_enrich";
-		//String test1 = "../SigDial2013/bin/res/test1_train23_enrich";
-		//String test2 = "../SigDial2013/bin/res/test2_train23_enrich";
-		//String test3 = "../SigDial2013/bin/res/test3_train23_enrich";
-		//String test4 = "../SigDial2013/bin/res/test4_train23_enrich";
+		//Act WithName + Out + SLU Ngram + BinarySwitch, Top3
+		String train = "../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitchwithName_top3";
+		String dev = "../SigDial2014/scripts/res/dstc2_dev_H1_actngram_binaryswitchwithName_top3";
 		
-		//Train on train3
-		//String train3 = "../SigDial2013/bin/res/train3_actngram_train3";
-		//String test1 = "../SigDial2013/bin/res/test1_actngram_train3";
-		//String test2 = "../SigDial2013/bin/res/test2_actngram_train3";
-		//String test3 = "../SigDial2013/bin/res/test3_actngram_train3";
-		//String test4 = "../SigDial2013/bin/res/test4_actngram_train3";
-		
-		//Train on train2 + train3
-		//String train = "../SigDial2013/bin/res/train23_actngram_train23";
-		//String test1 = "../SigDial2013/bin/res/test1_actngram_train23";
-		//String test2 = "../SigDial2013/bin/res/test2_actngram_train23";
-		//String test3 = "../SigDial2013/bin/res/test3_actngram_train23";
-		//String test4 = "../SigDial2013/bin/res/test4_actngram_train23";
-		
-		//Self Training
-		/*String train1 = "../SigDial2013/bin/res/test1_actngram_selftraining";
-		String train2 = "../SigDial2013/bin/res/test2_actngram_selftraining";
-		String train3 = "../SigDial2013/bin/res/test3_actngram_selftraining";
-		String train4 = "../SigDial2013/bin/res/test4_actngram_selftraining";
-		
-		String test1 = "../SigDial2013/bin/res/test1_actngram";
-		String test2 = "../SigDial2013/bin/res/test2_actngram";
-		String test3 = "../SigDial2013/bin/res/test3_actngram";
-		String test4 = "../SigDial2013/bin/res/test4_actngram";
-		
-		classifier.ClassifierNgram(train1, test1);
-		classifier.ClassifierNgram(train2, test2);
-		classifier.ClassifierNgram(train3, test3);
-		classifier.ClassifierNgram(train4, test4);*/
-		
-		/*classifier.ClassifierNgram(train, train);
-		classifier.ClassifierNgram(train, test1);
-		classifier.ClassifierNgram(train, test2);
-		classifier.ClassifierNgram(train3, test3);
-		classifier.ClassifierNgram(train, test4);*/
-		
+		classifier.ClassifierTwoNgram(train, train);
+		classifier.ClassifierTwoNgram(train, dev);
+				
 		System.setOut(oldout);
 		
 		System.out.println("Finish!");
