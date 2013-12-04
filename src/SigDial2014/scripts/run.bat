@@ -3,14 +3,14 @@ set ontology=config/ontology_dstc2.json
 set outdir=res/
 set CRFDir=D:/NLP/CRF++-0.58/
 
-goto after_summary
+rem goto after_summary
 set m=summary
 for %%t in (dstc2_train dstc2_dev) do (
 	python getSummary.py --dataset=%%t --dataroot=%root% --logfile=%outdir%%%t_%m%.txt
 )
 :after_summary
 
-rem goto after_2waymodel_goals_actwithname
+goto after_2waymodel_goals_actwithname
 set m=2waymodel_enrich_goals_topline
 for %%t in (dstc2_train dstc2_dev) do (
 	python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label --requestfile=%outdir%%%t_request_actngram_ngram.arff.label --goal_area=%outdir%%%t_goals_enrich_more_Larea.label --goal_food=%outdir%%%t_goals_enrich_more_Lfood.label --goal_name=%outdir%%%t_goals_enrich_more_Lname.label --goal_pricerange=%outdir%%%t_goals_enrich_more_Lpricerange.label
@@ -37,7 +37,7 @@ for %%t in (dstc2_train dstc2_dev) do (
 )
 :after_2waymodel_goals
 
-rem goto after_2waymodel_error
+goto after_2waymodel_error
 set m=2waymodel_error
 set m2=2waymodel_enrich_goals_topline
 for %%t in (dstc2_train dstc2_dev) do (

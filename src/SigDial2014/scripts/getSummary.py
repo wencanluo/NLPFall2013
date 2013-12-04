@@ -3,6 +3,7 @@ import fio
 import dataset_walker
 import utility
 import baseline
+import TopLine
 
 def quote(s):
 	if s == None:
@@ -465,6 +466,10 @@ def main(argv):
 				recovery_method = getRecoveryMethod(log_turn, label_turn, last_labelturn)
 				recovery_goals = getRecoveryGoals(log_turn, label_turn, last_labelturn)
 				
+				InSLU = TopLine.findSLUGoals(log_turn, goal_label)
+				InARS = TopLine.findASRGoals(log_turn, goal_label)
+				InTrans = TopLine.findTranscriptionGoals(label_turn, goal_label)
+
 				#has correct slu label
 				#hasTrueLabel = hasCorrectSLULabel(label_turn)
 				#correctSLULabel = getCorrectSLULabel(label_turn)
@@ -508,6 +513,10 @@ def main(argv):
 				#row.append(quote(correct_slu))
 				row.append(quote(recovery_method))
 				row.append(quote(strdict(recovery_goals)))
+				
+				row.append(InSLU)
+				row.append(InARS)
+				row.append(InTrans)
 				
 				sum.append(row)
 				
@@ -554,6 +563,10 @@ def main(argv):
 	header.append("recovery_method")
 	header.append("recovery_goals")
 	
+	header.append('InSLU')
+	header.append('InARS')
+	header.append('InTrans')
+				
 	fio.writeMatrix(args.logfile, sum, header)
 	
 if (__name__ == '__main__'):

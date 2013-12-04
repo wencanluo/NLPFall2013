@@ -120,6 +120,12 @@ class ToplineTracker(object):
 		self.hyps = {"goal-labels":{}, "goal-labels-joint":[], "requested-slots":{}, "method-label":{}}
 	
 
+def findASRGoals(turn, goals):
+	for k, v in goals.items():
+		if findASR(turn, v):
+			return True
+	return False
+	
 def findASR(turn, v):
 	for asr in turn['input']['live']['asr-hyps']:
 		hyp = asr['asr-hyp']
@@ -131,6 +137,12 @@ def findASR(turn, v):
 			return True
 	return False
 
+def findTranscriptionGoals(turn, goals):
+	for k, v in goals.items():
+		if findTranscription(turn, v):
+			return True
+	return False
+	
 def findTranscription(label_turn, v):
 	if 'transcription' in label_turn:
 		input_trans = label_turn['transcription']
@@ -145,6 +157,22 @@ def findTranscription(label_turn, v):
 	if input_trans.find(v) != -1:
 		return True
 
+def findSLUGoals(turn, goals):
+	if "dialog-acts" in turn["output"] :
+		mact = turn["output"]["dialog-acts"]
+	else :
+		mact = []
+		
+	slu_hyps = Uacts(turn)
+	
+	for k, v in goals.items():
+		for score, uact in slu_hyps:
+			informed_goals, denied_goals, requested, method = labels(uact, mact)
+
+			if k in informed_goals and informed_goals[k] == v:
+				return True
+	return False
+	
 class Topline2Tracker(object):
 	def __init__(self):
 		self.reset()
