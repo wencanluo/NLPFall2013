@@ -253,9 +253,9 @@ def getNewOutput(mact, slu, label_turn, last_labelturn):
 	goal_label, method_label, request_label = getLabels(label_turn)
 	p_goal_label, p_method_label, p_request_label = getLabels(last_labelturn)
 	
-	n_goal_label = p_goal_label
-	n_method_label = p_method_label
-	n_request_label = p_request_label
+	n_goal_label = copy.deepcopy(p_goal_label)
+	n_method_label = copy.deepcopy(p_method_label)
+	n_request_label = copy.deepcopy(p_request_label)
 	
 	# clear requested-slots that have been informed
 	for act in mact:
@@ -453,6 +453,9 @@ def main(argv):
 				goal_label = label_turn['goal-labels']
 				method_label = label_turn['method-label']
 				request_slots = label_turn['requested-slots']
+				
+				if turn_index == 5:
+					debug = 1
 				
 				#get the rank of correct slu
 				rank = getCorrectSLUHypRank_H1(log_turn, label_turn)

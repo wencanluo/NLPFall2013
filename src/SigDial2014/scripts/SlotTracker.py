@@ -1,6 +1,19 @@
 import fio
 import math
 
+def getGoalsDict(goals):#return to.desc=pitt
+	tokens = goals.split(';')
+	
+	dict = {}
+	for token in tokens:
+		t2 = token.split('=')
+		if len(t2)!=2: continue
+		name = t2[0]
+		value= t2[1]
+		
+		dict[name] = value
+	return dict
+
 def getSluSlotValueDict(slu):#return to.desc=pitt
 	tokens = slu.split('&')
 	
@@ -33,7 +46,12 @@ def getAct(slu, prefix = "", withname = False):#parse the action from the slu st
 			if k2==-1: 
 				actions.append(prefix + token[:k])
 			else:
-				actions.append(prefix + token[:k] + '.' +token[k+1:k2])
+				if token[:k] == "request":
+					k3 = token.find(')')
+					if k3==-1:continue
+					actions.append(prefix + token[:k] + '.' +token[k2+1:k3])
+				else:
+					actions.append(prefix + token[:k] + '.' +token[k+1:k2])
 	return set(actions)
 
 def getOutActExplConfDict(out_act):

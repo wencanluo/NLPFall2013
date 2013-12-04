@@ -3,11 +3,53 @@ set ontology=config/ontology_dstc2.json
 set outdir=res/
 set CRFDir=D:/NLP/CRF++-0.58/
 
-goto after_firstCorrect
-set m=firstcorrect
+goto after_summary
+set m=summary
+for %%t in (dstc2_train dstc2_dev) do (
+	python getSummary.py --dataset=%%t --dataroot=%root% --logfile=%outdir%%%t_%m%.txt
+)
+:after_summary
+
+goto after_2waymodel_goals_actwithname
+set m=2waymodel_enrich_goals_trans
+for %%t in (dstc2_train dstc2_dev) do (
+	python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label --requestfile=%outdir%%%t_request_actngram_ngram.arff.label --goal_area=%outdir%%%t_goals_enrich_trans_Larea.label --goal_food=%outdir%%%t_goals_enrich_trans_Lfood.label --goal_name=%outdir%%%t_goals_enrich_trans_Lname.label --goal_pricerange=%outdir%%%t_goals_enrich_trans_Lpricerange.label
+	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
+)
+:after_2waymodel_goals_actwithname
+
+goto after_2waymodel_goals_actwithname
+set m=2waymodel_actWithNamengram_goals
+for %%t in (dstc2_train dstc2_dev) do (
+	python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label --requestfile=%outdir%%%t_request_actngram_ngram.arff.label --goal_area=%outdir%%%t_goals_actWithNamengram_Larea.label --goal_food=%outdir%%%t_goals_actWithNamengram_Lfood.label --goal_name=%outdir%%%t_goals_actWithNamengram_Lname.label --goal_pricerange=%outdir%%%t_goals_actWithNamengram_Lpricerange.label
+	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
+)
+:after_2waymodel_goals_actwithname
+
+goto after_2waymodel_goals
+set m=2waymodel_actngram_goals
+for %%t in (dstc2_train dstc2_dev) do (
+	python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label --requestfile=%outdir%%%t_request_actngram_ngram.arff.label --goal_area=%outdir%%%t_goals_actngram_Larea.label --goal_food=%outdir%%%t_goals_actngram_Lfood.label --goal_name=%outdir%%%t_goals_actngram_Lname.label --goal_pricerange=%outdir%%%t_goals_actngram_Lpricerange.label
+	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
+)
+:after_2waymodel_goals
+
+goto after_2waymodel_error
+set m=2waymodel_error
+set m2=2waymodel_enrich_goals
+for %%t in (dstc2_train dstc2_dev) do (
+	python get2wayError.py --trackfile=%outdir%%m2%_%%t_track.json --summaryfile=%outdir%%%t_summary.txt --logfile=%outdir%%m2%_%%t_error.txt
+)
+:after_2waymodel_error
+
+rem goto after_firstCorrect
+set m=firstcorrect_top3
 for %%t in (dstc2_train dstc2_dev) do (
 	for %%k in (0 1 2 3 4 5 6 7 8 9 10) do (
-		python FirstCorrectModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_H1_actngram_binaryswitch.label --topK=%%k
+		python FirstCorrectModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_H1_actngram_binaryswitch_top3_10.label --topK=%%k
 		python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
 		python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score_%%k.txt
 	)
@@ -24,12 +66,10 @@ for %%t in (dstc2_train dstc2_dev) do (
 :after_binaryswitch
 
 goto after_binaryswitch_full
-set m=binaryswitch_fullscore
+set m=binaryswitch_fullscore_top1
 for %%t in (dstc2_train dstc2_dev) do (
-rem for %%t in (dstc2_train) do (
 	for %%k in (0 1 2 3 4 5 6 7 8 9 10) do (
-	rem for %%k in (0) do (
-		python BinarySwitchModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_H1_actngram_binaryswitch.label --topK=%%k
+		python BinarySwitchModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_H1_actngram_binaryswitch_top1_10.label --topK=%%k
 		python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
 		python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score_%%k.txt
 	)
@@ -111,13 +151,6 @@ for %%t in (dstc2_train dstc2_dev) do (
 	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
 )
 :after_baselineTop1
-
-rem goto after_summary
-set m=summary
-for %%t in (dstc2_train dstc2_dev) do (
-	python getSummary.py --dataset=%%t --dataroot=%root% --logfile=%outdir%%%t_%m%.txt
-)
-:after_summary
 
 goto after_HWUbaseline
 set m=HWUbaseline

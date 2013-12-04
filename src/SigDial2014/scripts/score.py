@@ -27,7 +27,7 @@ def main(argv):
                         help='File to write with CSV scoring data')
     parser.add_argument('--ontology',dest='ontology',action='store',metavar='JSON_FILE',required=True,
                         help='JSON Ontology file')
-    parser.add_argument('--rocbins',dest='rocbins',action='store',metavar='INT',default=10000,type=int,
+    parser.add_argument('--rocbins',dest='rocbins',action='store',metavar='INT',default=200,type=int,
                         help='ROC bins to use (default 10000).  Lower numbers make the script run faster, but produce less accurate ROC results.')
     parser.add_argument('--rocdump',dest='rocdump',action='store',metavar='FILE_STEM',
                         help='If present, use this file stem to write out ROC plot data: filestem.<schedule>.<slot>.<type>.csv, where type is either roc (which contains the ROC curve coordinates) or scores (which contains the raw scores used to compute the ROC curves).')
@@ -47,6 +47,7 @@ def main(argv):
     stats = []
     #stat_classes = [Stat_Accuracy, Stat_Probs, Stat_MRR, Stat_Updates, lambda : Stat_ROC(args.rocbins)]
     stat_classes = [Stat_Accuracy, Stat_Probs]
+    #stat_classes = [Stat_Accuracy, Stat_Probs, lambda : Stat_ROC(args.rocbins)]
     
     for schedule in SCHEDULES:
         for label_scheme in LABEL_SCHEMES:
