@@ -141,7 +141,7 @@ public class SigDial2014Classifier {
 		classifier.ClassifierNgram(train, dev);*/
 		
 		//Act + Ngram + BinarySwitch, Top3
-		String traintop1 = "../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitch_top1";
+		/*String traintop1 = "../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitch_top1";
 		String traintop3 = "../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitch_top3";
 		
 		String train3 = "../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitch_top3_10";
@@ -154,7 +154,7 @@ public class SigDial2014Classifier {
 		classifier.ClassifierNgram(traintop3, dev3);
 		
 		classifier.ClassifierNgram(traintop1, train1);
-		classifier.ClassifierNgram(traintop1, dev1);
+		classifier.ClassifierNgram(traintop1, dev1);*/
 		
 		//Act WithName + BinarySwitch
 		/*String train = "../SigDial2014/scripts/res/dstc2_train_H1_actWithName_binaryswitch";
@@ -164,11 +164,11 @@ public class SigDial2014Classifier {
 		classifier.ClassifierNgram(train, dev);*/
 		
 		//Act WithName + Out + SLU Ngram + BinarySwitch, Top3
-		/*String train = "../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitchwithName_top3";
-		String dev = "../SigDial2014/scripts/res/dstc2_dev_H1_actngram_binaryswitchwithName_top3";
+		String train = "../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitchwithName";
+		String dev = "../SigDial2014/scripts/res/dstc2_dev_H1_actngram_binaryswitchwithName";
 		
 		classifier.ClassifierTwoNgram(train, train);
-		classifier.ClassifierTwoNgram(train, dev);*/
+		classifier.ClassifierTwoNgram(train, dev);
 				
 		System.setOut(oldout);
 		
