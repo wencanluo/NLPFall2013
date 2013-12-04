@@ -1,0 +1,180 @@
+train:../SigDial2014/scripts/res/dstc2_train_goals_actWithNamengram_Larea
+test:../SigDial2014/scripts/res/dstc2_train_goals_actWithNamengram_Larea
+Train: 11677
+Test: 11677
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 0.989     0.124      0.984     0.989     0.987      0.934      0.983    area.No
+                 0.877     0.001      0.909     0.877     0.893      0.995      0.816    area.Yes.centre
+                 0.918     0.002      0.925     0.918     0.922      0.991      0.863    area.Yes.dontcare
+                 0.884     0.002      0.908     0.884     0.896      0.982      0.818    area.Yes.east
+                 0.883     0.002      0.906     0.883     0.894      0.991      0.824    area.Yes.north
+                 0.833     0.003      0.885     0.833     0.858      0.968      0.749    area.Yes.south
+                 0.829     0.001      0.915     0.829     0.87       0.977      0.772    area.Yes.west
+Weighted Avg.    0.976     0.11       0.975     0.976     0.975      0.939      0.963
+
+=== Confusion Matrix ===
+
+     a     b     c     d     e     f     g   <-- classified as
+ 10224    10    17    19    20    27    17 |     a = area.No
+    11   100     2     1     0     0     0 |     b = area.Yes.centre
+    21     0   236     0     0     0     0 |     c = area.Yes.dontcare
+    26     0     0   198     0     0     0 |     d = area.Yes.east
+    26     0     0     0   211     2     0 |     e = area.Yes.north
+    47     0     0     0     1   239     0 |     f = area.Yes.south
+    35     0     0     0     1     2   184 |     g = area.Yes.west
+
+train:../SigDial2014/scripts/res/dstc2_train_goals_actWithNamengram_Larea
+test:../SigDial2014/scripts/res/dstc2_dev_goals_actWithNamengram_Larea
+Train: 11677
+Test: 3934
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 0.979     0.216      0.975     0.979     0.977      0.884      0.974    area.No
+                 0.667     0.002      0.75      0.667     0.706      0.975      0.525    area.Yes.centre
+                 0.811     0.003      0.859     0.811     0.834      0.975      0.722    area.Yes.dontcare
+                 0.8       0.004      0.754     0.8       0.776      0.914      0.615    area.Yes.east
+                 0.784     0.004      0.795     0.784     0.789      0.946      0.644    area.Yes.north
+                 0.756     0.003      0.861     0.756     0.805      0.914      0.663    area.Yes.south
+                 0.738     0.005      0.706     0.738     0.722      0.926      0.535    area.Yes.west
+Weighted Avg.    0.958     0.194      0.957     0.958     0.957      0.889      0.94 
+
+=== Confusion Matrix ===
+
+    a    b    c    d    e    f    g   <-- classified as
+ 3456    6   12   15   15    9   18 |    a = area.No
+    8   18    0    1    0    0    0 |    b = area.Yes.centre
+   16    0   73    0    0    0    1 |    c = area.Yes.dontcare
+   11    0    0   52    0    1    1 |    d = area.Yes.east
+   16    0    0    0   58    0    0 |    e = area.Yes.north
+   19    0    0    1    0   62    0 |    f = area.Yes.south
+   17    0    0    0    0    0   48 |    g = area.Yes.west
+
+train:../SigDial2014/scripts/res/dstc2_train_goals_actWithNamengram_Lfood
+test:../SigDial2014/scripts/res/dstc2_train_goals_actWithNamengram_Lfood
+Train: 11677
+Test: 11677
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 0.961     0.173      0.964     0.961     0.962      0.895      0.959    food.No
+                 0.805     0.037      0.781     0.805     0.793      0.888      0.657    food.Yes
+                 0.925     0.001      0.97      0.925     0.947      0.971      0.91     food.Yes.dontcare
+Weighted Avg.    0.938     0.148      0.938     0.938     0.938      0.897      0.915
+
+=== Confusion Matrix ===
+
+    a    b    c   <-- classified as
+ 9297  373    8 |    a = food.No
+  320 1330    2 |    b = food.Yes
+   25    1  321 |    c = food.Yes.dontcare
+
+train:../SigDial2014/scripts/res/dstc2_train_goals_actWithNamengram_Lfood
+test:../SigDial2014/scripts/res/dstc2_dev_goals_actWithNamengram_Lfood
+Train: 11677
+Test: 3934
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 0.953     0.273      0.95      0.953     0.951      0.843      0.946    food.No
+                 0.692     0.043      0.707     0.692     0.7        0.826      0.531    food.Yes
+                 0.863     0.004      0.863     0.863     0.863      0.943      0.761    food.Yes.dontcare
+Weighted Avg.    0.917     0.236      0.916     0.917     0.917      0.843      0.887
+
+=== Confusion Matrix ===
+
+    a    b    c   <-- classified as
+ 3166  146   10 |    a = food.No
+  153  353    4 |    b = food.Yes
+   14    0   88 |    c = food.Yes.dontcare
+
+train:../SigDial2014/scripts/res/dstc2_train_goals_actWithNamengram_Lname
+test:../SigDial2014/scripts/res/dstc2_train_goals_actWithNamengram_Lname
+Train: 11677
+Test: 11677
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 1         0.25       1         1         1          0.875      1        name.No
+                 0.75      0          1         0.75      0.857      0.875      0.75     name.Yes
+Weighted Avg.    1         0.25       1         1         1          0.875      1    
+
+=== Confusion Matrix ===
+
+     a     b   <-- classified as
+ 11669     0 |     a = name.No
+     2     6 |     b = name.Yes
+
+train:../SigDial2014/scripts/res/dstc2_train_goals_actWithNamengram_Lname
+test:../SigDial2014/scripts/res/dstc2_dev_goals_actWithNamengram_Lname
+Train: 11677
+Test: 3934
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 1         1          0.998     1         0.999      0.5        0.998    name.No
+                 0         0          0         0         0          0.5        0.002    name.Yes
+Weighted Avg.    0.998     0.998      0.996     0.998     0.997      0.5        0.996
+
+=== Confusion Matrix ===
+
+    a    b   <-- classified as
+ 3926    0 |    a = name.No
+    8    0 |    b = name.Yes
+
+train:../SigDial2014/scripts/res/dstc2_train_goals_actWithNamengram_Lpricerange
+test:../SigDial2014/scripts/res/dstc2_train_goals_actWithNamengram_Lpricerange
+Train: 11677
+Test: 11677
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 0.99      0.089      0.99      0.99      0.99       0.951      0.989    pricerange.No
+                 0.91      0.004      0.873     0.91      0.891      0.993      0.817    pricerange.Yes.cheap
+                 0.923     0.001      0.96      0.923     0.941      0.994      0.894    pricerange.Yes.dontcare
+                 0.858     0.002      0.903     0.858     0.88       0.982      0.792    pricerange.Yes.expensive
+                 0.938     0.002      0.931     0.938     0.934      0.981      0.877    pricerange.Yes.moderate
+Weighted Avg.    0.982     0.08       0.982     0.982     0.982      0.955      0.975
+
+=== Confusion Matrix ===
+
+     a     b     c     d     e   <-- classified as
+ 10396    43     7    24    28 |     a = pricerange.No
+    30   303     0     0     0 |     b = pricerange.Yes.cheap
+    14     0   168     0     0 |     c = pricerange.Yes.dontcare
+    36     1     0   224     0 |     d = pricerange.Yes.expensive
+    25     0     0     0   378 |     e = pricerange.Yes.moderate
+
+train:../SigDial2014/scripts/res/dstc2_train_goals_actWithNamengram_Lpricerange
+test:../SigDial2014/scripts/res/dstc2_dev_goals_actWithNamengram_Lpricerange
+Train: 11677
+Test: 3934
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 0.987     0.176      0.982     0.987     0.984      0.906      0.981    pricerange.No
+                 0.877     0.003      0.892     0.877     0.884      0.954      0.796    pricerange.Yes.cheap
+                 0.813     0.003      0.825     0.813     0.819      0.981      0.688    pricerange.Yes.dontcare
+                 0.697     0.003      0.807     0.697     0.748      0.897      0.577    pricerange.Yes.expensive
+                 0.829     0.004      0.86      0.829     0.844      0.904      0.719    pricerange.Yes.moderate
+Weighted Avg.    0.971     0.16       0.97      0.971     0.971      0.909      0.957
+
+=== Confusion Matrix ===
+
+    a    b    c    d    e   <-- classified as
+ 3523   12   10   11   15 |    a = pricerange.No
+   15  107    0    0    0 |    b = pricerange.Yes.cheap
+   12    0   52    0    0 |    c = pricerange.Yes.dontcare
+   19    0    1   46    0 |    d = pricerange.Yes.expensive
+   18    1    0    0   92 |    e = pricerange.Yes.moderate
+
