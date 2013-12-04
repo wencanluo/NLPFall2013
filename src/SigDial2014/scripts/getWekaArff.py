@@ -56,6 +56,9 @@ def getOutActDict(slu):
 		if len(t2)!=2: continue
 		value = t2[0]
 		
+		if name == "request":
+			value = t2[1]
+		
 		actions[name] = value
 	return actions
 
@@ -74,6 +77,9 @@ def getSluActDict(slu):#return to=pitt
 		name = t3[0]
 		value=t2[1]
 		
+		if name == "request":
+			value = t2[1]
+			
 		actions[name] = value
 	return actions
 	

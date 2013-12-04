@@ -184,16 +184,16 @@ def main():
 	
 	if args.goal_area != None and args.goal_food != None and args.goal_name != None and args.goal_pricerange != None:
 		head, body = fio.readMatrix(args.goal_area, True)
-		goal_area_labels = [item[1] for item in body]
+		goal_area_labels = [item[0] for item in body]
 		
 		head, body = fio.readMatrix(args.goal_food, True)
-		goal_food_labels = [item[1] for item in body]
+		goal_food_labels = [item[0] for item in body]
 		
 		head, body = fio.readMatrix(args.goal_name, True)
-		goal_name_labels = [item[1] for item in body]
+		goal_name_labels = [item[0] for item in body]
 		
 		head, body = fio.readMatrix(args.goal_pricerange, True)
-		goal_pricerange_labels = [item[1] for item in body]
+		goal_pricerange_labels = [item[0] for item in body]
 		 
 	dataset = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot)
 	track_file = open(args.trackfile, "wb")
