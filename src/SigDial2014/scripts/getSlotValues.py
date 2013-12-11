@@ -5,6 +5,11 @@ Created on Sep 30, 2013
 '''
 import fio
 import sys, json
+import getWekaArff
+import getSummary
+import SlotTracker
+from collections import defaultdict
+import getWekaGoalsArff
 
 def getSlotDict(file):
 	head, body = fio.readMatrix(file, True)
@@ -88,14 +93,57 @@ def checkSlotOntology():
 				for k in d:
 					if k not in ontology[key]:
 						print key, k			
+
+def checkRuquested():
+	tests = ["dstc2_train", "dstc2_dev"]
+	
+	goal_names = ['area', 'food', 'name', 'pricerange']
+	
+	dict = defaultdict(float)
+	
+	for goal in goal_names:
+		print goal
+		for test in tests:
+			print test
+			filename = "res/"+test+"_summary.txt"
 			
+			head, body = fio.readMatrix(filename, True)
+			
+			out_index = head.index('output acts')
+			goal_index = head.index('recovery_goals')
+			
+			for i,row in enumerate(body):
+				out_act = row[out_index][1:-1]
+				
+				goals = row[goal_index][1:-1]
+				goaldict = SlotTracker.getGoalsDict(goals)
+				
+				isRequestedGoal = getWekaGoalsArff.IsRequestedSlotGoals(out_act, goal_names)
+				
+				if goal in isRequestedGoal:
+					if goal in goals:
+						dict['Yes.Yes'] = dict['Yes.Yes'] + 1
+					else:
+						dict['Yes.No'] = dict['Yes.No'] + 1
+				else:
+					if goal in goals:
+						dict['No.Yes'] = dict['No.Yes'] + 1
+					else:
+						dict['No.No'] = dict['No.No'] + 1
+		
+			
+			print dict['Yes.Yes'], "\t", dict['Yes.No']
+			print dict['No.Yes'], "\t", dict['No.No']
+		
+					
 if (__name__ == '__main__'):
 	
 	SavedStdOut = sys.stdout
 	sys.stdout = open('log.txt', 'w')
 	
 	#getSlotValuesDistribution()
-	checkSlotOntology()
+	#checkSlotOntology()
+	checkRuquested()
 	
 	sys.stdout = SavedStdOut
 	

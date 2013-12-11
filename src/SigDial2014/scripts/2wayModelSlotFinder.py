@@ -3,22 +3,31 @@ from collections import defaultdict
 
 from baseline import *
 import fio
+import getSummary
 
 request_slotnames = ['area', 'food', 'name', 'pricerange', 'addr', 'phone', 'postcode', 'signature']
 
-def GetSlot(slu_hyps, goal):
+def GetSlot(slu_hyps, goal, goal_label):
+	if goal in goal_label:
+		value = goal_label[goal]
+	else:
+		return None
+	
 	for score, uact in slu_hyps:
 		for act in uact:
 			for slot in act['slots']:
 				if goal == slot[0]:
-					return slot[1]
+					if slot[1] == value: return value
+					#return slot[1]
 	return None
 
 class Tracker(object):
 	def __init__(self):
 		self.reset()
 
-	def addTurn(self, turn, rank = 0, method_label = None, request_label = None, goals_label = None):
+	def addTurn(self, turn, label_turn, rank = 0, method_label = None, request_label = None, goals_label = None):
+		goal_label, method_label_gold, request_label_gold = getSummary.getLabels(label_turn)
+		
 		hyps = copy.deepcopy(self.hyps)
 		if "dialog-acts" in turn["output"] :
 			mact = turn["output"]["dialog-acts"]
@@ -98,7 +107,7 @@ class Tracker(object):
 						if goals_label[goal] == 'dontcare':
 							value = 'dontcare'
 						else:
-							value = GetSlot(slu_hyps, goal)
+							value = GetSlot(slu_hyps, goal, goal_label)
 						if value != None:
 							goal_stats[goal][value] = score
 		
@@ -187,15 +196,15 @@ def main():
 		goal_area_labels = [item[0] for item in body]
 		
 		head, body = fio.readMatrix(args.goal_food, True)
-		goal_food_labels = [item[1] for item in body]
+		goal_food_labels = [item[0] for item in body]
 		
 		head, body = fio.readMatrix(args.goal_name, True)
-		goal_name_labels = [item[1] for item in body]
+		goal_name_labels = [item[0] for item in body]
 		
 		head, body = fio.readMatrix(args.goal_pricerange, True)
 		goal_pricerange_labels = [item[0] for item in body]
 		 
-	dataset = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot)
+	dataset = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot, labels=True)
 	track_file = open(args.trackfile, "wb")
 	track = {"sessions":[]}
 	track["dataset"]  = args.dataset
@@ -208,7 +217,7 @@ def main():
 	for call in dataset :
 		this_session = {"session-id":call.log["session-id"], "turns":[]}
 		tracker.reset()
-		for turn, _ in call :
+		for turn, label_turn in call :
 			turn_count = turn_count + 1
 			
 			rank = labels[turn_count]
@@ -227,7 +236,7 @@ def main():
 					
 				goals['pricerange'] = 'No' if goal_pricerange_labels[turn_count]== 'pricerange.No' else goal_pricerange_labels[turn_count][len('pricerange.Yes.'):]
 			
-			tracker_turn = tracker.addTurn(turn, rank, method, requests, goals)
+			tracker_turn = tracker.addTurn(turn, label_turn, rank, method, requests, goals)
 			this_session["turns"].append(tracker_turn)
 		
 		track["sessions"].append(this_session)
