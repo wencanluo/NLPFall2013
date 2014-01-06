@@ -406,6 +406,8 @@ def main(argv):
 	
 	for session in sessions:
 		session_id = session.log['session-id']
+		sr_id = session.log['system-specific']['acoustic-condition'] #speech recognizer id
+		dm_id = session.log['system-specific']['dialog-manager'] #dialog manager id
 		
 		last_labelturn = None
 		
@@ -478,6 +480,9 @@ def main(argv):
 				
 				row = []
 				row.append(session_id)
+				row.append(sr_id)
+				row.append(dm_id)
+				
 				row.append(turn_index)
 				row.append(aborted)
 				row.append(n_asr_live)
@@ -528,7 +533,11 @@ def main(argv):
 			
 			last_labelturn = copy.deepcopy(label_turn)
 	
-	header = ["session_id", "turn_index"]
+	header = ["session_id"]
+	header.append('sr_id')
+	header.append('dm_id')
+	
+	header.append("turn_index")		
 	header.append("aborted")
 	header.append("# of ars_live")
 	#header.append("# of ars_batch")

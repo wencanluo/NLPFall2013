@@ -94,7 +94,7 @@ def checkSlotOntology():
 					if k not in ontology[key]:
 						print key, k			
 
-def checkRuquested():
+def checkRequested():
 	tests = ["dstc2_train", "dstc2_dev"]
 	
 	goal_names = ['area', 'food', 'name', 'pricerange']
@@ -134,8 +134,34 @@ def checkRuquested():
 			
 			print dict['Yes.Yes'], "\t", dict['Yes.No']
 			print dict['No.Yes'], "\t", dict['No.No']
+
+def getARCombinationCount():
+	tests = ["dstc2_train", "dstc2_dev"]
+	
+	for test in tests:
+		dict = defaultdict(float)
 		
-					
+		print test
+		filename = "res/"+test+"_summary.txt"
+		
+		head, body = fio.readMatrix(filename, True)
+		
+		sr_id_index = head.index('sr_id')
+		dm_id_index = head.index('dm_id')
+		turn_index= head.index('turn_index')
+		
+		for i,row in enumerate(body):
+			sr_id = 'SR'+row[sr_id_index]
+			dm_id = 'DM'+row[dm_id_index]
+			
+			turn_id = row[turn_index]
+				
+			if turn_id == '0':	
+				dict[sr_id+'.'+dm_id] = dict[sr_id+'.'+dm_id] + 1
+
+		print dict['SR0.DM0'], "\t", dict['SR0.DM1']
+		print dict['SR1.DM0'], "\t", dict['SR1.DM1']
+			
 if (__name__ == '__main__'):
 	
 	SavedStdOut = sys.stdout
@@ -143,7 +169,8 @@ if (__name__ == '__main__'):
 	
 	#getSlotValuesDistribution()
 	#checkSlotOntology()
-	checkRuquested()
+	#checkRequested()
+	getARCombinationCount()
 	
 	sys.stdout = SavedStdOut
 	
