@@ -1,0 +1,8 @@
+interaction between truns.
+training by different dialog manager
+conditional probability model
+some simple rule-based method
+confidence-score based voting
+random baseline
+include dialog states knowledge
+include more results
