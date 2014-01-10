@@ -122,7 +122,7 @@ public class SigDial2014GoalClassifier {
 	 */
 	public static void main(String[] args) throws Exception {
 		PrintStream oldout = System.out;
-		File f = new File("res_goals_enrich_sr_dm.txt");		
+		File f = new File("res_goals_enrich_more_bigram.txt");		
 		System.setOut(new PrintStream(f));
 		
 		SigDial2014GoalClassifier classifier = new SigDial2014GoalClassifier();
@@ -140,14 +140,14 @@ public class SigDial2014GoalClassifier {
 			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_trans_L" + goal;
 			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_trans_L" + goal;
 			
-			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_more_L" + goal;
-			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_more_L" + goal;
+			String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_more_bigram_L" + goal;
+			String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_more_bigram_L" + goal;
 			
 			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_wizoz_L" + goal;
 			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_wizoz_L" + goal;
 			
-			String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_sr_dm_L" + goal;
-			String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_sr_dm_L" + goal;
+			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_sr_dm_L" + goal;
+			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_sr_dm_L" + goal;
 			
 			classifier.ClassifierNgram(train, train);
 			classifier.ClassifierNgram(train, dev);
