@@ -11,6 +11,26 @@ import SlotTracker
 from collections import defaultdict
 import getWekaGoalsArff
 
+def getUnigramDict(file):
+	head, body = fio.readMatrix(file, True)
+	#index = head.index('goal_label')
+	asr_index = head.index('top asr')
+	
+	dict = {}
+	
+	for row in body:
+		asr = row[asr_index][1:-1]
+		
+		ws = asr.split()
+		for w in ws:
+			if w not in dict:
+				dict[w] = 0
+			dict[w] = dict[w] + 1
+	
+	fio.PrintDict(dict, True)
+	
+	return dict
+
 def getSlotDict(file):
 	head, body = fio.readMatrix(file, True)
 	#index = head.index('goal_label')
@@ -165,12 +185,14 @@ def getARCombinationCount():
 if (__name__ == '__main__'):
 	
 	SavedStdOut = sys.stdout
-	sys.stdout = open('log.txt', 'w')
+	sys.stdout = open('res/unigram.dict', 'w')
+	
+	getUnigramDict("res/dstc2_train_summary.txt")
 	
 	#getSlotValuesDistribution()
 	#checkSlotOntology()
 	#checkRequested()
-	getARCombinationCount()
+	#getARCombinationCount()
 	
 	sys.stdout = SavedStdOut
 	

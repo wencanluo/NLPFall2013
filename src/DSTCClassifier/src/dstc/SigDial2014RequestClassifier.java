@@ -73,14 +73,14 @@ public class SigDial2014RequestClassifier {
 	 */
 	public static void main(String[] args) throws Exception {
 		PrintStream oldout = System.out;
-		File f = new File("log.txt");		
+		File f = new File("res_request_actngram_slot.txt");		
 		System.setOut(new PrintStream(f));
 		
 		SigDial2014RequestClassifier classifier = new SigDial2014RequestClassifier();
 		
 		//Act + Ngram, MindChange
-		String train = "../SigDial2014/scripts/res/dstc2_train_request_actngram";
-		String dev = "../SigDial2014/scripts/res/dstc2_dev_request_actngram";
+		String train = "../SigDial2014/scripts/res/dstc2_train_request_actngram_slot";
+		String dev = "../SigDial2014/scripts/res/dstc2_dev_request_actngram_slot";
 		
 		classifier.ClassifierNgram(train, train);
 		classifier.ClassifierNgram(train, dev);

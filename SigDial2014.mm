@@ -1,4 +1,4 @@
-<map version="1.0.1">
+<map version="1.0.0">
 <!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
 <node CREATED="1383111059942" ID="ID_451486381" MODIFIED="1384221239561" STYLE="bubble" TEXT="SigDial2014">
 <node CREATED="1383001117799" FOLDED="true" HGAP="26" ID="ID_918255701" MODIFIED="1384794804050" POSITION="right" STYLE="bubble" TEXT="Baseline" VSHIFT="-4">
@@ -138,6 +138,7 @@
 <icon BUILTIN="idea"/>
 </node>
 <node CREATED="1389285667138" ID="ID_1518201597" MODIFIED="1389285679325" TEXT="Speech Recognition Error Correction"/>
+<node CREATED="1389325661835" ID="ID_1337342571" MODIFIED="1389325675251" TEXT="Different Classifier for different dialog acts"/>
 </node>
 <node CREATED="1386734174281" ID="ID_759816704" MODIFIED="1389285412914" POSITION="right" TEXT="error analysis">
 <icon BUILTIN="idea"/>

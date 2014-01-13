@@ -97,7 +97,7 @@ def getWekaARFF_Ngram(tests):
 		
 def getMulanARFF_ActNgram(featurefile, tests):
 	#features = fio.LoadDict("res/train1a.dict")
-	features = fio.LoadDict("res/"+featurefile+".dict")
+	features = fio.LoadDict("res/"+featurefile+"_name.dict")
 	
 	#tests = ['train1a', 'test1', 'test2', 'test3', 'test4']
 	
@@ -131,7 +131,7 @@ def getMulanARFF_ActNgram(featurefile, tests):
 			in_act = row[in_index][1:-1]
 			asr = row[asr_index][1:-1]
 			
-			acts = set( list(getAct(out_act)) + list(getAct(in_act)))
+			acts = set( list(getAct(out_act, "out_", True)) + list(getAct(in_act, "in_", True)))
 			
 			requests = row[request_index][1:-1].split(';')
 			
@@ -172,7 +172,7 @@ def getMulanARFF_ActNgram(featurefile, tests):
 		for label in labels:
 			types = types + ['Category']
 		#fio.ArffWriter("res/"+test+"_request_actngram.arff", header, types, "dstc", data)
-		fio.MulanWriter("res/"+test+"_request_actngram", labels, header, types, "dstc", data)
+		fio.MulanWriter("res/"+test+"_request_actngram_slot", labels, header, types, "dstc", data)
 							
 if (__name__ == '__main__'):
 	getMulanARFF_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])

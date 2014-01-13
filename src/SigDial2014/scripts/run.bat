@@ -10,10 +10,21 @@ for %%t in (dstc2_train dstc2_dev) do (
 )
 :after_summary
 
-goto after_2waymodel_goals_actwithname
-set m=2waymodel_goals_enrich_sr_dm
+goto after_CRF_Train_Act
+set train=dstc2_train
+for %%g in (area pricerange) do (
+	%CRFDir%crf_learn -c 4.0 %outdir%template.txt %outdir%%train%_%%g.crf %outdir%model_%train%_%%g
+
+	for %%t in (dstc2_train dstc2_dev) do (
+		%CRFDir%crf_test -m %outdir%model_%train%_%%g %outdir%%%t_%%g.crf > %outdir%%%t_%%g.out
+	)
+)
+:after_CRF_Train_Act
+
+rem goto after_2waymodel_goals_actwithname
+set m=2waymodel_goals_request_slot
 for %%t in (dstc2_train dstc2_dev) do (
-	python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label --requestfile=%outdir%%%t_request_actngram_ngram.arff.label --goal_area=%outdir%%%t_goals_enrich_sr_dm_Larea.label --goal_food=%outdir%%%t_goals_enrich_sr_dm_Lfood.label --goal_name=%outdir%%%t_goals_enrich_sr_dm_Lname.label --goal_pricerange=%outdir%%%t_goals_enrich_sr_dm_Lpricerange.label
+	python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label --requestfile=%outdir%%%t_request_actngram_slot_ngram.arff.label --goal_area=%outdir%%%t_area_crf.label --goal_food=%outdir%%%t_goals_enrich_more_bigram_Lfood.label --goal_name=%outdir%%%t_goals_enrich_more_bigram_Lname.label --goal_pricerange=%outdir%%%t_pricerange_crf.label
 	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
 	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
 )
