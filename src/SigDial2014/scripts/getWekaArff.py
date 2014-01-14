@@ -794,6 +794,8 @@ def getWekaARFF_Bin(featurefile, tests):
 		
 		fio.ArffWriter("res/"+test+"_"+featurefile+"_bins.arff", header, types, "dstc", data)
 		#fio.writeMatrix('res/' + test + "_"+featurefile"_bins.body", data, header)
+
+
 		
 if (__name__ == '__main__'):
 	#getActList(["dstc2_train"], "dstc2_train", True)

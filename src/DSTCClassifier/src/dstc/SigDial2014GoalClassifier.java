@@ -122,12 +122,13 @@ public class SigDial2014GoalClassifier {
 	 */
 	public static void main(String[] args) throws Exception {
 		PrintStream oldout = System.out;
-		File f = new File("res_goals_enrich_more_bigram.txt");		
+		File f = new File("res_goals_nbest_asrs_count.txt");		
 		System.setOut(new PrintStream(f));
 		
 		SigDial2014GoalClassifier classifier = new SigDial2014GoalClassifier();
 
 		String[] Goals = {"area", "food", "name", "pricerange"};
+		//String[] Goals = {"area", "pricerange"};
 		
 		//Act + Ngram, MindChange
 		for(String goal: Goals){
@@ -140,8 +141,14 @@ public class SigDial2014GoalClassifier {
 			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_trans_L" + goal;
 			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_trans_L" + goal;
 			
-			String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_more_bigram_L" + goal;
-			String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_more_bigram_L" + goal;
+			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_more_bigram_L" + goal;
+			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_more_bigram_L" + goal;
+			
+			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_asrs_L" + goal;
+			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_asrs_L" + goal;
+			
+			String train = "../SigDial2014/scripts/res/dstc2_train_nbest_goals_enrich_asrs_L" + goal;
+			String dev = "../SigDial2014/scripts/res/dstc2_dev_nbest_goals_enrich_asrs_L" + goal;
 			
 			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_wizoz_L" + goal;
 			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_wizoz_L" + goal;

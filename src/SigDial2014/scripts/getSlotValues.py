@@ -10,7 +10,29 @@ import getSummary
 import SlotTracker
 from collections import defaultdict
 import getWekaGoalsArff
+from SlotTracker import *
 
+def getQuestionType():
+	tests = ["dstc2_train", "dstc2_dev"]
+	
+	for test in tests:
+		dict = {}
+		filename = "res/"+test+"_summary.txt"
+		head, body = fio.readMatrix(filename, True)
+		goal_index = head.index('recovery_goals')
+		
+		out_index = head.index('output acts')
+		asr_index = head.index('top asr')
+		in_trans_index = head.index('input trans')
+		
+		for i,row in enumerate(body):
+			out_act = row[out_index][1:-1]
+			acts = "_".join(sorted(set( list(getAct(out_act, "out_", True)))))
+			asr = row[asr_index][1:-1]			
+			trans = row[in_trans_index][1:-1]
+			goals = row[goal_index][1:-1]
+			goaldict = getGoalsDict(goals)
+			
 def getUnigramDict(file):
 	head, body = fio.readMatrix(file, True)
 	#index = head.index('goal_label')
@@ -181,14 +203,64 @@ def getARCombinationCount():
 
 		print dict['SR0.DM0'], "\t", dict['SR0.DM1']
 		print dict['SR1.DM0'], "\t", dict['SR1.DM1']
+
+def getPrior():
+	#tests = ["dstc2_train", "dstc2_dev"]
+	tests = ["dstc2_train"]
+	
+	goal_names = ['area', 'food', 'name', 'pricerange']
+	
+	dict = {}
+	
+	for goal in goal_names:
+		for test in tests:
+			filename = "res/"+test+"_summary.txt"
 			
+			head, body = fio.readMatrix(filename, True)
+			
+			out_index = head.index('output acts')
+			goal_index = head.index('recovery_goals')
+			
+			for i,row in enumerate(body):
+				goals = row[goal_index][1:-1]
+				goaldict = SlotTracker.getGoalsDict(goals)
+				
+				label = ""
+				if goal in goaldict:
+					if goal == 'name' or goal == 'food':
+						if goaldict[goal]=='dontcare':
+							label = 'dontcare'
+						else:
+							label = 'Yes'
+					else:
+						label = goaldict[goal]
+				else:
+					label = 'No'
+				
+				if goal not in dict:
+					dict[goal]=defaultdict(float)
+					
+				dict[goal][label] = dict[goal][label] + 1.0
+	
+	#normalized
+	for goal in dict:
+		x_items = dict[goal].items()
+		total_p = sum([p for k,p in x_items])
+
+		for k in dict[goal]:
+			dict[goal][k] = dict[goal][k]/total_p
+		
+	return dict
+					
 if (__name__ == '__main__'):
 	
 	SavedStdOut = sys.stdout
-	sys.stdout = open('res/unigram.dict', 'w')
+	sys.stdout = open('res/slotdistribution.txt', 'w')
 	
-	getUnigramDict("res/dstc2_train_summary.txt")
+	getPrior()
 	
+	#getUnigramDict("res/dstc2_train_summary.txt")
+	#getQuestionType()
 	#getSlotValuesDistribution()
 	#checkSlotOntology()
 	#checkRequested()

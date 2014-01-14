@@ -4,6 +4,7 @@ import dataset_walker
 import utility
 import baseline
 import TopLine
+import math
 
 def quote(s):
 	if s == None:
@@ -389,7 +390,17 @@ def getTurns(sessions):# fixed this
 			log_turns.append(log_turn)
 			label_turns.append(label_turn)
 	return log_turns, label_turns
-						
+
+def getASRs(log_turn):
+	ASRs = []
+	#score = 0
+	for asr in log_turn['input']['live']['asr-hyps']:
+		ASRs.append(asr['asr-hyp'])
+		#score = score + math.exp(asr['score'])
+		#score = score + math.pow(2, asr['score'])
+	#print score
+	return "#".join(ASRs)
+							
 def main(argv):
 	parser = argparse.ArgumentParser(description='Simple hand-crafted dialog state tracker baseline.')
 	parser.add_argument('--dataset', dest='dataset', action='store', metavar='DATASET', required=True,
@@ -427,6 +438,8 @@ def main(argv):
 				#top asr
 				top_asr = log_turn['input']['live']['asr-hyps'][0]['asr-hyp'] if len(log_turn['input']['live']['asr-hyps']) > 0 else ''
 				asr_score = log_turn['input']['live']['asr-hyps'][0]['score'] if len(log_turn['input']['live']['asr-hyps']) > 0 else -1
+				
+				ASRs = getASRs(log_turn)
 				
 				#top nlu
 				top_slu = log_turn['input']['live']['slu-hyps'][0]['slu-hyp'] if len(log_turn['input']['live']['slu-hyps']) > 0 else None
@@ -500,7 +513,7 @@ def main(argv):
 				
 				row.append(quote(top_asr))
 				row.append(asr_score)
-
+				row.append(quote(ASRs))
 				row.append(quote(strslu(top_slu)))
 				row.append(quote(strslu(output_acts)))
 				row.append(top_slu_score)
@@ -554,6 +567,7 @@ def main(argv):
 	
 	header.append("top asr")
 	header.append("asr_score")
+	header.append("ASRs")
 	
 	header.append("top slu")
 	header.append("output acts")
