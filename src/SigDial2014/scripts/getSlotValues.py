@@ -255,11 +255,11 @@ def getPrior():
 if (__name__ == '__main__'):
 	
 	SavedStdOut = sys.stdout
-	sys.stdout = open('res/slotdistribution.txt', 'w')
+	sys.stdout = open('res/log.txt', 'w')
 	
-	getPrior()
+	#getPrior()
 	
-	#getUnigramDict("res/dstc2_train_summary.txt")
+	getUnigramDict("res/dstc2_train_summary.txt")
 	#getQuestionType()
 	#getSlotValuesDistribution()
 	#checkSlotOntology()

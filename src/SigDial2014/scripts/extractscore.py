@@ -12,7 +12,7 @@ def extractScoreAllMetrics():
 	#modes = ['baseline', 'baseline_focus', 'HWUbaseline', '2waymodel_act', '2waymodel_actngram', '2waymodel_actngram_topline']
 	#modes = ['topline2','topline3']
 	#modes = ['2waymodel_actngram_method_topline', '2waymodel_actngram_method_online', '2waymodel_actngram_method_mindchange']
-	modes = ['nbestmodel_goals_nbest_bayes']
+	modes = ['2waymodel_goals_enrich_logasr']
 			
 	metrics = ['Joint_Goals', 'Requested', 'Method']
 	
