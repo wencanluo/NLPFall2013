@@ -7,6 +7,108 @@ import fio
 import Cosin
 from SlotTracker import *
 import getWekaArff
+import json
+
+ontology = json.load(open('config/ontology_dstc2.json'))
+foodnamelist = [
+            "afghan", 
+            "african", 
+            "afternoon tea", 
+            "asian oriental", 
+            "australasian", 
+            "australian", 
+            "austrian", 
+            "barbeque", 
+            "basque", 
+            "belgian", 
+            "bistro", 
+            "brazilian", 
+            "british", 
+            "canapes", 
+            "cantonese", 
+            "caribbean", 
+            "catalan", 
+            "chinese", 
+            "christmas", 
+            "corsica", 
+            "creative", 
+            "crossover", 
+            "cuban", 
+            "danish", 
+            "eastern european", 
+            "english", 
+            "eritrean", 
+            "european", 
+            "french", 
+            "fusion", 
+            "gastropub", 
+            "german", 
+            "greek", 
+            "halal", 
+            "hungarian", 
+            "indian", 
+            "indonesian", 
+            "international", 
+            "irish", 
+            "italian", 
+            "jamaican", 
+            "japanese", 
+            "korean", 
+            "kosher", 
+            "latin american", 
+            "lebanese", 
+            "light bites", 
+            "malaysian", 
+            "mediterranean", 
+            "mexican", 
+            "middle eastern", 
+            "modern american", 
+            "modern eclectic", 
+            "modern european", 
+            "modern global", 
+            "molecular gastronomy", 
+            "moroccan", 
+            "new zealand", 
+            "north african", 
+            "north american", 
+            "north indian", 
+            "northern european", 
+            "panasian", 
+            "persian", 
+            "polish", 
+            "polynesian", 
+            "portuguese", 
+            "romanian", 
+            "russian", 
+            "scandinavian", 
+            "scottish", 
+            "seafood", 
+            "singaporean", 
+            "south african", 
+            "south indian", 
+            "spanish", 
+            "sri lankan", 
+            "steakhouse", 
+            "swedish", 
+            "swiss", 
+            "thai", 
+            "the americas", 
+            "traditional", 
+            "turkish", 
+            "tuscan", 
+            "unusual", 
+            "vegetarian", 
+            "venetian", 
+            "vietnamese", 
+            "welsh", 
+            "world"
+        ]
+foodnames = {}
+#for food in ontology['informable']['food']:
+for food in foodnamelist:
+	foodnames[' '+food+' '] = len(food.split())
+
+foodnames = sorted(foodnames, key = foodnames.get, reverse = True)
 		
 def getMulanARFF_ActNgram(featurefile, tests):
 	#features = fio.LoadDict("res/train1a.dict")
@@ -300,37 +402,47 @@ def getMulanARFF_Enrich(featurefile, tests):
 	#tests = ['train1a', 'test1', 'test2', 'test3', 'test4']
 	
 	for test in tests:
-		
-		filename = "res/"+test+"_summary.txt"
-		head, body = fio.readMatrix(filename, True)
-		
-		sr_id_index = head.index('sr_id')
-		dm_id_index = head.index('dm_id')
-		
-		turn_index= head.index('turn_index')
-		rank_index = head.index('rank')
-		out_index = head.index('output acts')
-		in_index = head.index('top slu')
-		asr_index = head.index('top asr')
-		asr_score_index = head.index('asr_score')
-		
-		out_trans_index = head.index('output trans')
-		in_trans_index = head.index('input trans')
-		
-		sluscore_index = head.index('top slu score')
-		restart_index = head.index('aborted')
-		
-		input_start_index = head.index('intput_start_time')
-		input_end_index = head.index('intput_end_time')
-		output_start_index = head.index('output_start_time')
-		output_end_index = head.index('output_end_time')
-		
-		goal_index = head.index('recovery_goals')
-		
 		#labels = ['area', 'food', 'name', 'pricerange', 'addr', 'phone', 'postcode', 'signature']
 		goal_names = ['area', 'food', 'name', 'pricerange']
 		
 		for goal in goal_names:
+			
+			predictions = []
+			for method in ['baseline_focus', 'HWUbaseline']:
+				file = 'res/'+method+'_'+test+'_track.json.'+goal+'.label'
+				head, body = fio.readMatrix(file, True)
+				predictions.append([row[1] for row in body])
+			for method in ['nbest_goals_enrich_asrs']:
+				file = 'res/'+test+'_'+method+'_L'+goal+'.label.combine'
+				head, body = fio.readMatrix(file, True)
+				predictions.append([row[1] for row in body])
+			
+			filename = "res/"+test+"_summary.txt"
+			head, body = fio.readMatrix(filename, True)
+			
+			sr_id_index = head.index('sr_id')
+			dm_id_index = head.index('dm_id')
+			
+			turn_index= head.index('turn_index')
+			rank_index = head.index('rank')
+			out_index = head.index('output acts')
+			in_index = head.index('top slu')
+			asr_index = head.index('top asr')
+			asr_score_index = head.index('asr_score')
+			
+			out_trans_index = head.index('output trans')
+			in_trans_index = head.index('input trans')
+			
+			sluscore_index = head.index('top slu score')
+			restart_index = head.index('aborted')
+			
+			input_start_index = head.index('intput_start_time')
+			input_end_index = head.index('intput_end_time')
+			output_start_index = head.index('output_start_time')
+			output_end_index = head.index('output_end_time')
+			
+			goal_index = head.index('recovery_goals')
+		
 			data = []
 			
 			confirmedslot = {}
@@ -419,6 +531,9 @@ def getMulanARFF_Enrich(featurefile, tests):
 					row.append(1)
 				else:
 					row.append(0)
+				
+				for p in predictions:
+					row.append(p[i])
 						
 				if goal in goaldict:
 					if goal == 'name' or goal == 'food':
@@ -461,6 +576,9 @@ def getMulanARFF_Enrich(featurefile, tests):
 			
 			header.append('isRequestedGoal')
 			
+			for p in ['focus','hwu','nbest']:
+				header.append(p)
+					
 			goal = 'L' + goal
 
 			header.append(goal)
@@ -492,12 +610,16 @@ def getMulanARFF_Enrich(featurefile, tests):
 				types.append('Category')
 				
 			types = types + ['Category']
+			
+			for p in ['focus','hwu','nbest']:
+				types.append('Category')
+				
 			types = types + ['Category']
 			
 			#fio.MulanWriter("res/"+test+"_goals_actngram", goal_names, header, types, "dstc", data)
 			#fio.ArffWriter("res/"+test+"_goals_enrich_sr_" + goal +".arff", header, types, "dstc", data)
 			#fio.ArffWriter("res/"+test+"_goals_enrich_dm_" + goal +".arff", header, types, "dstc", data)
-			fio.ArffWriter("res/"+test+"_goals_enrich_logasr_" + goal +".arff", header, types, "dstc", data)
+			fio.ArffWriter("res/"+test+"_goals_enrich_logasr_hybird_" + goal +".arff", header, types, "dstc", data)
 			#fio.writeMatrix("res/"+test+"_goals_enrich_logasr_" + goal +".matrix", data, header)
 
 def getMulanARFF_WizOz(featurefile, tests):
@@ -930,8 +1052,6 @@ def getWekaARFFBinarySwitch_ASRs(featurefile, tests):
 	#tests = ['train1a', 'test1', 'test2', 'test3', 'test4']
 	
 	for test in tests:
-		
-		
 		filename = "res/"+test+"_summary.txt"
 		head, body = fio.readMatrix(filename, True)
 		
@@ -939,7 +1059,8 @@ def getWekaARFFBinarySwitch_ASRs(featurefile, tests):
 		
 		asr_index = head.index('ASRs')
 		goal_index = head.index('recovery_goals')
-		goal_names = ['area', 'food', 'name', 'pricerange']
+		#goal_names = ['area', 'food', 'name', 'pricerange']
+		goal_names = ['food']
 		sr_id_index = head.index('sr_id')
 		
 		data = []
@@ -958,14 +1079,29 @@ def getWekaARFFBinarySwitch_ASRs(featurefile, tests):
 				
 				for asr in ASRs:
 					row = []
+					
+					#asr = asr.replace("'","\\'")
+					
+					hasFood = -1
+					e_asr = ' ' + asr + ' '
+					for food in foodnames:
+						if e_asr.find(food) != -1:
+							hasFood = 0
+							e_asr = e_asr.replace(food, ' FFFFD ')
+							#break
+					
+					asr = e_asr.strip()
+						
 					row.append(asr)
 					row.append(sr_id)
-					
+
 					for key in features.keys():
 						if key in acts:
 							row.append(1)
 						else:
 							row.append(0)
+					
+					#row.append(hasFood)
 							
 					if goal in goaldict:
 						if goal == 'name' or goal == 'food':
@@ -987,6 +1123,8 @@ def getWekaARFFBinarySwitch_ASRs(featurefile, tests):
 			for key in features.keys():
 				header.append(key)
 			
+			#header.append("hasFood")
+			
 			goal = 'L' + goal
 
 			header.append(goal)
@@ -996,15 +1134,19 @@ def getWekaARFFBinarySwitch_ASRs(featurefile, tests):
 			types.append('Category')
 			for key in features.keys():
 				types.append('Category')
+			
+			#types = types + ['Category']#hasFood
 				
 			types = types + ['Category']
 			
-			fio.ArffWriter("res/"+test+"_nbest_goals_enrich_asrs_" + goal +".arff", header, types, "dstc", data)
+			fio.ArffWriter("res/"+test+"_nbest_goals_enrich_asrs_class_" + goal +".arff", header, types, "dstc", data)
 																				
 if (__name__ == '__main__'):
+						
 	#getMulanARFF_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getMulanARFF_ActWithNameNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getMulanARFF_ASRs("dstc2_train", ["dstc2_train", "dstc2_dev"])
-	getWekaARFFBinarySwitch_ASRs("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	getMulanARFF_Enrich("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	#getWekaARFFBinarySwitch_ASRs("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getMulanARFF_WizOz("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	print "Done"

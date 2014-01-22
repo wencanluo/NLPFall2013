@@ -42,16 +42,18 @@ def getAct(slu, prefix = "", withname = False):#parse the action from the slu st
 		if not withname:
 			actions.append(prefix + token[:k])
 		else:
-			k2 = token.find('=')
-			if k2==-1: 
-				actions.append(prefix + token[:k])
-			else:
-				if token[:k] == "request":
-					k3 = token.find(')')
-					if k3==-1:continue
-					actions.append(prefix + token[:k] + '.' +token[k2+1:k3])
+			k3 = token.find(')')
+			if k3==-1:continue
+			
+			for t in token[k+1:k3].split(';'):
+				k2 = t.find('=')
+				if k2==-1: 
+					actions.append(prefix + token[:k])
 				else:
-					actions.append(prefix + token[:k] + '.' +token[k+1:k2])
+					if token[:k] == "request":
+						actions.append(prefix + token[:k] + '.' +t[k2+1:])
+					else:
+						actions.append(prefix + token[:k] + '.' +t[:k2])
 	return set(actions)
 
 def getOutActExplConfDict(out_act):

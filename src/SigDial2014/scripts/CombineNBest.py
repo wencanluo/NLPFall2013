@@ -45,6 +45,8 @@ def main():
 	args = parser.parse_args()
 	
 	for goal in [args.goal_area, args.goal_food, args.goal_name, args.goal_pricerange]:
+		if goal == None: continue
+		
 		head, body = fio.readMatrix(goal, True)
 		
 		dataset = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot)

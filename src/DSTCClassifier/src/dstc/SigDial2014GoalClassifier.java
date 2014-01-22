@@ -122,12 +122,13 @@ public class SigDial2014GoalClassifier {
 	 */
 	public static void main(String[] args) throws Exception {
 		PrintStream oldout = System.out;
-		File f = new File("res_goals_nbest_asrs_count.txt");		
+		File f = new File("res_goals_nbest_asrs_hybird2.txt");		
 		System.setOut(new PrintStream(f));
 		
 		SigDial2014GoalClassifier classifier = new SigDial2014GoalClassifier();
 
 		String[] Goals = {"area", "food", "name", "pricerange"};
+		//String[] Goals = {"food"};
 		//String[] Goals = {"area", "pricerange"};
 		
 		//Act + Ngram, MindChange
@@ -147,9 +148,15 @@ public class SigDial2014GoalClassifier {
 			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_asrs_L" + goal;
 			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_asrs_L" + goal;
 			
-			String train = "../SigDial2014/scripts/res/dstc2_train_nbest_goals_enrich_asrs_L" + goal;
-			String dev = "../SigDial2014/scripts/res/dstc2_dev_nbest_goals_enrich_asrs_L" + goal;
+			//String train = "../SigDial2014/scripts/res/dstc2_train_nbest_goals_enrich_asrs_L" + goal;
+			//String dev = "../SigDial2014/scripts/res/dstc2_dev_nbest_goals_enrich_asrs_L" + goal;
 			
+			//String train = "../SigDial2014/scripts/res/dstc2_train_nbest_goals_enrich_asrs_class_L" + goal;
+			//String dev = "../SigDial2014/scripts/res/dstc2_dev_nbest_goals_enrich_asrs_class_L" + goal;
+			
+			String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_logasr_hybird_L" + goal;
+			String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_logasr_hybird_L" + goal;
+
 			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_wizoz_L" + goal;
 			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_wizoz_L" + goal;
 			
@@ -157,7 +164,7 @@ public class SigDial2014GoalClassifier {
 			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_sr_dm_L" + goal;
 			
 			classifier.ClassifierNgram(train, train);
-			classifier.ClassifierNgram(train, dev);
+			//classifier.ClassifierNgram(train, dev);
 		}
 		
 		System.setOut(oldout);

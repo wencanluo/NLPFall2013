@@ -29,7 +29,8 @@ for %%t in (dstc2_train dstc2_dev) do (
 goto after_CombineNBest
 set m=CombineNBest
 for %%t in (dstc2_train dstc2_dev) do (
-	python CombineNBest.py --dataset=%%t --dataroot=%root% --goal_area=%outdir%%%t_nbest_goals_enrich_asrs_Larea.label --goal_food=%outdir%%%t_nbest_goals_enrich_asrs_Lfood.label --goal_name=%outdir%%%t_nbest_goals_enrich_asrs_Lname.label --goal_pricerange=%outdir%%%t_nbest_goals_enrich_asrs_Lpricerange.label
+	rem python CombineNBest.py --dataset=%%t --dataroot=%root% --goal_area=%outdir%%%t_nbest_goals_enrich_asrs_Larea.label --goal_food=%outdir%%%t_nbest_goals_enrich_asrs_Lfood.label --goal_name=%outdir%%%t_nbest_goals_enrich_asrs_Lname.label --goal_pricerange=%outdir%%%t_nbest_goals_enrich_asrs_Lpricerange.label
+	python CombineNBest.py --dataset=%%t --dataroot=%root% --goal_food=%outdir%%%t_nbest_goals_enrich_asrs_class_Lfood.label
 )
 :after_CombineNBest
 
@@ -55,12 +56,24 @@ for %%t in (dstc2_train dstc2_dev) do (
 
 rem Current Best Result
 rem goto after_2waymodel_goals_actwithname
-set m=2waymodel_goals_nbest_hwu_food
+set m=2waymodel_goals_bybrid
 for %%t in (dstc2_train dstc2_dev) do (
+	rem hybrid
+	python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label --requestfile=%outdir%%%t_request_actngram_ngram.arff.label --goal_area=%outdir%%%t_goals_enrich_logasr_hybird_Larea.label --goal_food=%outdir%%%t_goals_enrich_logasr_hybird_Lfood.label --goal_name=%outdir%%%t_goals_enrich_logasr_hybird_Lname.label --goal_pricerange=%outdir%%%t_goals_enrich_logasr_hybird_Lpricerange.label
+
 	rem python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label --requestfile=%outdir%%%t_request_actngram_ngram.arff.label --goal_area=%outdir%%%t_nbest_goals_enrich_asrs_Larea.label.combine --goal_food=%outdir%%%t_goals_enrich_more_Lfood.label --goal_name=%outdir%%%t_goals_enrich_more_Lname.label --goal_pricerange=%outdir%%%t_nbest_goals_enrich_asrs_Lpricerange.label.combine
-	python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label --requestfile=%outdir%%%t_request_actngram_ngram.arff.label --goal_area=%outdir%%%t_nbest_goals_enrich_asrs_Larea.label.combine --goal_food=%outdir%HWUbaseline_%%t_track.json.food.label --goal_name=%outdir%%%t_nbest_goals_enrich_asrs_Lname.label --goal_pricerange=%outdir%%%t_nbest_goals_enrich_asrs_Lpricerange.label.combine  --goal_food_prediction=%outdir%HWUbaseline_%%t_track.json.food.prediction
+	rem Best
+	rem python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label --requestfile=%outdir%%%t_request_actngram_ngram.arff.label --goal_area=%outdir%%%t_nbest_goals_enrich_asrs_Larea.label.combine --goal_food=%outdir%HWUbaseline_%%t_track.json.food.label --goal_name=%outdir%%%t_nbest_goals_enrich_asrs_Lname.label --goal_pricerange=%outdir%%%t_nbest_goals_enrich_asrs_Lpricerange.label.combine  --goal_food_prediction=%outdir%HWUbaseline_%%t_track.json.food.prediction
+	rem class-based
+	rem python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label --requestfile=%outdir%%%t_request_actngram_ngram.arff.label --goal_area=%outdir%%%t_nbest_goals_enrich_asrs_Larea.label.combine --goal_food=%outdir%%%t_nbest_goals_enrich_asrs_class_Lfood.label.combine --goal_name=%outdir%%%t_nbest_goals_enrich_asrs_Lname.label --goal_pricerange=%outdir%%%t_nbest_goals_enrich_asrs_Lpricerange.label.combine
+	
 	rem python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label --requestfile=%outdir%%%t_request_actngram_ngram.arff.label --goal_area=%outdir%%%t_nbest_goals_enrich_asrs_Larea.label.combine --goal_food=%outdir%voting_%%t.food.label --goal_name=%outdir%voting_%%t.name.label --goal_pricerange=%outdir%%%t_nbest_goals_enrich_asrs_Lpricerange.label.combine
 	rem python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label --requestfile=%outdir%%%t_request_actngram_ngram.arff.label --goal_area=%outdir%voting_%%t.area.label --goal_food=%outdir%voting_%%t.food.label --goal_name=%outdir%voting_%%t.name.label --goal_pricerange=%outdir%voting_%%t.pricerange.label
+	rem CRF
+	rem python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label --requestfile=%outdir%%%t_request_actngram_ngram.arff.label --goal_area=%outdir%%%t_area_crf.label --goal_food=%outdir%%%t_goals_enrich_more_Lfood.label --goal_name=%outdir%%%t_goals_enrich_more_Lname.label --goal_pricerange=%outdir%%%t_pricerange_crf.label
+	rem 
+	rem python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_actngram.label --methodfile=%outdir%%%t_method_actngram_mindchange.label --requestfile=%outdir%%%t_request_actngram_ngram.arff.label --goal_area=%outdir%%%t_area_crf.label --goal_food=%outdir%%%t_goals_enrich_more_Lfood.label --goal_name=%outdir%%%t_goals_enrich_more_Lname.label --goal_pricerange=%outdir%%%t_pricerange_crf.label --goal_food_prediction=%outdir%HWUbaseline_%%t_track.json.food.prediction
+	
 	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
 	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
 )

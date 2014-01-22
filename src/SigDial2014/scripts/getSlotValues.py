@@ -13,7 +13,9 @@ import getWekaGoalsArff
 from SlotTracker import *
 
 def getQuestionType():
-	tests = ["dstc2_train", "dstc2_dev"]
+	tests = ["dstc2_train", "dstc2_dev", "dstc2_test"]
+	
+	dicts = []
 	
 	for test in tests:
 		dict = {}
@@ -25,13 +27,53 @@ def getQuestionType():
 		asr_index = head.index('top asr')
 		in_trans_index = head.index('input trans')
 		
+		dict = {}
+		
 		for i,row in enumerate(body):
 			out_act = row[out_index][1:-1]
-			acts = "_".join(sorted(set( list(getAct(out_act, "out_", True)))))
+			at = getAct(out_act, "out_", True)
+			acts = "_".join(sorted(set( list(at))))
 			asr = row[asr_index][1:-1]			
 			trans = row[in_trans_index][1:-1]
 			goals = row[goal_index][1:-1]
 			goaldict = getGoalsDict(goals)
+			
+			if acts not in dict:
+				dict[acts] = {}
+			
+			for goal in goaldict:
+				if goal not in dict[acts]:
+					dict[acts][goal] = 0
+				dict[acts][goal] = dict[acts][goal] + 1
+		
+		dicts.append(dict)	
+		
+	keys = []
+	
+	for dict in dicts:
+		keys = keys + dict.keys()
+	
+	keys = sorted(set(keys))
+	
+	for key in keys:
+		print key,
+		
+		values = []
+		for dict in dicts:
+			if key in dict:
+				values = values + dict[key].keys()
+		values = sorted(set(values))
+		
+		for value in values:
+			print "\t", value,"\t",
+			
+			for dict in dicts:
+				if key in dict and value in dict[key]:
+					print dict[key][value], "\t", 
+				else:
+					print 0, "\t",
+			print
+		print
 			
 def getUnigramDict(file):
 	head, body = fio.readMatrix(file, True)
@@ -307,9 +349,9 @@ if (__name__ == '__main__'):
 	#sys.stdout = open('res/log.txt', 'w')
 	
 	#getPrior()
-	getAccuracy()
+	#getAccuracy()
 	#getUnigramDict("res/dstc2_train_summary.txt")
-	#getQuestionType()
+	getQuestionType()
 	#getSlotValuesDistribution()
 	#checkSlotOntology()
 	#checkRequested()

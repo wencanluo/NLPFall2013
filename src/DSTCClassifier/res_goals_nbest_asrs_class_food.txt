@@ -1,0 +1,24 @@
+train:../SigDial2014/scripts/res/dstc2_train_nbest_goals_enrich_asrs_class_Lfood
+test:../SigDial2014/scripts/res/dstc2_train_nbest_goals_enrich_asrs_class_Lfood
+Train: 116767
+Test: 116767
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 0.963     0.257      0.948     0.963     0.955      0.854      0.944    food.No
+                 0.716     0.035      0.773     0.716     0.744      0.845      0.595    food.Yes
+                 0.855     0.001      0.946     0.855     0.898      0.953      0.848    food.Yes.dontcare
+Weighted Avg.    0.925     0.218      0.923     0.925     0.924      0.855      0.892
+
+=== Confusion Matrix ===
+
+     a     b     c   <-- classified as
+ 93194  3453   133 |     a = food.No
+  4650 11832    35 |     b = food.Yes
+   482    22  2966 |     c = food.Yes.dontcare
+
+train:../SigDial2014/scripts/res/dstc2_train_nbest_goals_enrich_asrs_class_Lfood
+test:../SigDial2014/scripts/res/dstc2_dev_nbest_goals_enrich_asrs_class_Lfood
+Train: 116767
+Test: 39340
