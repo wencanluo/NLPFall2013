@@ -10,7 +10,7 @@ def GetSlot(slu_hyps, goal):
 	for score, uact in slu_hyps:
 		for act in uact:
 			for slot in act['slots']:
-				if goal == slot[0]:
+				if goal == slot[0] and slot[1] != 'dontcare':
 					return slot[1]
 	return None
 
@@ -18,7 +18,7 @@ class Tracker(object):
 	def __init__(self):
 		self.reset()
 
-	def addTurn(self, turn, rank = 0, method_label = None, request_label = None, goals_label = None):
+	def addTurn(self, turn, rank = 0, method_label = None, request_label = None, goals_label = None, food_prediction = None):
 		hyps = copy.deepcopy(self.hyps)
 		if "dialog-acts" in turn["output"] :
 			mact = turn["output"]["dialog-acts"]
@@ -101,6 +101,13 @@ class Tracker(object):
 							value = GetSlot(slu_hyps, goal)
 						if value != None:
 							goal_stats[goal][value] = score
+			
+			if food_prediction != None:
+				if food_prediction == "none":
+					if 'food' in goal_stats:
+						del goal_stats['food']
+				else:
+					goal_stats['food'][food_prediction] = score
 		
 		# pick top values for each slot
 		for slot in goal_stats:
@@ -169,7 +176,8 @@ def main():
 						help='File with goal_name prediction results')
 	parser.add_argument('--goal_pricerange',dest='goal_pricerange',action='store',required=False,metavar='TXT',
 						help='File with goal_pricerange prediction results')
-	
+	parser.add_argument('--goal_food_prediction',dest='goal_food_prediction',action='store',required=False,metavar='TXT',
+						help='File with actual prediction results')
 	args = parser.parse_args()
 	
 	head, body = fio.readMatrix(args.labelfile, True)
@@ -193,7 +201,11 @@ def main():
 		goal_name_labels = [item[1] for item in body]
 		
 		head, body = fio.readMatrix(args.goal_pricerange, True)
-		goal_pricerange_labels = [item[0.l.8y8u] for item in body]
+		goal_pricerange_labels = [item[1] for item in body]
+	
+	if args.goal_food_prediction != None:
+		head, body = fio.readMatrix(args.goal_food_prediction, True)
+		food_prediction_labels = [item[1] for item in body]
 		 
 	dataset = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot)
 	track_file = open(args.trackfile, "wb")
@@ -227,7 +239,9 @@ def main():
 					
 				goals['pricerange'] = 'No' if goal_pricerange_labels[turn_count]== 'pricerange.No' else goal_pricerange_labels[turn_count][len('pricerange.Yes.'):]
 			
-			tracker_turn = tracker.addTurn(turn, rank, method, requests, goals)
+			food_prediction = food_prediction_labels[turn_count] if args.goal_food_prediction != None else None
+			
+			tracker_turn = tracker.addTurn(turn, rank, method, requests, goals, food_prediction)
 			this_session["turns"].append(tracker_turn)
 		
 		track["sessions"].append(this_session)

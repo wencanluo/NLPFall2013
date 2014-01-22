@@ -59,7 +59,7 @@ def getGoalMajorityVoting(goals_labels, goal_stats, score, slu_hyps, turn = None
 	
 	dict = {}
 	for i, goals_label in enumerate(goals_labels):
-		if i>3: continue
+		if i>5: continue
 		
 		if weighted:
 			score = math.exp(scores[i])

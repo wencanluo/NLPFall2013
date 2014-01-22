@@ -121,6 +121,9 @@ class ToplineTracker(object):
 	
 
 def findASRGoals(turn, goals):
+	if goals == None:
+		return False
+	
 	for k, v in goals.items():
 		if findASR(turn, v):
 			return True
@@ -138,12 +141,18 @@ def findASR(turn, v):
 	return False
 
 def findTranscriptionGoals(turn, goals):
+	if goals == None:
+		return False
+	
 	for k, v in goals.items():
 		if findTranscription(turn, v):
 			return True
 	return False
 	
 def findTranscription(label_turn, v):
+	if v == None:
+		return False
+	
 	if 'transcription' in label_turn:
 		input_trans = label_turn['transcription']
 	elif 'transcript' in label_turn: #for test3
@@ -158,6 +167,9 @@ def findTranscription(label_turn, v):
 		return True
 
 def findSLUGoals(turn, goals):
+	if goals == None:
+		return False
+	
 	if "dialog-acts" in turn["output"] :
 		mact = turn["output"]["dialog-acts"]
 	else :

@@ -178,7 +178,8 @@ def checkRequested():
 			print dict['No.Yes'], "\t", dict['No.No']
 
 def getARCombinationCount():
-	tests = ["dstc2_train", "dstc2_dev"]
+	#tests = ["dstc2_train", "dstc2_dev", "dstc2_test"]
+	tests = ["dstc2_test"]
 	
 	for test in tests:
 		dict = defaultdict(float)
@@ -198,11 +199,13 @@ def getARCombinationCount():
 			
 			turn_id = row[turn_index]
 				
-			if turn_id == '0':	
-				dict[sr_id+'.'+dm_id] = dict[sr_id+'.'+dm_id] + 1
-
-		print dict['SR0.DM0'], "\t", dict['SR0.DM1']
-		print dict['SR1.DM0'], "\t", dict['SR1.DM1']
+			#if turn_id == '0':	
+			dict[sr_id+'.'+dm_id] = dict[sr_id+'.'+dm_id] + 1
+		
+		print dict['SR0.DM2'], "\t", dict['SR1.DM2']
+		
+		#print dict['SR0.DM0'], "\t", dict['SR0.DM1']
+		#print dict['SR1.DM0'], "\t", dict['SR1.DM1']
 
 def getPrior():
 	#tests = ["dstc2_train", "dstc2_dev"]
@@ -251,22 +254,68 @@ def getPrior():
 			dict[goal][k] = dict[goal][k]/total_p
 		
 	return dict
-					
+
+def getAccuracy():
+	goal_names = ['area', 'food', 'name', 'pricerange']
+	
+	for goal in goal_names:
+		print
+		for data in ['dstc2_dev']:
+			for method in ['baseline', 'baseline_focus', 'HWUbaseline']:
+				file = 'res/'+method+'_'+data+'_track.json.'+goal+'.label'
+				head, body = fio.readMatrix(file, True)
+				N = len(body)
+				n = 0.
+				for row in body:
+					if row[0] == row[1]:
+						n = n + 1
+				print data,"\t",method,'\t', goal, '\t', n/N
+				
+			for method in ['goals_enrich_more']:
+				file = 'res/'+data+'_'+method+'_L'+goal+'.label'
+				head, body = fio.readMatrix(file, True)
+				N = len(body)
+				n = 0.
+				for row in body:
+					if row[0] == row[1]:
+						n = n + 1
+				print data,"\t",method,'\t', goal, '\t', n/N
+	 		
+	 		for method in ['nbest_goals_enrich_asrs']:
+				file = 'res/'+data+'_'+method+'_L'+goal+'.label.combine'
+				head, body = fio.readMatrix(file, True)
+				N = len(body)
+				n = 0.
+				for row in body:
+					if row[0] == row[1]:
+						n = n + 1
+				print data,"\t",method,'\t', goal, '\t', n/N
+				
+			for method in ['voting']:
+				file = 'res/'+method+'_'+data+'.'+goal+'.label'
+				head, body = fio.readMatrix(file, True)
+				N = len(body)
+				n = 0.
+				for row in body:
+					if row[0] == row[1]:
+						n = n + 1
+				print data,"\t",method,'\t', goal, '\t', n/N
+			
 if (__name__ == '__main__'):
 	
-	SavedStdOut = sys.stdout
-	sys.stdout = open('res/log.txt', 'w')
+	#SavedStdOut = sys.stdout
+	#sys.stdout = open('res/log.txt', 'w')
 	
 	#getPrior()
-	
-	getUnigramDict("res/dstc2_train_summary.txt")
+	getAccuracy()
+	#getUnigramDict("res/dstc2_train_summary.txt")
 	#getQuestionType()
 	#getSlotValuesDistribution()
 	#checkSlotOntology()
 	#checkRequested()
 	#getARCombinationCount()
 	
-	sys.stdout = SavedStdOut
+	#sys.stdout = SavedStdOut
 	
 	print "Done"
 	

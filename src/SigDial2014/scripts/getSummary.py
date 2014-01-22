@@ -17,9 +17,13 @@ def parenthesis(s):
 	return '(' + s + ')'
 
 def strlist(l):
+	if l == None:
+		return ""
 	return ';'.join(l)
 	
 def strdict(slot):
+	if slot == None:
+		return ""
 	l = [k+'='+v for k,v in slot.items()]
 	return ";".join(l)
 
@@ -95,6 +99,9 @@ def fixedThis(log_turn):
 	return log_turn
 
 def IsCorrectSLUHypRank_H1(hyps, label_turn):
+	if label_turn == None:
+		return False
+	
 	goal_label = label_turn['goal-labels']
 	method_label = label_turn['method-label']
 	request_slots = label_turn['requested-slots']
@@ -135,6 +142,9 @@ def getCorrectSLUHypRank_H1(log_turn, label_turn):
 	#assume NONE is -1
 	#assume slu that doesn't do anything is -1
 	'''
+	if label_turn == None:
+		return -1
+	
 	goal_label = label_turn['goal-labels']
 	method_label = label_turn['method-label']
 	request_slots = label_turn['requested-slots']
@@ -178,6 +188,8 @@ def getCorrectSLUHypRank_H2(log_turn, label_turn, last_labelturn = None):
 	#H2: assume that the SLU is correct if and only if it matches the differences between the previous correct answer and the current one
 	only for "request" and "inform"
 	'''
+	if label_turn == None:
+		return -1
 	goal_label, method_label, request_label = getLabels(label_turn)
 	p_goal_label, p_method_label, p_request_label = getLabels(last_labelturn)
 	
@@ -252,6 +264,9 @@ def getCorrectSLUHypRank_H2(log_turn, label_turn, last_labelturn = None):
 	return -1
 
 def getNewOutput(mact, slu, label_turn, last_labelturn):
+	if label_turn == None:
+		return None
+	
 	goal_label, method_label, request_label = getLabels(label_turn)
 	p_goal_label, p_method_label, p_request_label = getLabels(last_labelturn)
 	
@@ -284,6 +299,9 @@ def getNewOutput(mact, slu, label_turn, last_labelturn):
 	return n_goal_label, n_method_label, n_request_label
 
 def CheckNewOutput(mact, slu, label_turn, last_labelturn):
+	if label_turn == None:
+		return False
+	
 	goal_label, method_label, request_label = getLabels(label_turn)
 	p_goal_label, p_method_label, p_request_label = getLabels(last_labelturn)
 	
@@ -322,6 +340,8 @@ def CheckNewOutput(mact, slu, label_turn, last_labelturn):
 	
 #H3: assume that the SLU is correct if and only if it will turn into the correct answer based on the previous one and the new SLU
 def getCorrectSLUHypRank_H3(log_turn, label_turn, last_labelturn = None):
+	if label_turn == None:
+		return -1
 	
 	if "dialog-acts" in log_turn["output"] :
 		mact = log_turn["output"]["dialog-acts"]
@@ -346,6 +366,9 @@ def getLabels(label_turn):#goal is a dict; method is a string; request is a list
 	return goal_label, method_label, request_label
 
 def getRecoveryMethod(log_turn, label_turn, last_labelturn):
+	if label_turn == None:
+		return None
+	
 	if "dialog-acts" in log_turn["output"] :
 		mact = log_turn["output"]["dialog-acts"]
 	else :
@@ -370,6 +393,9 @@ def getRecoveryMethod(log_turn, label_turn, last_labelturn):
 	return "impossible"
 
 def getRecoveryGoals(log_turn, label_turn, last_labelturn):
+	if label_turn == None:
+		return None
+	
 	if "dialog-acts" in log_turn["output"] :
 		mact = log_turn["output"]["dialog-acts"]
 	else :
@@ -411,8 +437,12 @@ def main(argv):
 						help='File to write with summary output')
 	
 	args = parser.parse_args()
-	sessions = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot, labels=True)
-
+	
+	if "test" in args.dataset:
+		sessions = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot, labels=False)
+	else:
+		sessions = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot, labels=True)
+		
 	sum = []
 	
 	for session in sessions:
@@ -455,10 +485,13 @@ def main(argv):
 				output_trans = log_turn['output']['transcript'] if 'transcript' in log_turn['output'] else None
 	
 				#input transcription
-				if 'transcription' in label_turn:
-					input_trans = label_turn['transcription']
-				elif 'transcript' in label_turn: #for test3
-					input_trans = label_turn['transcript']
+				if label_turn != None:
+					if 'transcription' in label_turn:
+						input_trans = label_turn['transcription']
+					elif 'transcript' in label_turn: #for test3
+						input_trans = label_turn['transcript']
+					else:
+						input_trans = ""
 				else:
 					input_trans = ""
 				
@@ -466,12 +499,9 @@ def main(argv):
 				output_acts = log_turn['output']['dialog-acts'] if 'dialog-acts' in log_turn['output'] else None
 				
 				#get correct slu label
-				goal_label = label_turn['goal-labels']
-				method_label = label_turn['method-label']
-				request_slots = label_turn['requested-slots']
-				
-				if turn_index == 5:
-					debug = 1
+				goal_label = label_turn['goal-labels'] if label_turn != None else None
+				method_label = label_turn['method-label'] if label_turn != None else None
+				request_slots = label_turn['requested-slots'] if label_turn != None else None
 				
 				#get the rank of correct slu
 				rank = getCorrectSLUHypRank_H1(log_turn, label_turn)
