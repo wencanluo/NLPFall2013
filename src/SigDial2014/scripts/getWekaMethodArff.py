@@ -367,5 +367,6 @@ if (__name__ == '__main__'):
 	#getWekaARFF_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getWekaARFF_ActNgramTopline("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getWekaARFF_ActNgramRecovery("dstc2_train", ["dstc2_train", "dstc2_dev"])
-	getWekaARFF_ActwithNameNgramRecovery("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	#getWekaARFF_ActwithNameNgramRecovery("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	getWekaARFF_ActwithNameNgramRecovery("dstc2_traindev", ["dstc2_traindev", "dstc2_test"])
 	print "Done"

@@ -367,7 +367,7 @@ def getLabels(label_turn):#goal is a dict; method is a string; request is a list
 
 def getRecoveryMethod(log_turn, label_turn, last_labelturn):
 	if label_turn == None:
-		return None
+		return "none"
 	
 	if "dialog-acts" in log_turn["output"] :
 		mact = log_turn["output"]["dialog-acts"]
@@ -394,7 +394,7 @@ def getRecoveryMethod(log_turn, label_turn, last_labelturn):
 
 def getRecoveryGoals(log_turn, label_turn, last_labelturn):
 	if label_turn == None:
-		return None
+		return {}
 	
 	if "dialog-acts" in log_turn["output"] :
 		mact = log_turn["output"]["dialog-acts"]
@@ -499,9 +499,9 @@ def main(argv):
 				output_acts = log_turn['output']['dialog-acts'] if 'dialog-acts' in log_turn['output'] else None
 				
 				#get correct slu label
-				goal_label = label_turn['goal-labels'] if label_turn != None else None
-				method_label = label_turn['method-label'] if label_turn != None else None
-				request_slots = label_turn['requested-slots'] if label_turn != None else None
+				goal_label = label_turn['goal-labels'] if label_turn != None else {}
+				method_label = label_turn['method-label'] if label_turn != None else "none"
+				request_slots = label_turn['requested-slots'] if label_turn != None else []
 				
 				#get the rank of correct slu
 				rank = getCorrectSLUHypRank_H1(log_turn, label_turn)

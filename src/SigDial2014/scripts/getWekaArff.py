@@ -798,11 +798,12 @@ def getWekaARFF_Bin(featurefile, tests):
 
 		
 if (__name__ == '__main__'):
+	getActList(["dstc2_traindev"], "dstc2_traindev", True)
 	#getActList(["dstc2_train"], "dstc2_train", True)
 	#getWekaARFF_ActNgramWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getWekaARFF_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getWekaARFFBinarySwitch_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
-	getWekaARFFBinarySwitch_ActNgramWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	#getWekaARFFBinarySwitch_ActNgramWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getWekaARFFBinarySwitch_ActWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getWekaARFF_ActWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	print "Done"

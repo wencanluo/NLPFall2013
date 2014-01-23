@@ -1059,8 +1059,8 @@ def getWekaARFFBinarySwitch_ASRs(featurefile, tests):
 		
 		asr_index = head.index('ASRs')
 		goal_index = head.index('recovery_goals')
-		#goal_names = ['area', 'food', 'name', 'pricerange']
-		goal_names = ['food']
+		goal_names = ['area', 'food', 'name', 'pricerange']
+		#goal_names = ['food']
 		sr_id_index = head.index('sr_id')
 		
 		data = []
@@ -1082,15 +1082,15 @@ def getWekaARFFBinarySwitch_ASRs(featurefile, tests):
 					
 					#asr = asr.replace("'","\\'")
 					
-					hasFood = -1
-					e_asr = ' ' + asr + ' '
-					for food in foodnames:
-						if e_asr.find(food) != -1:
-							hasFood = 0
-							e_asr = e_asr.replace(food, ' FFFFD ')
-							#break
+					#hasFood = -1
+					#e_asr = ' ' + asr + ' '
+					#for food in foodnames:
+					#	if e_asr.find(food) != -1:
+					#		hasFood = 0
+					#		e_asr = e_asr.replace(food, ' FFFFD ')
+					#		#break
 					
-					asr = e_asr.strip()
+					#asr = e_asr.strip()
 						
 					row.append(asr)
 					row.append(sr_id)
@@ -1139,14 +1139,15 @@ def getWekaARFFBinarySwitch_ASRs(featurefile, tests):
 				
 			types = types + ['Category']
 			
-			fio.ArffWriter("res/"+test+"_nbest_goals_enrich_asrs_class_" + goal +".arff", header, types, "dstc", data)
+			#fio.ArffWriter("res/"+test+"_nbest_goals_enrich_asrs_class_" + goal +".arff", header, types, "dstc", data)
+			fio.ArffWriter("res/"+test+"_nbest_goals_asrs_" + goal +".arff", header, types, "dstc", data)
 																				
 if (__name__ == '__main__'):
 						
 	#getMulanARFF_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getMulanARFF_ActWithNameNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getMulanARFF_ASRs("dstc2_train", ["dstc2_train", "dstc2_dev"])
-	getMulanARFF_Enrich("dstc2_train", ["dstc2_train", "dstc2_dev"])
-	#getWekaARFFBinarySwitch_ASRs("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	#getMulanARFF_Enrich("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	getWekaARFFBinarySwitch_ASRs("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getMulanARFF_WizOz("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	print "Done"
