@@ -1,0 +1,103 @@
+Name of participant(s): Wencan Luo, Diane Litman
+Affiliation: University of Pittsburgh
+
+For each entry (maximum of 5):
+
+-- Entry 1 -- (first-correct model)
+1. Filename of tracker output (for both dev and test sets): 
+2. Which fields of the log.json objects does this tracker use as input? 
+	turn.output, turn.input.live.asr-hyps, turn.input.live.slu-hyps, system-specific
+3. Does this tracker require no look-ahead in the test data before it outputs its results? I.e. would it have been possible to achieve this tracker output in an online setup?
+	No. It's online.
+4. If your approach requires calculating statistics over the whole test set before outputting results, the answer to this is no. This is also the case if your tracker uses data from further ahead in the dialogue.
+	No.
+5. Is this approach fast enough to use in a live system?
+	Yes.
+6. Please give your opinion on whether this is a real-time solution. 
+	Yes. The decoding is pretty fast.
+7. Are the joint goals calculated as the product of the marginals?(This is achievable by omitting the goal-labels-joint field)
+	No
+8. Does this tracker consider hypotheses that haven't been suggested by the live SLU?
+	Yes
+9. Brief informal description of the approach: (This is optional, but interesting and useful information. No more than 100 words.)
+	The idea is to classifier each SLU as whether it is correct or not untill to get a correct one.
+	Only the first correct SLU is kept, all other ones are discarded.
+
+-- Entry 2 -- (BinarySwitch model)
+1. Filename of tracker output (for both dev and test sets): 
+2. Which fields of the log.json objects does this tracker use as input? 
+	turn.output, turn.input.live.asr-hyps, turn.input.live.slu-hyps, system-specific
+3. Does this tracker require no look-ahead in the test data before it outputs its results? I.e. would it have been possible to achieve this tracker output in an online setup?
+	No. It's online.
+4. If your approach requires calculating statistics over the whole test set before outputting results, the answer to this is no. This is also the case if your tracker uses data from further ahead in the dialogue.
+	No.
+5. Is this approach fast enough to use in a live system?
+	Yes.
+6. Please give your opinion on whether this is a real-time solution. 
+	Yes. The decoding is pretty fast.
+7. Are the joint goals calculated as the product of the marginals?(This is achievable by omitting the goal-labels-joint field)
+	No
+8. Does this tracker consider hypotheses that haven't been suggested by the live SLU?
+	Yes
+9. Brief informal description of the approach: (This is optional, but interesting and useful information. No more than 100 words.)
+	The idea is to classifier each SLU as whether it is correct or not. 
+	This binary decision serves as a bianry switch to indicate whether to pick up the corresponding SLU or not.
+
+	-- Entry 3 -- (Nbest ASR model)
+1. Filename of tracker output (for both dev and test sets): 
+2. Which fields of the log.json objects does this tracker use as input? 
+	turn.output, turn.input.live.asr-hyps, turn.input.live.slu-hyps, system-specific
+3. Does this tracker require no look-ahead in the test data before it outputs its results? I.e. would it have been possible to achieve this tracker output in an online setup?
+	No. It's online.
+4. If your approach requires calculating statistics over the whole test set before outputting results, the answer to this is no. This is also the case if your tracker uses data from further ahead in the dialogue.
+	No.
+5. Is this approach fast enough to use in a live system?
+	Yes.
+6. Please give your opinion on whether this is a real-time solution. 
+	Yes. The decoding is pretty fast.
+7. Are the joint goals calculated as the product of the marginals?(This is achievable by omitting the goal-labels-joint field)
+	No
+8. Does this tracker consider hypotheses that haven't been suggested by the live SLU?
+	Yes
+9. Brief informal description of the approach: (This is optional, but interesting and useful information. No more than 100 words.)
+	The idea is to classifier whether each ASR contains the goals or not. Then take the top 6 majority voting as the final decision.
+
+	
+	-- Entry 4 -- (Voting model)
+1. Filename of tracker output (for both dev and test sets): 
+2. Which fields of the log.json objects does this tracker use as input? 
+	turn.output, turn.input.live.asr-hyps, turn.input.live.slu-hyps, system-specific
+3. Does this tracker require no look-ahead in the test data before it outputs its results? I.e. would it have been possible to achieve this tracker output in an online setup?
+	No. It's online.
+4. If your approach requires calculating statistics over the whole test set before outputting results, the answer to this is no. This is also the case if your tracker uses data from further ahead in the dialogue.
+	No.
+5. Is this approach fast enough to use in a live system?
+	Yes.
+6. Please give your opinion on whether this is a real-time solution. 
+	Yes. The decoding is pretty fast.
+7. Are the joint goals calculated as the product of the marginals?(This is achievable by omitting the goal-labels-joint field)
+	No
+8. Does this tracker consider hypotheses that haven't been suggested by the live SLU?
+	Yes
+9. Brief informal description of the approach: (This is optional, but interesting and useful information. No more than 100 words.)
+	The given HWUBaseline considers only the SLU and the N-Best considers only the ASR. Therefore, combining them might get a better performance.
+
+	
+	-- Entry 5 -- (Hybrid model)
+1. Filename of tracker output (for both dev and test sets): 
+2. Which fields of the log.json objects does this tracker use as input? 
+	turn.output, turn.input.live.asr-hyps, turn.input.live.slu-hyps, system-specific
+3. Does this tracker require no look-ahead in the test data before it outputs its results? I.e. would it have been possible to achieve this tracker output in an online setup?
+	No. It's online.
+4. If your approach requires calculating statistics over the whole test set before outputting results, the answer to this is no. This is also the case if your tracker uses data from further ahead in the dialogue.
+	No.
+5. Is this approach fast enough to use in a live system?
+	Yes.
+6. Please give your opinion on whether this is a real-time solution. 
+	Yes. The decoding is pretty fast.
+7. Are the joint goals calculated as the product of the marginals?(This is achievable by omitting the goal-labels-joint field)
+	No
+8. Does this tracker consider hypotheses that haven't been suggested by the live SLU?
+	Yes
+9. Brief informal description of the approach: (This is optional, but interesting and useful information. No more than 100 words.)
+	Using the NBest model to do the "pricerange", "area" goals and using HWUBaseline to do the "food" and "name".

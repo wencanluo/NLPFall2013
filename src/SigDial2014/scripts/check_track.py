@@ -43,19 +43,19 @@ class TrackChecker():
         if len(self.sessions.datasets) != 1 :
             self.add_error(("top level",), "tracker output should be over a single dataset")
         if "dataset" not in self.tracker_output :
-            self.add_error(("top level","trackfile should specify its dataset"))
+            self.add_error(("top level",),"trackfile should specify its dataset")
         elif self.sessions.datasets[0] != self.tracker_output["dataset"]:
-            self.add_error(("top level","datasets do not match"))
+            self.add_error(("top level",),"datasets do not match")
         if len(self.tracker_output["sessions"]) !=  len(self.sessions) :
-            self.add_error(("top level","number of sessions does not match"))
+            self.add_error(("top level",),"number of sessions does not match")
         if "wall-time" not in self.tracker_output :
-            self.add_error(("top level","wall-time should be included"))
+            self.add_error(("top level",),"wall-time should be included")
         else:
             wall_time = self.tracker_output["wall-time"]
             if type(wall_time) != type(0.0):
-                self.add_error(("top level","wall-time must be a float"))
+                self.add_error(("top level",),"wall-time must be a float")
             elif wall_time <= 0.0 :
-                self.add_error(("top level","wall-time must be positive"))
+                self.add_error(("top level",),"wall-time must be positive")
                 
         # check no extra keys TODO
          
@@ -122,10 +122,10 @@ class TrackChecker():
                     d = {}
                     for i, hyp in enumerate(tracker_turn["goal-labels-joint"]):
                         d[i] = hyp["score"]
-                    self._check_distribution(
-                        (session_id, "turn", turn_num, "goal-labels-joint", "hyp", i),
-                        d
-                    )
+                        self._check_distribution(
+                            (session_id, "turn", turn_num, "goal-labels-joint", "hyp", i),
+                            d
+                        )
                     # now check hypotheses
                     for i, hyp in enumerate(tracker_turn["goal-labels-joint"]):
                         for slot in hyp["slots"]:
