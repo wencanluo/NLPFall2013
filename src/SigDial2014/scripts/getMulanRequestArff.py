@@ -176,4 +176,5 @@ def getMulanARFF_ActNgram(featurefile, tests):
 							
 if (__name__ == '__main__'):
 	getMulanARFF_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	getMulanARFF_ActNgram("dstc2_traindev", ["dstc2_traindev", "dstc2_test"])
 	print "Done"

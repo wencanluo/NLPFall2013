@@ -1,4 +1,0 @@
-train:../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitchwithName
-test:../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitchwithName
-Train: 43055
-Test: 43055

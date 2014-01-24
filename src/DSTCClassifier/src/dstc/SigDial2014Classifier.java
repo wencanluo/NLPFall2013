@@ -111,7 +111,7 @@ public class SigDial2014Classifier {
 	 */
 	public static void main(String[] args) throws Exception {
 		PrintStream oldout = System.out;
-		File f = new File("log.txt");		
+		File f = new File("log_H1_actngram_binaryswitchwithName.txt");		
 		System.setOut(new PrintStream(f));
 		
 		SigDial2014Classifier classifier = new SigDial2014Classifier();
@@ -166,9 +166,12 @@ public class SigDial2014Classifier {
 		//Act WithName + Out + SLU Ngram + BinarySwitch, Top3
 		String train = "../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitchwithName";
 		String dev = "../SigDial2014/scripts/res/dstc2_dev_H1_actngram_binaryswitchwithName";
+		String traindev = "../SigDial2014/scripts/res/dstc2_traindev_H1_actngram_binaryswitchwithName";
+		String test = "../SigDial2014/scripts/res/dstc2_test_H1_actngram_binaryswitchwithName";
 		
 		classifier.ClassifierTwoNgram(train, train);
 		classifier.ClassifierTwoNgram(train, dev);
+		classifier.ClassifierTwoNgram(traindev, test);
 				
 		System.setOut(oldout);
 		

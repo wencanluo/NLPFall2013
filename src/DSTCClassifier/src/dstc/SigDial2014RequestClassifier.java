@@ -81,9 +81,12 @@ public class SigDial2014RequestClassifier {
 		//Act + Ngram, MindChange
 		String train = "../SigDial2014/scripts/res/dstc2_train_request_actngram_slot";
 		String dev = "../SigDial2014/scripts/res/dstc2_dev_request_actngram_slot";
+		String traindev = "../SigDial2014/scripts/res/dstc2_traindev_request_actngram_slot";
+		String test = "../SigDial2014/scripts/res/dstc2_test_request_actngram_slot";
 		
 		classifier.ClassifierNgram(train, train);
 		classifier.ClassifierNgram(train, dev);
+		classifier.ClassifierNgram(traindev, test);
 		
 		System.setOut(oldout);
 		

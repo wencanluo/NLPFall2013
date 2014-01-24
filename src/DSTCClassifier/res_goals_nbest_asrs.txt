@@ -1,0 +1,4 @@
+train:../SigDial2014/scripts/res/dstc2_train_nbest_goals_asrs_Larea
+test:../SigDial2014/scripts/res/dstc2_train_nbest_goals_asrs_Larea
+Train: 116767
+Test: 116767

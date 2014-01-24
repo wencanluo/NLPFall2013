@@ -357,7 +357,11 @@ def getWekaARFFBinarySwitch_ActNgramWithName(featurefile, tests):
 		filename = "res/"+test+"_summary.txt"
 		head, body = fio.readMatrix(filename, True)
 		
-		sessions = dataset_walker.dataset_walker(test, dataroot='../data', labels=True)
+		if "test" in test:
+			sessions = dataset_walker.dataset_walker(test, dataroot='../data', labels=False)
+			#log_turns, label_turns = getSummary.getTurns(sessions)
+		else:
+			sessions = dataset_walker.dataset_walker(test, dataroot='../data', labels=True)
 		log_turns, label_turns = getSummary.getTurns(sessions)
 		
 		print len(log_turns)
@@ -378,7 +382,7 @@ def getWekaARFFBinarySwitch_ActNgramWithName(featurefile, tests):
 			Trans_System = row[systemout_index][1:-1]
 			
 			log_turn = log_turns[i]
-			label_turn = label_turns[i]
+			label_turn = label_turns[i] if label_turns != None else None
 			
 			#in_act = row[in_index][1:-1]
 			
@@ -798,12 +802,13 @@ def getWekaARFF_Bin(featurefile, tests):
 
 		
 if (__name__ == '__main__'):
-	getActList(["dstc2_traindev"], "dstc2_traindev", True)
+	#getActList(["dstc2_traindev"], "dstc2_traindev", True)
 	#getActList(["dstc2_train"], "dstc2_train", True)
 	#getWekaARFF_ActNgramWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getWekaARFF_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getWekaARFFBinarySwitch_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getWekaARFFBinarySwitch_ActNgramWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	getWekaARFFBinarySwitch_ActNgramWithName("dstc2_traindev", ["dstc2_traindev", "dstc2_test"])
 	#getWekaARFFBinarySwitch_ActWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getWekaARFF_ActWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	print "Done"

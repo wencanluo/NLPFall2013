@@ -8,10 +8,13 @@ Method_Classifier (MindChange Model)
 			* Top ASR
 			* Acts (51)
 			> dstc_train_method_actwithNamengram_mindchange.arff
+			> dstc_dev_method_actwithNamengram_mindchange.arff
+			> dstc_traindev_method_actwithNamengram_mindchange.arff
 			> dstc_test_method_actwithNamengram_mindchange.arff
 	Step2: Do the method Classifier
 		java SigDial2014MethodClassifier
 			> dstc_train_method_actwithNamengram_mindchange.label
+			> dstc_dev_method_actwithNamengram_mindchange.label
 			> dstc_test_method_actwithNamengram_mindchange.label
 	Step3: Run the 2waymodel
 		python 2wayModel.py
@@ -19,11 +22,17 @@ Method_Classifier (MindChange Model)
 Request_Classifier
 	Step1: Get ARFF file
 		python getMulanRequestArff.getMulanARFF_ActNgram()
+			* Top ASR
+			* Acts (51)
 			> dstc_train_request_actngram_slot.arff dstc_train_request_actngram_slot.xml
-			> dstc_test_request_actngram_slot.arff dstc_train_request_actngram_slot.xml
+			> dstc_dev_request_actngram_slot.arff dstc_dev_request_actngram_slot.xml
+			> dstc_traindev_request_actngram_slot.arff dstc_traindev_request_actngram_slot.xml
+			> dstc_test_request_actngram_slot.arff dstc_test_request_actngram_slot.xml
 	Step2: Do the method Classifier
 		java SigDial2014RequestClassifier
-			> 
+			> dstc_train_request_actngram_slot.arff
+			> dstc_dev_request_actngram_slot.arff
+			> dstc2_test_request_actngram_slot_ngram.arff.label
 	Step3: Run the 2waymodel
 		python 2wayModel.py
 		

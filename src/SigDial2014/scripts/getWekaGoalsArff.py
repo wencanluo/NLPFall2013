@@ -1149,5 +1149,6 @@ if (__name__ == '__main__'):
 	#getMulanARFF_ASRs("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getMulanARFF_Enrich("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	getWekaARFFBinarySwitch_ASRs("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	getWekaARFFBinarySwitch_ASRs("dstc2_traindev", ["dstc2_traindev", "dstc2_test"])
 	#getMulanARFF_WizOz("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	print "Done"

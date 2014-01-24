@@ -406,10 +406,10 @@ def getRecoveryGoals(log_turn, label_turn, last_labelturn):
 	
 	return utility.sub(goal_label, p_goal_label)
 
-def getTurns(sessions):# fixed this
+def getTurns(sessions, label = True):# fixed this
 	log_turns = []
 	label_turns = []
-	
+		
 	for session in sessions:
 		for turn_index,(log_turn,label_turn) in enumerate(session):
 			log_turn = fixedThis(log_turn)

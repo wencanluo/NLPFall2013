@@ -1,0 +1,72 @@
+train:../SigDial2014/scripts/res/dstc2_train_method_actwithNamengram_mindchange
+test:../SigDial2014/scripts/res/dstc2_train_method_actwithNamengram_mindchange
+Train: 11677
+Test: 11677
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 0.878     0.007      0.898     0.878     0.888      0.978      0.816    byalternatives
+                 0.961     0.014      0.973     0.961     0.967      0.984      0.956    byconstraints
+                 0.556     0          1         0.556     0.714      0.973      0.565    byname
+                 0.977     0.002      0.989     0.977     0.983      0.998      0.983    finished
+                 0.973     0.037      0.957     0.973     0.965      0.969      0.944    none
+Weighted Avg.    0.963     0.022      0.963     0.963     0.963      0.979      0.945
+
+=== Confusion Matrix ===
+
+    a    b    c    d    e   <-- classified as
+  643   44    0    0   45 |    a = byalternatives
+    6 3806    0    1  149 |    b = byconstraints
+    0    0    5    0    4 |    c = byname
+    1    1    0 1618   36 |    d = finished
+   66   62    0   17 5173 |    e = none
+
+train:../SigDial2014/scripts/res/dstc2_train_method_actwithNamengram_mindchange
+test:../SigDial2014/scripts/res/dstc2_dev_method_actwithNamengram_mindchange
+Train: 11677
+Test: 3934
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 0.748     0.009      0.848     0.748     0.795      0.939      0.682    byalternatives
+                 0.934     0.023      0.949     0.934     0.941      0.971      0.919    byconstraints
+                 0         0          0         0         0          0.792      0.006    byname
+                 0.973     0.004      0.971     0.973     0.972      0.995      0.962    finished
+                 0.957     0.068      0.93      0.957     0.943      0.944      0.912    none
+Weighted Avg.    0.937     0.042      0.934     0.937     0.935      0.959      0.905
+
+=== Confusion Matrix ===
+
+    a    b    c    d    e   <-- classified as
+  184   25    0    0   37 |    a = byalternatives
+    3 1169    0    0   80 |    b = byconstraints
+    0    0    0    0    8 |    c = byname
+    0    1    0  501   13 |    d = finished
+   30   37    0   15 1831 |    e = none
+
+train:../SigDial2014/scripts/res/dstc2_traindev_method_actwithNamengram_mindchange
+test:../SigDial2014/scripts/res/dstc2_test_method_actwithNamengram_mindchange
+Train: 15611
+Test: 9890
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 0.055     0          1         0.055     0.104      ?          1        byalternatives
+                 0         0.363      0         0         0          ?          ?        byconstraints
+                 0         0          0         0         0          ?          ?        byname
+                 0         0.115      0         0         0          ?          ?        finished
+                 0         0.467      0         0         0          ?          ?        none
+Weighted Avg.    0.055     0          1         0.055     0.104      0          1    
+
+=== Confusion Matrix ===
+
+    a    b    c    d    e   <-- classified as
+  542 3589    1 1136 4622 |    a = byalternatives
+    0    0    0    0    0 |    b = byconstraints
+    0    0    0    0    0 |    c = byname
+    0    0    0    0    0 |    d = finished
+    0    0    0    0    0 |    e = none
+
