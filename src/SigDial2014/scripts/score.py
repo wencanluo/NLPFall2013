@@ -27,8 +27,6 @@ def main(argv):
                         help='File to write with CSV scoring data')
     parser.add_argument('--ontology',dest='ontology',action='store',metavar='JSON_FILE',required=True,
                         help='JSON Ontology file')
-    parser.add_argument('--rocbins',dest='rocbins',action='store',metavar='INT',default=200,type=int,
-                        help='ROC bins to use (default 10000).  Lower numbers make the script run faster, but produce less accurate ROC results.')
     parser.add_argument('--rocdump',dest='rocdump',action='store',metavar='FILE_STEM',
                         help='If present, use this file stem to write out ROC plot data: filestem.<schedule>.<slot>.<type>.csv, where type is either roc (which contains the ROC curve coordinates) or scores (which contains the raw scores used to compute the ROC curves).')
 
@@ -45,9 +43,7 @@ def main(argv):
     
     # what stats are there?
     stats = []
-    #stat_classes = [Stat_Accuracy, Stat_Probs, Stat_MRR, Stat_Updates, lambda : Stat_ROC(args.rocbins)]
-    stat_classes = [Stat_Accuracy, Stat_Probs]
-    #stat_classes = [Stat_Accuracy, Stat_Probs, lambda : Stat_ROC(args.rocbins)]
+    stat_classes = [Stat_Accuracy, Stat_Probs, Stat_MRR, Stat_Updates, Stat_ROC]
     
     for schedule in SCHEDULES:
         for label_scheme in LABEL_SCHEMES:
@@ -226,6 +222,8 @@ def main(argv):
                         
                         
                     stat_class.add(dist, true_label, (session_id, turn_num, component, schedule, label_scheme))
+      except KeyboardInterrupt :
+          raise
       except:
           traceback.print_exc(file=sys.stdout)
           print "While scoring " + str(session_id)
@@ -241,9 +239,11 @@ def main(argv):
             else :
                 result = "%.7f"%result
             print >>csvfile,( "%s, %s, %i, %s, %i, %s"%(".".join(component), stat_subname, schedule, label_scheme, N, result))
-            if stat_subname[:3] == "roc" and (args.rocdump):
-                rocfile = args.rocdump + '.schedule' + schedule + '.' + (".".join(component)) + '.roc.csv'
-                stat_class.DumpROCToFile(rocfile)
+        if isinstance(stat_class, Stat_ROC) and (args.rocdump):
+            rocfile = args.rocdump + '.schedule' + str(schedule) + str(label_scheme)+'.' + (".".join(component)) + '.roc.csv'
+            scoresfile = args.rocdump + '.schedule' + str(schedule) + str(label_scheme)+'.' + (".".join(component)) + '.scores.csv'
+            stat_class.DumpROCToFile(rocfile)
+            stat_class.DumpScoresToFile(scoresfile)
         
     print >>csvfile,'basic,total_wall_time,,,,%s' % (tracker_output['wall-time'])
     print >>csvfile,'basic,sessions,,,,%s' % (len(sessions))
@@ -488,75 +488,47 @@ class Stat_Updates(Stat):
     def newDialog(self) :
         self.previous = None
 
+def _changingIndices(x) :
+    out = [0]
+    value = x[0]
+    for i, x_value in enumerate(x) :
+        if x_value != value :
+            out.append(i)
+            value = x_value
+    return out
+
+def _cumSum(x) :
+    out = []
+    cum = 0.0
+    for x_value in x:
+        cum += x_value
+        out.append(cum)
+    return out
 
 class Stat_ROC(Stat):
-    def __init__(self,bins=10000):
+    def __init__(self):
         self.data = []
-        self.bins = bins
-        self.current = False
         self.N = 0
-
-    def add(self, dist, true_label, this_id, independent=False):
+        
+    def add(self, dist,  true_label, this_id, independent=False):
+        
         if independent :
-             top_hyp, score = tophyp_independent(dist)
-             self.data.append( [top_hyp == true_label, score] ) 
+            top_hyp, score = tophyp_independent(dist)
+            label = top_hyp == true_label
+            
         else :
-            self.data.append( [dist[0][0] == true_label, dist[0][1]] ) # the label, T or F- and the score
-        self.current = False
+            label = dist[0][0]== true_label
+            score = dist[0][1]
+            
+        self.data.append(
+            (label, score)
+        )
         self.N = len(self.data)
-
-    def _CountBins(self):
-        self._data = []
-        self._rawdata = []
-        if (len(self.data) < 2):
-            return
-        self.data.sort(key=lambda x:x[1])
-        items = len(self.data)
-        min_score = min(self.data,key=lambda x:x[1])[1]
-        max_score = max(self.data,key=lambda x:x[1])[1]
-        incr = 1.0 * (max_score - min_score) / (self.bins-1)
-        thresholds = [min_score + (x*incr) for x in range(self.bins)]
-        for threshold_index,threshold in enumerate(thresholds):
-            count_TA = 0
-            count_FA = 0
-            count_TR = 0
-            count_FR = 0
-            for label,score in self.data:
-                if (threshold_index == (self.bins-1) or score < threshold):
-                    # reject
-                    if (label == True):
-                        count_FR += 1
-                    elif (label == False):
-                        count_TR += 1
-                    else:
-                        raise RuntimeError,'Label is not true or false: %s' % (label)
-                else:
-                    # accept
-                    if (label == True):
-                        count_TA += 1
-                    elif (label == False):
-                        count_FA += 1
-                    else:
-                        raise RuntimeError,'Label is not true or false: %s' % (label)
-            self._data.append([
-                        threshold,
-                        1.0 * count_TA / items,
-                        1.0 * count_FA / items,
-                        1.0 * count_TR / items,
-                        1.0 * count_FR / items,
-                        1.0 * count_TA / (count_TA + count_FR) if (count_TA + count_FR)>0 else None,
-                        1.0 * count_FA / (count_FA + count_TR) if (count_FA + count_TR)>0 else None,
-                        ])
-            self._rawdata.append([
-                    threshold,
-                    count_TA,
-                    count_FA,
-                    count_TR,
-                    count_FR,
-                    ])
-
-    def results(self):
-        return [
+    
+    def results(self, ):
+        self._calculateROC()
+        
+        return (
              ('roc.v1_eer', self.N, self.EER() ),
              ('roc.v1_ca05', self.N, self.CA_at_FA(0.05) ),
              ('roc.v1_ca10', self.N, self.CA_at_FA(0.10) ),
@@ -564,52 +536,67 @@ class Stat_ROC(Stat):
              ('roc.v2_ca05', self.N, self.CA_at_FA(0.05,version=2) ),
              ('roc.v2_ca10', self.N, self.CA_at_FA(0.10,version=2) ),
              ('roc.v2_ca20', self.N, self.CA_at_FA(0.20,version=2) ),
-            ]
-
-    def _CheckCurrent(self):
-        if (self.current == False):
-            self._CountBins()
-            self.current = True
-
+            )
+    def EER(self) :
+        if (self.N < 2):
+            return None
+        for (t,ta,fa,tr,fr) in self.roc_curve:
+            if (fr >= fa):
+                return float(fr + fa)/self.N
+        raise RuntimeError,'Could not find a place where FR >= FA'
+    
+    def _calculateROC(self) :
+        self.data.sort(key=lambda x:-x[1])
+        N = len(self.data)
+        if N <= 2 :
+            self.roc_curve = []
+            return
+        indices = _changingIndices([x[1] for x in self.data[:-1]]) + [N-1]
+        # true/false accepts/rejects
+        cumsum = _cumSum([int(x[0]) for x in self.data])
+        N_true = sum([int(x[0]) for x in self.data])
+        N_false = N-N_true
+        frs = [N_true-cumsum[i] for i in indices]
+        trs = [N_false-i+cumsum[i]-1 for i in indices]
+        fas = [i-cumsum[i]+1 for i in indices]
+        tas =  [cumsum[i] for i in indices]
+        thresholds = [self.data[i][1] for i in indices]
+        self.roc_curve = zip(thresholds,tas, fas, trs, frs)
+        self.roc_curve.reverse() # so thresholds are increasing
+        
     def CA_at_FA(self,fa_thresh,version=1):
         assert (version in [1,2]),'Dont know version %s' % (version)
-        self._CheckCurrent()
         if (self.N < 2):
             return None
         if (version == 1):
-            for (t,ta,fa,tr,fr,tpr,fpr) in self._data:
-                if (fa <= fa_thresh):
-                    return ta
+            for (t,ta,fa,tr,fr) in self.roc_curve:
+                if (float(fa)/self.N <= fa_thresh):
+                    return float(ta)/self.N
             raise RuntimeError,'Could not find a place where FA <= FA_THRESH'
         else:
-            for (t,ta,fa,tr,fr,tpr,fpr) in self._data:
-                if (fpr != None and fpr <= fa_thresh):
-                    return tpr
+            for (t,ta,fa,tr,fr) in self.roc_curve:
+                try :
+                    ta_rate = ta/(ta + fr)
+                    fa_rate = fa/(fa + tr)
+                    if (fa_rate <= fa_thresh):
+                        return ta_rate
+                except ZeroDivisionError :
+                    continue
             return None
+        
 
-    def EER(self):
-        self._CheckCurrent()
-        if (self.N < 2):
-            return None
-        for (t,ta,fa,tr,fr,tpr,fpr) in self._data:
-            if (fr >= fa):
-                return fr + fa
-        raise RuntimeError,'Could not find a place where FR >= FA'
+
+
 
     def DumpROCToFile(self,filename):
-        self._CheckCurrent()
-        f = open(filename,'w')
-        print >>f,'threshold,TA,FA,TR,FR,TPR,FPR,count_threshold,count_TA,count_FA,count_TR,count_FR'
-        for row,row_raw in zip(self._data,self._rawdata):
-            print >>f,','.join( [str(x) for x in row+row_raw])
-        f.close()
+        pass
 
     def DumpScoresToFile(self,filename):
-        self._CheckCurrent()
+        print "creating", filename
         f = open(filename,'w')
         print >>f,'label,score'
-        for label,score in self.data:
-            print >>f,'%s,%s' % (label,score)
+        for label, score in self.data:
+            print >>f,'%s,%s'%(label,score)
         f.close()
     
 def tophyp_independent(dists) :

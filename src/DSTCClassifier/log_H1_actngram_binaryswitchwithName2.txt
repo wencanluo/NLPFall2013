@@ -1,0 +1,18 @@
+train:../SigDial2014/scripts/res/dstc2_traindev_H1_actngram_binaryswitchwithName
+test:../SigDial2014/scripts/res/dstc2_test_H1_actngram_binaryswitchwithName
+Train: 58570
+Test: 37449
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 0.669     0          1         0.669     0.801      ?          1        0
+                 0         0.331      0         0         0          ?          ?        1
+Weighted Avg.    0.669     0          1         0.669     0.801      0          1    
+
+=== Confusion Matrix ===
+
+     a     b   <-- classified as
+ 25039 12410 |     a = 0
+     0     0 |     b = 1
+

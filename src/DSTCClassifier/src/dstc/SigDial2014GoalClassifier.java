@@ -122,57 +122,38 @@ public class SigDial2014GoalClassifier {
 	 */
 	public static void main(String[] args) throws Exception {
 		PrintStream oldout = System.out;
-		File f = new File("res_goals_nbest_asrs.txt");		
+		File f = new File("res_goals_nbest_self.txt");		
 		System.setOut(new PrintStream(f));
 		
 		SigDial2014GoalClassifier classifier = new SigDial2014GoalClassifier();
 
-		String[] Goals = {"area", "food", "name", "pricerange"};
+		//String[] Goals = {"area", "food", "name", "pricerange"};
+		//String[] Goals = {"area", "food", "name", "pricerange"};
 		//String[] Goals = {"food"};
-		//String[] Goals = {"area", "pricerange"};
+		String[] Goals = {"area", "pricerange"};
 		
 		//Act + Ngram, MindChange
 		for(String goal: Goals){
-			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_actWithNamengram_L" + goal;
-			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_actWithNamengram_L" + goal;
-			
-			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_L" + goal;
-			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_L" + goal;
-			
-			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_trans_L" + goal;
-			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_trans_L" + goal;
-			
-			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_more_bigram_L" + goal;
-			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_more_bigram_L" + goal;
-			
-			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_asrs_L" + goal;
-			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_asrs_L" + goal;
-			
-			//String train = "../SigDial2014/scripts/res/dstc2_train_nbest_goals_enrich_asrs_L" + goal;
-			//String dev = "../SigDial2014/scripts/res/dstc2_dev_nbest_goals_enrich_asrs_L" + goal;
+			if(goal.equals("area")) continue;
 			
 			String train = "../SigDial2014/scripts/res/dstc2_train_nbest_goals_asrs_L" + goal;
 			String dev = "../SigDial2014/scripts/res/dstc2_dev_nbest_goals_asrs_L" + goal;
-			String traindev = "../SigDial2014/scripts/res/dstc2_traindev_nbest_goals_asrs_L" + goal;
+			String traindev = "../SigDial2014/scripts/res/dstc2_traindev_nbest_goals_asrs_self_L" + goal;
+			String traindevtest = "../SigDial2014/scripts/res/dstc2_traindevtest_nbest_goals_asrs_self_L" + goal;
 			String test = "../SigDial2014/scripts/res/dstc2_test_nbest_goals_asrs_L" + goal;
-			
-			//String train = "../SigDial2014/scripts/res/dstc2_train_nbest_goals_enrich_asrs_class_L" + goal;
-			//String dev = "../SigDial2014/scripts/res/dstc2_dev_nbest_goals_enrich_asrs_class_L" + goal;
-			
-			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_logasr_hybird_L" + goal;
-			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_logasr_hybird_L" + goal;
-
-			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_wizoz_L" + goal;
-			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_wizoz_L" + goal;
-			
-			//String train = "../SigDial2014/scripts/res/dstc2_train_goals_enrich_sr_dm_L" + goal;
-			//String dev = "../SigDial2014/scripts/res/dstc2_dev_goals_enrich_sr_dm_L" + goal;
-			
-			classifier.ClassifierNgram(train, train);
-			classifier.ClassifierNgram(train, dev);
-			classifier.ClassifierNgram(traindev, test);
+			classifier.ClassifierNgram(traindev, dev);
+			//classifier.ClassifierNgram(traindevtest, test);
 		}
 		
+		for(String goal: Goals){
+			String train = "../SigDial2014/scripts/res/dstc2_train_nbest_goals_asrs_L" + goal;
+			String dev = "../SigDial2014/scripts/res/dstc2_dev_nbest_goals_asrs_L" + goal;
+			String traindev = "../SigDial2014/scripts/res/dstc2_traindev_nbest_goals_asrs_self_L" + goal;
+			String traindevtest = "../SigDial2014/scripts/res/dstc2_traindevtest_nbest_goals_asrs_self_L" + goal;
+			String test = "../SigDial2014/scripts/res/dstc2_test_nbest_goals_asrs_L" + goal;
+			//classifier.ClassifierNgram(traindev, dev);
+			classifier.ClassifierNgram(traindevtest, test);
+		}
 		System.setOut(oldout);
 		
 		System.out.println("Finish!");

@@ -270,7 +270,7 @@ def getWekaARFF_ActNgram(featurefile, tests):
 		
 def getWekaARFFBinarySwitch_ActNgram(featurefile, tests):
 	#features = fio.LoadDict("res/train1a.dict")
-	features = fio.LoadDict("res/"+featurefile+".dict")
+	features = fio.LoadDict("res/"+featurefile+"_name.dict")
 	
 	#tests = ['train1a', 'test1', 'test2', 'test3', 'test4']
 	
@@ -280,7 +280,12 @@ def getWekaARFFBinarySwitch_ActNgram(featurefile, tests):
 		filename = "res/"+test+"_summary.txt"
 		head, body = fio.readMatrix(filename, True)
 		
-		sessions = dataset_walker.dataset_walker(test, dataroot='../data', labels=True)
+		if "test" in test:
+			sessions = dataset_walker.dataset_walker(test, dataroot='../data', labels=False)
+			#log_turns, label_turns = getSummary.getTurns(sessions)
+		else:
+			sessions = dataset_walker.dataset_walker(test, dataroot='../data', labels=True)
+			
 		log_turns, label_turns = getSummary.getTurns(sessions)
 		
 		print len(log_turns)
@@ -305,7 +310,7 @@ def getWekaARFFBinarySwitch_ActNgram(featurefile, tests):
 			
 			for k, hyps in enumerate(log_turn['input']['live']['slu-hyps']):
 				#only keep top 3
-				#if k >= 3: continue
+				#if k >= 1: continue
 				
 				#get whether it is correct for each SLU
 				label = 1 if getSummary.IsCorrectSLUHypRank_H1(hyps, label_turn) else 0
@@ -313,7 +318,7 @@ def getWekaARFFBinarySwitch_ActNgram(featurefile, tests):
 				#get acts for each input SLU
 				in_act = getSummary.strslu(hyps['slu-hyp'])
 					
-				acts = set( list(getAct(out_act)) + list(getAct(in_act)))
+				acts = set( list(getAct(out_act, "out_", True)) + list(getAct(in_act, "in_", True)))
 				
 				row = []
 				
@@ -341,7 +346,7 @@ def getWekaARFFBinarySwitch_ActNgram(featurefile, tests):
 		types = types + ['Category']
 		#fio.ArffWriter("res/"+test+"_H2_actngram.arff", header, types, "dstc", data)
 		#fio.ArffWriter("res/"+test+"_actngram.arff", header, types, "dstc", data)
-		fio.ArffWriter("res/"+test+"_H1_actngram_binaryswitch_top3_10.arff", header, types, "dstc", data)
+		fio.ArffWriter("res/"+test+"_H1_actngram_binaryswitch.arff", header, types, "dstc", data)
 			
 def getWekaARFFBinarySwitch_ActNgramWithName(featurefile, tests):
 	#Feature Set: Act with Name, System out, User Slot in
@@ -387,7 +392,7 @@ def getWekaARFFBinarySwitch_ActNgramWithName(featurefile, tests):
 			#in_act = row[in_index][1:-1]
 			
 			for k, hyps in enumerate(log_turn['input']['live']['slu-hyps']):
-				#if k >= 3: continue
+				#if k >= 1: continue
 				
 				#get whether it is correct for each SLU
 				label = 1 if getSummary.IsCorrectSLUHypRank_H1(hyps, label_turn) else 0
@@ -802,13 +807,14 @@ def getWekaARFF_Bin(featurefile, tests):
 
 		
 if (__name__ == '__main__'):
-	#getActList(["dstc2_traindev"], "dstc2_traindev", True)
+	getActList(["dstc2_traindevtest"], "dstc2_traindevtest", True)
 	#getActList(["dstc2_train"], "dstc2_train", True)
 	#getWekaARFF_ActNgramWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getWekaARFF_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getWekaARFFBinarySwitch_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	#getWekaARFFBinarySwitch_ActNgram("dstc2_traindev", ["dstc2_traindev", "dstc2_test"])
 	#getWekaARFFBinarySwitch_ActNgramWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
-	getWekaARFFBinarySwitch_ActNgramWithName("dstc2_traindev", ["dstc2_traindev", "dstc2_test"])
+	#getWekaARFFBinarySwitch_ActNgramWithName("dstc2_traindev", ["dstc2_traindev", "dstc2_test"])
 	#getWekaARFFBinarySwitch_ActWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getWekaARFF_ActWithName("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	print "Done"

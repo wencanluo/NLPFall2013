@@ -1,0 +1,1 @@
+javac -cp lib\mulan.jar;lib\weka.jar bin\dstc\SigDial2014Classifier.java

@@ -5,6 +5,8 @@ from baseline import *
 import fio
 import getSlotValues
 
+topK = 5
+
 def getNbest(mat, topK = 5):
 	res = []
 	
@@ -22,7 +24,19 @@ def getNbest(mat, topK = 5):
 		
 		keys = sorted(dict, key=dict.get, reverse = True)
 		if len(keys) > 0:
-			res.append(keys[0])
+			maxK = keys[0]
+			#handle the duplicate one
+			for i,k in enumerate(keys):
+				if i == 0: continue
+				if i > topK: continue
+				if i >= len(keys): continue
+				
+				if dict[k] == dict[keys[0]]:
+					if 'Yes' in k:
+						maxK = k
+						break
+			res.append(maxK)	
+			
 	return res
 	
 def main():
@@ -41,8 +55,12 @@ def main():
 						help='File with goal_name prediction results')
 	parser.add_argument('--goal_pricerange',dest='goal_pricerange',action='store',required=False,metavar='TXT',
 						help='File with goal_pricerange prediction results')
+	parser.add_argument('--topK',dest='topK',action='store',type=int, help='get topK accuracy')
 	
 	args = parser.parse_args()
+	
+	global topK
+	topK = args.topK
 	
 	for goal in [args.goal_area, args.goal_food, args.goal_name, args.goal_pricerange]:
 		if goal == None: continue
@@ -62,11 +80,11 @@ def main():
 				
 				n_asr_live = len(turn['input']['live']['asr-hyps'])
 				
-				combinedgoals = getNbest(body[nbest_count:nbest_count + n_asr_live][:])
+				combinedgoals = getNbest(body[nbest_count:nbest_count + n_asr_live][:], topK)
 				nbest.append(combinedgoals)
 				nbest_count = nbest_count + n_asr_live
 		
-		fio.writeMatrix(goal+".combine", nbest, head)
+		fio.writeMatrix(goal+'.'+str(topK)+".combine", nbest, head)
 		
 if __name__ == '__main__':
 	main()

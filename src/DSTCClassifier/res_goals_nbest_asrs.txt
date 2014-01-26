@@ -1,4 +1,90 @@
-train:../SigDial2014/scripts/res/dstc2_train_nbest_goals_asrs_Larea
-test:../SigDial2014/scripts/res/dstc2_train_nbest_goals_asrs_Larea
-Train: 116767
-Test: 116767
+train:../SigDial2014/scripts/res/dstc2_traindev_nbest_goals_asrs_Larea
+test:../SigDial2014/scripts/res/dstc2_test_nbest_goals_asrs_Larea
+Train: 156107
+Test: 98900
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 0.9       0          1         0.9       0.948      ?          1        area.No
+                 0         0.009      0         0         0          ?          ?        area.Yes.centre
+                 0         0.028      0         0         0          ?          ?        area.Yes.dontcare
+                 0         0.016      0         0         0          ?          ?        area.Yes.east
+                 0         0.014      0         0         0          ?          ?        area.Yes.north
+                 0         0.019      0         0         0          ?          ?        area.Yes.south
+                 0         0.014      0         0         0          ?          ?        area.Yes.west
+Weighted Avg.    0.9       0          1         0.9       0.948      0          1    
+
+=== Confusion Matrix ===
+
+     a     b     c     d     e     f     g   <-- classified as
+ 89045   856  2764  1556  1413  1869  1397 |     a = area.No
+     0     0     0     0     0     0     0 |     b = area.Yes.centre
+     0     0     0     0     0     0     0 |     c = area.Yes.dontcare
+     0     0     0     0     0     0     0 |     d = area.Yes.east
+     0     0     0     0     0     0     0 |     e = area.Yes.north
+     0     0     0     0     0     0     0 |     f = area.Yes.south
+     0     0     0     0     0     0     0 |     g = area.Yes.west
+
+train:../SigDial2014/scripts/res/dstc2_traindev_nbest_goals_asrs_Lfood
+test:../SigDial2014/scripts/res/dstc2_test_nbest_goals_asrs_Lfood
+Train: 156107
+Test: 98900
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 0.861     0          1         0.861     0.925      ?          1        food.No
+                 0         0.117      0         0         0          ?          ?        food.Yes
+                 0         0.022      0         0         0          ?          ?        food.Yes.dontcare
+Weighted Avg.    0.861     0          1         0.861     0.925      0          1    
+
+=== Confusion Matrix ===
+
+     a     b     c   <-- classified as
+ 85130 11571  2199 |     a = food.No
+     0     0     0 |     b = food.Yes
+     0     0     0 |     c = food.Yes.dontcare
+
+train:../SigDial2014/scripts/res/dstc2_traindev_nbest_goals_asrs_Lname
+test:../SigDial2014/scripts/res/dstc2_test_nbest_goals_asrs_Lname
+Train: 156107
+Test: 98900
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 1         0          1         1         1          ?          1        name.No
+                 0         0          0         0         0          ?          ?        name.Yes
+Weighted Avg.    1         0          1         1         1          0          1    
+
+=== Confusion Matrix ===
+
+     a     b   <-- classified as
+ 98877    23 |     a = name.No
+     0     0 |     b = name.Yes
+
+train:../SigDial2014/scripts/res/dstc2_traindev_nbest_goals_asrs_Lpricerange
+test:../SigDial2014/scripts/res/dstc2_test_nbest_goals_asrs_Lpricerange
+Train: 156107
+Test: 98900
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 0.907     0          1         0.907     0.951      ?          1        pricerange.No
+                 0         0.023      0         0         0          ?          ?        pricerange.Yes.cheap
+                 0         0.025      0         0         0          ?          ?        pricerange.Yes.dontcare
+                 0         0.016      0         0         0          ?          ?        pricerange.Yes.expensive
+                 0         0.03       0         0         0          ?          ?        pricerange.Yes.moderate
+Weighted Avg.    0.907     0          1         0.907     0.951      0          1    
+
+=== Confusion Matrix ===
+
+     a     b     c     d     e   <-- classified as
+ 89688  2260  2478  1535  2939 |     a = pricerange.No
+     0     0     0     0     0 |     b = pricerange.Yes.cheap
+     0     0     0     0     0 |     c = pricerange.Yes.dontcare
+     0     0     0     0     0 |     d = pricerange.Yes.expensive
+     0     0     0     0     0 |     e = pricerange.Yes.moderate
+

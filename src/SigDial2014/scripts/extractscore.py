@@ -12,16 +12,16 @@ def extractScoreAllMetrics():
 	#modes = ['baseline', 'baseline_focus', 'HWUbaseline', '2waymodel_act', '2waymodel_actngram', '2waymodel_actngram_topline']
 	#modes = ['topline2','topline3']
 	#modes = ['2waymodel_actngram_method_topline', '2waymodel_actngram_method_online', '2waymodel_actngram_method_mindchange']
-	modes = ['2waymodel_goals_bybrid']
+	modes = ['2waymodel_hybrid']
 			
 	metrics = ['Joint_Goals', 'Requested', 'Method']
 	
-	header = ['test', metrics[0]+'_accuracy',  metrics[1]+'_accuracy', metrics[2]+'_accuracy',metrics[0]+'_l2',metrics[1]+'_l2',metrics[2]+'_l2']
+	header = ['test', metrics[0]+'_accuracy',  metrics[1]+'_accuracy', metrics[2]+'_accuracy',metrics[0]+'_l2',metrics[1]+'_l2',metrics[2]+'_l2', metrics[0]+'_roc.v2_ca05',  metrics[1]+'_roc.v2_ca05', metrics[2]+'_roc.v2_ca05']
 	fio.PrintListwithName(header, 'method')
 	for mode in modes:
 		for test in data:
 			#for k, L in enumerate([range(43,45)]):
-			for k, L in enumerate([range(40,42)]):
+			for k, L in enumerate([range(70,73)]):
 				filename = "res/"+mode+"_"+test+"_score.txt"
 				lines = fio.readfile(filename)
 				
@@ -52,7 +52,7 @@ def extractScoreAllMetricsWithROC():
 	#modes = ['baseline', 'baseline_focus', 'HWUbaseline', '2waymodel_act', '2waymodel_actngram', '2waymodel_actngram_topline']
 	#modes = ['topline2','topline3']
 	#modes = ['2waymodel_actngram_method_topline', '2waymodel_actngram_method_online', '2waymodel_actngram_method_mindchange']
-	modes = ['binaryswitch_fullscore_top3']
+	modes = ['2waymodel_goals_nbest']
 			
 	metrics = ['Joint_Goals', 'Requested', 'Method']
 	
@@ -81,22 +81,23 @@ def extractScoreAllMetricsWithROC():
 		print
 					
 def extractScoreAllMetricsTopLine():
-	data = ['dstc2_train', 'dstc2_dev']
+	#data = ['dstc2_train', 'dstc2_dev']
+	data = ['dstc2_dev']
 	
 	score = []
 	
-	modes = ['firstcorrect']
+	modes = ['nbest_goals_hwu_self']
 			
 	metrics = ['Joint_Goals', 'Requested', 'Method']
 	
-	header = ['test', 'topK', metrics[0]+'_accuracy',  metrics[1]+'_accuracy', metrics[2]+'_accuracy',metrics[0]+'_l2',metrics[1]+'_l2',metrics[2]+'_l2']
+	header = ['test', 'topK', metrics[0]+'_accuracy',  metrics[1]+'_accuracy', metrics[2]+'_accuracy',metrics[0]+'_l2',metrics[1]+'_l2',metrics[2]+'_l2', metrics[0]+'_roc.v2_ca05',  metrics[1]+'_roc.v2_ca05', metrics[2]+'_roc.v2_ca05',]
 	fio.PrintListwithName(header, 'method')
 	for mode in modes:
 		for test in data:
 			for topK in range(11):
 				#for k, L in enumerate([range(43,45)]):
-				for k, L in enumerate([range(40,42)]):
-					filename = "res/"+mode+"_"+test+"_score_"+str(topK)+".txt"
+				for k, L in enumerate([range(70,73)]):
+					filename = "res/"+mode+"_"+test+"_score."+str(topK)+".txt"
 					lines = fio.readfile(filename)
 					
 					s = []
@@ -116,5 +117,6 @@ def extractScoreAllMetricsTopLine():
 		
 if (__name__ == '__main__'):
 	#extractScore()
-	extractScoreAllMetrics()
-	#extractScoreAllMetricsTopLine()
+	#extractScoreAllMetrics()
+	#extractScoreAllMetricsWithROC()
+	extractScoreAllMetricsTopLine()

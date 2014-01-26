@@ -408,12 +408,8 @@ def getMulanARFF_Enrich(featurefile, tests):
 		for goal in goal_names:
 			
 			predictions = []
-			for method in ['baseline_focus', 'HWUbaseline']:
+			for method in ['baseline_focus', 'HWUbaseline','nbest_goals']:
 				file = 'res/'+method+'_'+test+'_track.json.'+goal+'.label'
-				head, body = fio.readMatrix(file, True)
-				predictions.append([row[1] for row in body])
-			for method in ['nbest_goals_enrich_asrs']:
-				file = 'res/'+test+'_'+method+'_L'+goal+'.label.combine'
 				head, body = fio.readMatrix(file, True)
 				predictions.append([row[1] for row in body])
 			
@@ -619,7 +615,7 @@ def getMulanARFF_Enrich(featurefile, tests):
 			#fio.MulanWriter("res/"+test+"_goals_actngram", goal_names, header, types, "dstc", data)
 			#fio.ArffWriter("res/"+test+"_goals_enrich_sr_" + goal +".arff", header, types, "dstc", data)
 			#fio.ArffWriter("res/"+test+"_goals_enrich_dm_" + goal +".arff", header, types, "dstc", data)
-			fio.ArffWriter("res/"+test+"_goals_enrich_logasr_hybird_" + goal +".arff", header, types, "dstc", data)
+			fio.ArffWriter("res/"+test+"_goals_enrich_logasr_hybrid_" + goal +".arff", header, types, "dstc", data)
 			#fio.writeMatrix("res/"+test+"_goals_enrich_logasr_" + goal +".matrix", data, header)
 
 def getMulanARFF_WizOz(featurefile, tests):
@@ -1077,6 +1073,9 @@ def getWekaARFFBinarySwitch_ASRs(featurefile, tests):
 				goaldict = getGoalsDict(goals)
 				sr_id = row[sr_id_index]
 				
+				#asr = ASRs[0]
+				
+				#if True:
 				for asr in ASRs:
 					row = []
 					
@@ -1148,7 +1147,10 @@ if (__name__ == '__main__'):
 	#getMulanARFF_ActWithNameNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getMulanARFF_ASRs("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getMulanARFF_Enrich("dstc2_train", ["dstc2_train", "dstc2_dev"])
-	getWekaARFFBinarySwitch_ASRs("dstc2_train", ["dstc2_train", "dstc2_dev"])
-	getWekaARFFBinarySwitch_ASRs("dstc2_traindev", ["dstc2_traindev", "dstc2_test"])
+	#getMulanARFF_Enrich("dstc2_train", ["dstc2_train", "dstc2_test"])
+	#getWekaARFFBinarySwitch_ASRs("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	#getWekaARFFBinarySwitch_ASRs("dstc2_traindev", ["dstc2_traindev", "dstc2_test"])
+	getWekaARFFBinarySwitch_ASRs("dstc2_traindev", ["dstc2_dev"])
+	getWekaARFFBinarySwitch_ASRs("dstc2_traindevtest", ["dstc2_test"])
 	#getMulanARFF_WizOz("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	print "Done"

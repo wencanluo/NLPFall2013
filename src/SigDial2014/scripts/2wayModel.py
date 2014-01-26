@@ -18,7 +18,7 @@ class Tracker(object):
 	def __init__(self):
 		self.reset()
 
-	def addTurn(self, turn, rank = 0, method_label = None, request_label = None, goals_label = None, food_prediction = None):
+	def addTurn(self, turn, rank = 0, method_label = None, request_label = None, goals_label = None, food_prediction = None, name_prediction = None):
 		hyps = copy.deepcopy(self.hyps)
 		if "dialog-acts" in turn["output"] :
 			mact = turn["output"]["dialog-acts"]
@@ -108,7 +108,13 @@ class Tracker(object):
 						del goal_stats['food']
 				else:
 					goal_stats['food'][food_prediction] = score
-		
+			if name_prediction != None:
+				if name_prediction == "none":
+					if 'name' in goal_stats:
+						del goal_stats['name']
+				else:
+					goal_stats['name'][name_prediction] = score
+					
 		# pick top values for each slot
 		for slot in goal_stats:
 			curr_score = 0.0
@@ -162,8 +168,8 @@ def main():
 						help='Will look for corpus in <destroot>/<dataset>/...')
 	parser.add_argument('--trackfile',dest='trackfile',action='store',required=True,metavar='JSON_FILE',
 						help='File to write with tracker output')
-	parser.add_argument('--labelfile',dest='labelfile',action='store',required=True,metavar='TXT',
-						help='File with 2-way prediction results')
+	#parser.add_argument('--labelfile',dest='labelfile',action='store',required=True,metavar='TXT',
+	#					help='File with 2-way prediction results')
 	parser.add_argument('--methodfile',dest='methodfile',action='store',required=False,metavar='TXT',
 						help='File with method prediction results')
 	parser.add_argument('--requestfile',dest='requestfile',action='store',required=False,metavar='TXT',
@@ -178,10 +184,12 @@ def main():
 						help='File with goal_pricerange prediction results')
 	parser.add_argument('--goal_food_prediction',dest='goal_food_prediction',action='store',required=False,metavar='TXT',
 						help='File with actual prediction results')
+	parser.add_argument('--goal_name_prediction',dest='goal_name_prediction',action='store',required=False,metavar='TXT',
+						help='File with actual prediction results')
 	args = parser.parse_args()
 	
-	head, body = fio.readMatrix(args.labelfile, True)
-	labels = [item[1] for item in body]
+	#head, body = fio.readMatrix(args.labelfile, True)
+	#labels = [item[1] for item in body]
 	
 	if args.methodfile != None:
 		head, body = fio.readMatrix(args.methodfile, True)
@@ -192,7 +200,7 @@ def main():
 	
 	if args.goal_area != None and args.goal_food != None and args.goal_name != None and args.goal_pricerange != None:
 		head, body = fio.readMatrix(args.goal_area, True)
-		goal_area_labels = [item[0] for item in body]
+		goal_area_labels = [item[1] for item in body]
 		
 		head, body = fio.readMatrix(args.goal_food, True)
 		goal_food_labels = [item[1] for item in body]
@@ -206,6 +214,10 @@ def main():
 	if args.goal_food_prediction != None:
 		head, body = fio.readMatrix(args.goal_food_prediction, True)
 		food_prediction_labels = [item[1] for item in body]
+	
+	if args.goal_name_prediction != None:
+		head, body = fio.readMatrix(args.goal_name_prediction, True)
+		name_prediction_labels = [item[1] for item in body]
 		 
 	dataset = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot)
 	track_file = open(args.trackfile, "wb")
@@ -223,7 +235,7 @@ def main():
 		for turn, _ in call :
 			turn_count = turn_count + 1
 			
-			rank = labels[turn_count]
+			#rank = labels[turn_count]
 			method = method_labels[turn_count] if args.methodfile != None else None
 			requests = request_labels[turn_count] if args.requestfile != None else None
 			goals = None
@@ -240,8 +252,11 @@ def main():
 				goals['pricerange'] = 'No' if goal_pricerange_labels[turn_count]== 'pricerange.No' else goal_pricerange_labels[turn_count][len('pricerange.Yes.'):]
 			
 			food_prediction = food_prediction_labels[turn_count] if args.goal_food_prediction != None else None
+			name_prediction = name_prediction_labels[turn_count] if args.goal_name_prediction != None else None
 			
-			tracker_turn = tracker.addTurn(turn, rank, method, requests, goals, food_prediction)
+			#print goals
+			
+			tracker_turn = tracker.addTurn(turn, 0, method, requests, goals, food_prediction, name_prediction)
 			this_session["turns"].append(tracker_turn)
 		
 		track["sessions"].append(this_session)

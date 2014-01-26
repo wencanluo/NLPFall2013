@@ -27,31 +27,31 @@ def main(argv):
 	
 	assert(len(body) == len(tracker_output))
 	
-	goal = 'food'
-	data = []
-	for i in range(len(body)):
-		row = body[i]
-		track_turn = tracker_output[i]
-		goals = row[goal_id][1:-1]
-		
-		gdict = SlotTracker.getGoalsDict(goals)
-		dict = getGoal(track_turn)
-		
-		row = []
-		if goal in gdict:
-			row.append(gdict[goal])
-		else:
-			row.append('none')
-		
-		if goal in dict:
-			row.append(dict[goal])
-		else:
-			row.append('none')
-		
-		data.append(row)
-		
-	newHead = ['True', 'Predict']
-	fio.writeMatrix(args.trackfile+'.'+goal+'.prediction', data, newHead)
+	for goal in ['food', 'name', 'pricerange', 'area']:
+		data = []
+		for i in range(len(body)):
+			row = body[i]
+			track_turn = tracker_output[i]
+			goals = row[goal_id][1:-1]
+			
+			gdict = SlotTracker.getGoalsDict(goals)
+			dict = getGoal(track_turn)
+			
+			row = []
+			if goal in gdict:
+				row.append(gdict[goal])
+			else:
+				row.append('none')
+			
+			if goal in dict:
+				row.append(dict[goal])
+			else:
+				row.append('none')
+			
+			data.append(row)
+			
+		newHead = ['True', 'Predict']
+		fio.writeMatrix(args.trackfile+'.'+goal+'.prediction', data, newHead)
 	
 if (__name__ == '__main__'):
 	main(sys.argv)

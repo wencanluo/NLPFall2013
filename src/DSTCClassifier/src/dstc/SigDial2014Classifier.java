@@ -111,7 +111,7 @@ public class SigDial2014Classifier {
 	 */
 	public static void main(String[] args) throws Exception {
 		PrintStream oldout = System.out;
-		File f = new File("log_H1_actngram_binaryswitchwithName.txt");		
+		File f = new File("log_H1_actngram_binaryswitch_top1.txt");		
 		System.setOut(new PrintStream(f));
 		
 		SigDial2014Classifier classifier = new SigDial2014Classifier();
@@ -164,14 +164,20 @@ public class SigDial2014Classifier {
 		classifier.ClassifierNgram(train, dev);*/
 		
 		//Act WithName + Out + SLU Ngram + BinarySwitch, Top3
-		String train = "../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitchwithName";
-		String dev = "../SigDial2014/scripts/res/dstc2_dev_H1_actngram_binaryswitchwithName";
-		String traindev = "../SigDial2014/scripts/res/dstc2_traindev_H1_actngram_binaryswitchwithName";
-		String test = "../SigDial2014/scripts/res/dstc2_test_H1_actngram_binaryswitchwithName";
+		String train = "../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitch";
+		String traintop1 = "../SigDial2014/scripts/res/dstc2_train_H1_actngram_binaryswitch_top1";
+		String dev = "../SigDial2014/scripts/res/dstc2_dev_H1_actngram_binaryswitch";
+		String traindev = "../SigDial2014/scripts/res/dstc2_traindev_H1_actngram_binaryswitch";
+		String traindevtop1 = "../SigDial2014/scripts/res/dstc2_traindev_H1_actngram_binaryswitch_top1";
+		String test = "../SigDial2014/scripts/res/dstc2_test_H1_actngram_binaryswitch";
 		
-		classifier.ClassifierTwoNgram(train, train);
-		classifier.ClassifierTwoNgram(train, dev);
-		classifier.ClassifierTwoNgram(traindev, test);
+		classifier.ClassifierNgram(traintop1, train);
+		classifier.ClassifierNgram(traintop1, dev);
+		classifier.ClassifierNgram(traindevtop1, test);
+		
+		//classifier.ClassifierTwoNgram(train, train);
+		//classifier.ClassifierTwoNgram(train, dev);
+		//classifier.ClassifierTwoNgram(traindev, test);
 				
 		System.setOut(oldout);
 		

@@ -6,11 +6,13 @@ Created on Sep 30, 2013
 import fio
 import sys, json
 import getWekaArff
-import getSummary
+from getSummary import *
 import SlotTracker
 from collections import defaultdict
 import getWekaGoalsArff
 from SlotTracker import *
+import utility
+import get2wayError 
 
 def getQuestionType():
 	tests = ["dstc2_train", "dstc2_dev", "dstc2_test"]
@@ -178,6 +180,87 @@ def checkSlotOntology():
 					if k not in ontology[key]:
 						print key, k			
 
+def checkDeny():
+	ontology = json.load(open('config/ontology_dstc2.json'))
+	tests = ["dstc2_train", "dstc2_dev"]
+	
+	goal_names = ['area', 'food', 'name', 'pricerange']
+	
+	dict = defaultdict(float)
+	
+	for test in tests:
+		filename = "res/"+test+"_summary.txt"
+			
+		head, body = fio.readMatrix(filename, True)
+		
+		goal_index = head.index('goal_label')
+		turn_index= head.index('turn_index')
+		
+		for i,row in enumerate(body):
+			turn_id = row[turn_index]
+			goal = row[goal_index][1:-1]
+			d_1 = getGoalsDict(body[i-1][goal_index][1:-1]) if turn_id != '0' else {}
+			d = getGoalsDict(goal)
+			
+			for goalname in goal_names:
+				if goalname in d_1 and goalname not in d:
+					print d_1, d 
+					dict[goalname] = dict[goalname] + 1
+	
+	fio.PrintDict(dict, True)
+	
+def getSelfTraining():
+	ontology = json.load(open('config/ontology_dstc2.json'))
+	#tests = ["dstc2_traindev", "dstc2_traindevtest"]
+	
+	head, bodytrain = fio.readMatrix("res/dstc2_train_summary.txt", True)
+	goal_index = head.index('recovery_goals')
+	
+	body1 = [row[goal_index] for row in bodytrain]
+	
+	head, bodydev = fio.readMatrix("res/dstc2_dev_summary.txt", True)
+	body2 = [row[goal_index] for row in bodydev]
+	
+	bodydevself = fio.readMatrix("res/dstc2_dev_nbest_goals_hwu_food.goals", False)
+	bodydevself = [row[0] for row in bodydevself]
+	
+	bodytest = fio.readMatrix("res/dstc2_test_nbest_goals_hwu_food.goals", False)
+	bodytest = [row[0] for row in bodytest]
+	
+	bodys = body1 + body2 + bodytest
+	
+	tests = ["dstc2_traindevtest"]
+	for test in tests:
+		filename = "res/"+test+"_summary.txt"
+			
+		head, body = fio.readMatrix(filename, True)
+		assert(len(body) == len(bodys))
+		
+		goal_index = head.index('recovery_goals')
+		turn_index= head.index('turn_index')
+		
+		for i,row in enumerate(body):
+			body[i][goal_index] = bodys[i]
+	#fio.writeMatrix(filename + ".self", body, head)
+	fio.writeMatrix(filename, body, head)
+			
+def getGoalsfromTracker():
+	trackfile = "submissions_by_wencan/nbest_goals_hwu_food_dstc2_test_track.json"
+	
+	sessions = json.load(open(trackfile))['sessions']
+	
+	data = []
+	
+	for s in sessions:
+		for i, turn in enumerate(s['turns']):
+			row = []
+			track_turn_1 = s['turns'][i-1] if i > 0 else None 
+			track_turn = s['turns'][i]
+			dict = utility.sub(get2wayError.getGoal(track_turn), get2wayError.getGoal(track_turn_1))
+			row.append(quote(strdict(dict)))
+			data.append(row)
+	fio.writeMatrix("res/dstc2_test_nbest_goals_hwu_food.goals", data)	
+	
 def checkRequested():
 	tests = ["dstc2_train", "dstc2_dev"]
 	
@@ -351,7 +434,10 @@ if (__name__ == '__main__'):
 	#getPrior()
 	#getAccuracy()
 	#getUnigramDict("res/dstc2_train_summary.txt")
-	getQuestionType()
+	#getQuestionType()
+	#checkDeny()
+	#getGoalsfromTracker()
+	getSelfTraining()
 	#getSlotValuesDistribution()
 	#checkSlotOntology()
 	#checkRequested()

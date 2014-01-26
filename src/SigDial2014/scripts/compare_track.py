@@ -1,8 +1,8 @@
 import sys, os, json
 
 def main():
-	track1 = "res/binaryswitch_history_topline_dstc2_train_track.json"
-	track2 = "res/2waymodel_topline_dstc2_train_track_0.json"
+	track1 = "res/nbest_goals_nbest_price_area_dstc2_train_track.json"
+	track2 = "res/2waymodel_goals_nbest_dstc2_train_track.json"
 	
 	tracker1 = json.load(open(track1))
 	tracker2 = json.load(open(track2))
@@ -12,7 +12,6 @@ def main():
 		for turn1, turn2 in zip(session1['turns'],session2['turns']):
 			request1 = turn1["requested-slots"]
 			request2 = turn2["requested-slots"]
-			
 			
 			if request1 != request2:
 				print session1['session-id'], "\t", turn_count, "\t", request1,"\t", request2

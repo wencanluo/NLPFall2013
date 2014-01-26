@@ -9,11 +9,13 @@ request_slotnames = ['area', 'food', 'name', 'pricerange', 'addr', 'phone', 'pos
 
 priors = getSlotValues.getPrior()
 
+topK = 0
+
 def GetSlot(slu_hyps, goal):
 	for score, uact in slu_hyps:
 		for act in uact:
 			for slot in act['slots']:
-				if goal == slot[0]:
+				if goal == slot[0] and slot[1] != 'dontcare':
 					return slot[1]
 	return None
 
@@ -57,9 +59,11 @@ def getGoalMajorityVoting(goals_labels, goal_stats, score, slu_hyps, turn = None
 		
 	assert(len(scores) == len(goals_labels))
 	
+	global topK
+	
 	dict = {}
 	for i, goals_label in enumerate(goals_labels):
-		if i>5: continue
+		if i>topK: continue
 		
 		if weighted:
 			score = math.exp(scores[i])
@@ -89,7 +93,9 @@ def getGoalMajorityVoting(goals_labels, goal_stats, score, slu_hyps, turn = None
 		keys = sorted(d, key = d.get, reverse = True)
 		if len(keys) > 0:
 			goals_label[goal] = keys[0]
-		
+	
+	#print goals_label
+	
 	for goal in goals_label:
 		score = 1.0
 		if goals_label[goal] == 'No': continue
@@ -170,7 +176,7 @@ class Tracker(object):
 	def __init__(self):
 		self.reset()
 
-	def addTurn(self, turn, rank = 0, method_label = None, request_label = None, goals_label = None):
+	def addTurn(self, turn, rank = 0, method_label = None, request_label = None, goals_label = None, food_prediction= None, name_prediction= None):
 		hyps = copy.deepcopy(self.hyps)
 		if "dialog-acts" in turn["output"] :
 			mact = turn["output"]["dialog-acts"]
@@ -242,9 +248,22 @@ class Tracker(object):
 				#get the top one
 				#getGoal1(goals_label, goal_stats, score, slu_hyps)
 				#getGoalTop1(goals_label, goal_stats, score, slu_hyps)
-				#getGoalMajorityVoting(goals_label, goal_stats, score, slu_hyps, turn)
+				getGoalMajorityVoting(goals_label, goal_stats, score, slu_hyps, turn)
 				#getGoalMajorityVoting(goals_label, goal_stats, score, slu_hyps, turn, True)
-				getGoalBayes(goals_label, goal_stats, score, slu_hyps, turn)
+				#getGoalBayes(goals_label, goal_stats, score, slu_hyps, turn)
+			
+			if food_prediction != None:
+				if food_prediction == "none":
+					if 'food' in goal_stats:
+						del goal_stats['food']
+				else:
+					goal_stats['food'][food_prediction] = score
+			if name_prediction != None:
+				if name_prediction == "none":
+					if 'name' in goal_stats:
+						del goal_stats['name']
+				else:
+					goal_stats['name'][name_prediction] = score
 				
 		# pick top values for each slot
 		for slot in goal_stats:
@@ -299,8 +318,8 @@ def main():
 						help='Will look for corpus in <destroot>/<dataset>/...')
 	parser.add_argument('--trackfile',dest='trackfile',action='store',required=True,metavar='JSON_FILE',
 						help='File to write with tracker output')
-	parser.add_argument('--labelfile',dest='labelfile',action='store',required=True,metavar='TXT',
-						help='File with 2-way prediction results')
+	#parser.add_argument('--labelfile',dest='labelfile',action='store',required=True,metavar='TXT',
+	#					help='File with 2-way prediction results')
 	parser.add_argument('--methodfile',dest='methodfile',action='store',required=False,metavar='TXT',
 						help='File with method prediction results')
 	parser.add_argument('--requestfile',dest='requestfile',action='store',required=False,metavar='TXT',
@@ -314,14 +333,17 @@ def main():
 	parser.add_argument('--goal_pricerange',dest='goal_pricerange',action='store',required=False,metavar='TXT',
 						help='File with goal_pricerange prediction results')
 	parser.add_argument('--topK',dest='topK',action='store',type=int, help='get topK accuracy')
-	
+	parser.add_argument('--goal_food_prediction',dest='goal_food_prediction',action='store',required=False,metavar='TXT',
+						help='File with actual prediction results')
+	parser.add_argument('--goal_name_prediction',dest='goal_name_prediction',action='store',required=False,metavar='TXT',
+						help='File with actual prediction results')
 	args = parser.parse_args()
 	
 	global topK
 	topK = args.topK
 	
-	head, body = fio.readMatrix(args.labelfile, True)
-	labels = [item[1] for item in body]
+	#head, body = fio.readMatrix(args.labelfile, True)
+	#labels = [item[1] for item in body]
 	
 	if args.methodfile != None:
 		head, body = fio.readMatrix(args.methodfile, True)
@@ -342,7 +364,19 @@ def main():
 		
 		head, body = fio.readMatrix(args.goal_pricerange, True)
 		goal_pricerange_labels = [item[1] for item in body]
-		 
+		
+		assert(len(goal_area_labels) == len(goal_food_labels))
+		assert(len(goal_area_labels) == len(goal_name_labels))
+		assert(len(goal_area_labels) == len(goal_pricerange_labels))
+	
+	if args.goal_food_prediction != None:
+		head, body = fio.readMatrix(args.goal_food_prediction, True)
+		food_prediction_labels = [item[1] for item in body]
+	
+	if args.goal_name_prediction != None:
+		head, body = fio.readMatrix(args.goal_name_prediction, True)
+		name_prediction_labels = [item[1] for item in body]
+			 
 	dataset = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot)
 	track_file = open(args.trackfile, "wb")
 	track = {"sessions":[]}
@@ -361,7 +395,8 @@ def main():
 			
 			n_asr_live = len(turn['input']['live']['asr-hyps'])
 			
-			rank = labels[turn_count]
+			#rank = labels[turn_count]
+			rank = '0'
 			method = method_labels[turn_count] if args.methodfile != None else None
 			requests = request_labels[turn_count] if args.requestfile != None else None
 			
@@ -381,8 +416,11 @@ def main():
 					goals['pricerange'] = 'No' if goal_pricerange_labels[k]== 'pricerange.No' else goal_pricerange_labels[k][len('pricerange.Yes.'):]
 				nbestGoals.append(goals)
 			
+			food_prediction = food_prediction_labels[turn_count] if args.goal_food_prediction != None else None
+			name_prediction = name_prediction_labels[turn_count] if args.goal_name_prediction != None else None
+			
 			nbest_count = nbest_count + n_asr_live
-			tracker_turn = tracker.addTurn(turn, rank, method, requests, nbestGoals)
+			tracker_turn = tracker.addTurn(turn, rank, method, requests, nbestGoals, food_prediction, name_prediction)
 			this_session["turns"].append(tracker_turn)
 		
 		track["sessions"].append(this_session)

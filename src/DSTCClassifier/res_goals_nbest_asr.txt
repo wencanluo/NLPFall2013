@@ -1,0 +1,32 @@
+train:../SigDial2014/scripts/res/dstc2_traindev_nbest_goals_asr_Larea
+test:../SigDial2014/scripts/res/dstc2_test_nbest_goals_asr_Larea
+Train: 15611
+Test: 9890
+Classifier is done!
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
+                 0.885     0          1         0.885     0.939      ?          1        area.No
+                 0         0.009      0         0         0          ?          ?        area.Yes.centre
+                 0         0.032      0         0         0          ?          ?        area.Yes.dontcare
+                 0         0.019      0         0         0          ?          ?        area.Yes.east
+                 0         0.016      0         0         0          ?          ?        area.Yes.north
+                 0         0.021      0         0         0          ?          ?        area.Yes.south
+                 0         0.018      0         0         0          ?          ?        area.Yes.west
+Weighted Avg.    0.885     0          1         0.885     0.939      0          1    
+
+=== Confusion Matrix ===
+
+    a    b    c    d    e    f    g   <-- classified as
+ 8753   92  315  189  160  207  174 |    a = area.No
+    0    0    0    0    0    0    0 |    b = area.Yes.centre
+    0    0    0    0    0    0    0 |    c = area.Yes.dontcare
+    0    0    0    0    0    0    0 |    d = area.Yes.east
+    0    0    0    0    0    0    0 |    e = area.Yes.north
+    0    0    0    0    0    0    0 |    f = area.Yes.south
+    0    0    0    0    0    0    0 |    g = area.Yes.west
+
+train:../SigDial2014/scripts/res/dstc2_traindev_nbest_goals_asr_Lfood
+test:../SigDial2014/scripts/res/dstc2_test_nbest_goals_asr_Lfood
+Train: 15611
+Test: 9890

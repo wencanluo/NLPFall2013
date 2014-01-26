@@ -28,10 +28,10 @@ Request_Classifier
 			> dstc_dev_request_actngram_slot.arff dstc_dev_request_actngram_slot.xml
 			> dstc_traindev_request_actngram_slot.arff dstc_traindev_request_actngram_slot.xml
 			> dstc_test_request_actngram_slot.arff dstc_test_request_actngram_slot.xml
-	Step2: Do the method Classifier
+	Step2: Do the request Classifier
 		java SigDial2014RequestClassifier
-			> dstc_train_request_actngram_slot.arff
-			> dstc_dev_request_actngram_slot.arff
+			> dstc_train_request_actngram_slot_ngram.arff.label
+			> dstc_dev_request_actngram_slot_ngram.arff.label
 			> dstc2_test_request_actngram_slot_ngram.arff.label
 	Step3: Run the 2waymodel
 		python 2wayModel.py
@@ -39,17 +39,19 @@ Request_Classifier
 First-correct model
 	Step1: Get NBest Training
 		python getWekaArff.getWekaARFFBinarySwitch_ActNgramWithName()
-			* Trans_System
-			* Trans_SLU
+			* ASR
 			* Acts (51)
 			* Label (H1)
 			> dstc2_train_H1_actngram_binaryswitchwithName.arff
 			> dstc2_dev_H1_actngram_binaryswitchwithName.arff
+			> dstc2_traindev_H1_actngram_binaryswitchwithName.arff
+			> dstc2_test_H1_actngram_binaryswitchwithName.arff
 		#python getWekaArff.getWekaARFFBinarySwitch_ActWithName
 	Step2: Classifier on Dev and Test
 		java SigDial2014Classifier
 			> dstc2_train_H1_actngram_binaryswitchwithName.label
 			> dstc2_dev_H1_actngram_binaryswitchwithName.label
+			> dstc2_test_H1_actngram_binaryswitchwithName.label
 	Step3: Run the BinarySwitch Model
 		python FirstCorrectModel.py --topk=2
 		
@@ -76,17 +78,25 @@ NBest model
 			* Acts (51)
 			> dstc2_train_nbest_goals_asrs_L*.arff  #* \in [area, food, name, pricerange]
 			> dstc2_dev_nbest_goals_asrs_L*.arff  #* \in [area, food, name, pricerange]
+			> dstc2_traindev_nbest_goals_asrs_L*.arff  #* \in [area, food, name, pricerange]
+			> dstc2_test_nbest_goals_asrs_L*.arff  #* \in [area, food, name, pricerange]
 	Step2: Classifier on Dev and Test
 		java SigDial2014GoalClassifier.java
+			> dstc2_train_nbest_goals_asrs_L*.arff  #* \in [area, food, name, pricerange]
+			> dstc2_dev_nbest_goals_asrs_L*.arff  #* \in [area, food, name, pricerange]
+			> dstc2_test_nbest_goals_asrs_L*.label  #* \in [area, food, name, pricerange]
 	Step3: Combine NBest
 		java CombineNBest.py
 	Step4: Run the BinarySwitch Model
-		python 2wayModel.py
+		python 2wayModel
+			> 
+		
 		
 Voting Model
 	Step1: Get the NBest model
 	Step2: Get the baseline_focus, HWUBaseline models
 	Step3: Convert the tracker output to the label prediction format
+		
 	Step4: Combine them
 	
 Nbest + HWUBasline

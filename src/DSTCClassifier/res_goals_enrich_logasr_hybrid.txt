@@ -1,0 +1,4 @@
+train:../SigDial2014/scripts/res/dstc2_traindev_nbest_goals_asrs_self_Lpricerange
+test:../SigDial2014/scripts/res/dstc2_dev_nbest_goals_asrs_Lpricerange
+Train: 156107
+Test: 39340
