@@ -1,7 +1,7 @@
 import fio
 
 def extractScoreAllMetrics():
-	data = ['dstc2_train', 'dstc2_dev']
+	data = ['dstc2_train', 'dstc2_dev', 'dstc2_test']
 	
 	score = []
 	
@@ -12,7 +12,7 @@ def extractScoreAllMetrics():
 	#modes = ['baseline', 'baseline_focus', 'HWUbaseline', '2waymodel_act', '2waymodel_actngram', '2waymodel_actngram_topline']
 	#modes = ['topline2','topline3']
 	#modes = ['2waymodel_actngram_method_topline', '2waymodel_actngram_method_online', '2waymodel_actngram_method_mindchange']
-	modes = ['2waymodel_hybrid']
+	modes = ['nbest_goals_focus_food']
 			
 	metrics = ['Joint_Goals', 'Requested', 'Method']
 	
@@ -81,12 +81,12 @@ def extractScoreAllMetricsWithROC():
 		print
 					
 def extractScoreAllMetricsTopLine():
-	#data = ['dstc2_train', 'dstc2_dev']
-	data = ['dstc2_dev']
+	data = ['dstc2_train', 'dstc2_dev', 'dstc2_test']
+	#data = ['dstc2_dev']
 	
 	score = []
 	
-	modes = ['nbest_goals_hwu_self']
+	modes = ['nbest_goals_focus_food']
 			
 	metrics = ['Joint_Goals', 'Requested', 'Method']
 	
@@ -97,7 +97,7 @@ def extractScoreAllMetricsTopLine():
 			for topK in range(11):
 				#for k, L in enumerate([range(43,45)]):
 				for k, L in enumerate([range(70,73)]):
-					filename = "res/"+mode+"_"+test+"_score."+str(topK)+".txt"
+					filename = "res/"+mode+"_"+test+"_score_"+str(topK)+".txt"
 					lines = fio.readfile(filename)
 					
 					s = []

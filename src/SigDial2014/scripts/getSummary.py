@@ -6,6 +6,8 @@ import baseline
 import TopLine
 import math
 
+goal_names = ['area', 'food', 'name', 'pricerange']
+
 def quote(s):
 	if s == None:
 		return '""'
@@ -135,6 +137,47 @@ def IsCorrectSLUHypRank_H1(hyps, label_turn):
 	if hasInfo and correct: 
 		return True
 	return False
+
+def getCorrectOutGoals(log_turn):
+	dict = {}
+	
+	if 'dialog-acts' in log_turn['output']:#the correct one is from the output
+		for output_act in log_turn['output']['dialog-acts']:
+			act = output_act['act']
+			if act != "expl-conf" and act != "inform" and act != "impl-conf": continue
+			
+			slu_dict = {}
+			slu_dict['slots'] = {}
+			for slot in output_act['slots']:
+				if len(slot) == 2:
+					if slot[0] in goal_names:
+						dict[slot[0]] = slot[1]
+	return dict
+						
+def IsCorrectOutSLUHyp(log_turn, label_turn):
+	correct = True
+	hasInfo = False
+	
+	goal_label = label_turn['goal-labels']
+	
+	if 'dialog-acts' in log_turn['output']:#the correct one is from the output
+		for output_act in log_turn['output']['dialog-acts']:
+			act = output_act['act']
+			if act != "expl-conf" and act != "inform" and act != "impl-conf": continue
+			
+			slu_dict = {}
+			slu_dict['slots'] = {}
+			for slot in output_act['slots']:
+				if len(slot) == 2:
+					if slot[0] in goal_label:
+						hasInfo = True
+						if slot[1] != goal_label[slot[0]]:
+							correct = False
+							break
+			
+	if hasInfo and correct: 
+		return True
+	return False
 				
 def getCorrectSLUHypRank_H1(log_turn, label_turn):
 	'''
@@ -151,6 +194,9 @@ def getCorrectSLUHypRank_H1(log_turn, label_turn):
 	
 	#fixed this first
 	log_turn = fixedThis(log_turn)
+		
+	if IsCorrectOutSLUHyp(log_turn, label_turn):
+		return 0
 	
 	for k, hyps in enumerate(log_turn['input']['live']['slu-hyps']):
 		correct = True
@@ -179,7 +225,7 @@ def getCorrectSLUHypRank_H1(log_turn, label_turn):
 				if method_label != 'byalternatives': 
 					correct = False	
 					break
-		if hasInfo and correct: return k
+		if hasInfo and correct: return k+1
 		
 	return -1
 
@@ -438,10 +484,10 @@ def main(argv):
 	
 	args = parser.parse_args()
 	
-	if "test" in args.dataset:
-		sessions = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot, labels=False)
-	else:
-		sessions = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot, labels=True)
+	#if "test" in args.dataset:
+	#	sessions = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot, labels=False)
+	#else:
+	sessions = dataset_walker.dataset_walker(args.dataset, dataroot=args.dataroot, labels=True)
 		
 	sum = []
 	

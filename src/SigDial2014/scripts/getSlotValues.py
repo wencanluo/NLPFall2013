@@ -186,9 +186,9 @@ def checkDeny():
 	
 	goal_names = ['area', 'food', 'name', 'pricerange']
 	
-	dict = defaultdict(float)
-	
 	for test in tests:
+		dict = defaultdict(float)
+		
 		filename = "res/"+test+"_summary.txt"
 			
 		head, body = fio.readMatrix(filename, True)
@@ -207,7 +207,7 @@ def checkDeny():
 					print d_1, d 
 					dict[goalname] = dict[goalname] + 1
 	
-	fio.PrintDict(dict, True)
+		fio.PrintDict(dict, True)
 	
 def getSelfTraining():
 	ontology = json.load(open('config/ontology_dstc2.json'))
@@ -435,9 +435,9 @@ if (__name__ == '__main__'):
 	#getAccuracy()
 	#getUnigramDict("res/dstc2_train_summary.txt")
 	#getQuestionType()
-	#checkDeny()
+	checkDeny()
 	#getGoalsfromTracker()
-	getSelfTraining()
+	#getSelfTraining()
 	#getSlotValuesDistribution()
 	#checkSlotOntology()
 	#checkRequested()
