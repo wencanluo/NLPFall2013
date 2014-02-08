@@ -73,19 +73,20 @@ public class SigDial2014RequestClassifier {
 	 */
 	public static void main(String[] args) throws Exception {
 		PrintStream oldout = System.out;
-		File f = new File("res_request_actngram_slot.txt");		
+		File f = new File("res_request_asr_act_score_all2.txt");		
 		System.setOut(new PrintStream(f));
 		
 		SigDial2014RequestClassifier classifier = new SigDial2014RequestClassifier();
 		
 		//Act + Ngram, MindChange
-		String train = "../SigDial2014/scripts/res/dstc2_train_request_actngram_slot";
-		String dev = "../SigDial2014/scripts/res/dstc2_dev_request_actngram_slot";
-		String traindev = "../SigDial2014/scripts/res/dstc2_traindev_request_actngram_slot";
-		String test = "../SigDial2014/scripts/res/dstc2_test_request_actngram_slot";
+		String train = "../SigDial2014/scripts/res/dstc2_train_request_asr_act_score";
+		String trainall = "../SigDial2014/scripts/res/dstc2_train_request_asr_act_score_all";
+		String dev = "../SigDial2014/scripts/res/dstc2_dev_request_asr_act_score_all";
+		String traindev = "../SigDial2014/scripts/res/dstc2_traindev_request_asr_act_score";
+		String test = "../SigDial2014/scripts/res/dstc2_test_request_asr_act_score_all";
 		
-		classifier.ClassifierNgram(train, train);
-		classifier.ClassifierNgram(train, dev);
+		//classifier.ClassifierNgram(train, trainall);
+		//classifier.ClassifierNgram(train, dev);
 		classifier.ClassifierNgram(traindev, test);
 		
 		System.setOut(oldout);

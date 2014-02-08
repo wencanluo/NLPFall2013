@@ -86,7 +86,7 @@ def extractScoreAllMetricsTopLine():
 	
 	score = []
 	
-	modes = ['nbest_goals_focus_food']
+	modes = ['nbest_goals']
 			
 	metrics = ['Joint_Goals', 'Requested', 'Method']
 	
@@ -97,7 +97,7 @@ def extractScoreAllMetricsTopLine():
 			for topK in range(11):
 				#for k, L in enumerate([range(43,45)]):
 				for k, L in enumerate([range(70,73)]):
-					filename = "res/"+mode+"_"+test+"_score_"+str(topK)+".txt"
+					filename = "res/"+mode+"_"+test+"_score."+str(topK)+".txt"
 					lines = fio.readfile(filename)
 					
 					s = []

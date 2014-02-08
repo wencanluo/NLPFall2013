@@ -1,0 +1,7 @@
+train:../SigDial2014/scripts/res/dstc2_traindev_request_asr_act_score
+test:../SigDial2014/scripts/res/dstc2_test_request_asr_act_score_all
+Train: 15611
+Test: 98900
+../SigDial2014/scripts/res/dstc2_traindev_request_asr_act_score_ngram.arff	15611
+../SigDial2014/scripts/res/dstc2_test_request_asr_act_score_all_ngram.arff	98900
+Classifier is done!

@@ -303,8 +303,8 @@ def checkRequested():
 			print dict['No.Yes'], "\t", dict['No.No']
 
 def getARCombinationCount():
-	#tests = ["dstc2_train", "dstc2_dev", "dstc2_test"]
-	tests = ["dstc2_test"]
+	tests = ["dstc2_train", "dstc2_dev", "dstc2_test"]
+	#tests = ["dstc2_test"]
 	
 	for test in tests:
 		dict = defaultdict(float)
@@ -435,13 +435,13 @@ if (__name__ == '__main__'):
 	#getAccuracy()
 	#getUnigramDict("res/dstc2_train_summary.txt")
 	#getQuestionType()
-	checkDeny()
+	#checkDeny()
 	#getGoalsfromTracker()
 	#getSelfTraining()
 	#getSlotValuesDistribution()
 	#checkSlotOntology()
 	#checkRequested()
-	#getARCombinationCount()
+	getARCombinationCount()
 	
 	#sys.stdout = SavedStdOut
 	

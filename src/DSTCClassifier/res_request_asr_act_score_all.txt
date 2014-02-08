@@ -1,0 +1,14 @@
+train:../SigDial2014/scripts/res/dstc2_train_request_asr_act_score
+test:../SigDial2014/scripts/res/dstc2_train_request_asr_act_score_all
+Train: 11677
+Test: 116767
+../SigDial2014/scripts/res/dstc2_train_request_asr_act_score_ngram.arff	11677
+../SigDial2014/scripts/res/dstc2_train_request_asr_act_score_all_ngram.arff	116767
+Classifier is done!
+train:../SigDial2014/scripts/res/dstc2_train_request_asr_act_score
+test:../SigDial2014/scripts/res/dstc2_dev_request_asr_act_score_all
+Train: 11677
+Test: 39340
+../SigDial2014/scripts/res/dstc2_train_request_asr_act_score_ngram.arff	11677
+../SigDial2014/scripts/res/dstc2_dev_request_asr_act_score_all_ngram.arff	39340
+Classifier is done!

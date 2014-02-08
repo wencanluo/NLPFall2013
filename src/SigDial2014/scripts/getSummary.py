@@ -472,6 +472,16 @@ def getASRs(log_turn):
 		#score = score + math.pow(2, asr['score'])
 	#print score
 	return "#".join(ASRs)
+
+def getASR_Scores(log_turn):
+	ASRs = []
+	#score = 0
+	for asr in log_turn['input']['live']['asr-hyps']:
+		ASRs.append(str(math.exp(asr['score'])))
+		#score = score + math.exp(asr['score'])
+		#score = score + math.pow(2, asr['score'])
+	#print score
+	return "#".join(ASRs)
 							
 def main(argv):
 	parser = argparse.ArgumentParser(description='Simple hand-crafted dialog state tracker baseline.')
@@ -516,6 +526,7 @@ def main(argv):
 				asr_score = log_turn['input']['live']['asr-hyps'][0]['score'] if len(log_turn['input']['live']['asr-hyps']) > 0 else -1
 				
 				ASRs = getASRs(log_turn)
+				ASR_Scores = getASR_Scores(log_turn)
 				
 				#top nlu
 				top_slu = log_turn['input']['live']['slu-hyps'][0]['slu-hyp'] if len(log_turn['input']['live']['slu-hyps']) > 0 else None
@@ -590,6 +601,7 @@ def main(argv):
 				row.append(quote(top_asr))
 				row.append(asr_score)
 				row.append(quote(ASRs))
+				row.append(quote(ASR_Scores))
 				row.append(quote(strslu(top_slu)))
 				row.append(quote(strslu(output_acts)))
 				row.append(top_slu_score)
@@ -644,6 +656,7 @@ def main(argv):
 	header.append("top asr")
 	header.append("asr_score")
 	header.append("ASRs")
+	header.append("ASR_Scores")
 	
 	header.append("top slu")
 	header.append("output acts")

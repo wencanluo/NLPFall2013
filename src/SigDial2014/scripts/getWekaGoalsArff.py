@@ -1141,6 +1141,121 @@ def getWekaARFFBinarySwitch_ASRs(featurefile, tests):
 			#fio.ArffWriter("res/"+test+"_nbest_goals_enrich_asrs_class_" + goal +".arff", header, types, "dstc", data)
 			fio.ArffWriter("res/"+test+"_nbest_goals_asrs_" + goal +".arff", header, types, "dstc", data)
 																				
+def getWekaARFFBinarySwitch_ASR_Act_Score(featurefile, tests):
+	#Feature Set: Act with Name, System out, User Slot in
+	
+	#features = fio.LoadDict("res/train1a.dict")
+	features = fio.LoadDict("res/"+featurefile+"_name.dict")
+	
+	#tests = ['train1a', 'test1', 'test2', 'test3', 'test4']
+	
+	for test in tests:
+		filename = "res/"+test+"_summary.txt"
+		head, body = fio.readMatrix(filename, True)
+		
+		out_index = head.index('output acts')
+		
+		#asr_index = head.index('ASRs')
+		goal_index = head.index('recovery_goals')
+		goal_names = ['area', 'food', 'name', 'pricerange']
+		#goal_names = ['food']
+		sr_id_index = head.index('sr_id')
+		
+		asr_index = head.index('ASRs')
+		asr_score_index = head.index('ASR_Scores')
+		sr_id_index = head.index('sr_id')
+		
+		data = []
+		
+		for goal in goal_names:
+			data = []
+			
+			for i,row in enumerate(body):
+				out_act = row[out_index][1:-1]
+				
+				#ASRs = row[asr_index][1:-1].split('#')
+				acts = set( list(getAct(out_act, "out_", True)))
+				goals = row[goal_index][1:-1]
+				goaldict = getGoalsDict(goals)
+				sr_id = row[sr_id_index]
+				
+				ASRs = row[asr_index][1:-1].split('#')
+				ASR_Scores = row[asr_score_index][1:-1].split('#')
+				sr_id = row[sr_id_index]
+			
+				#asr = ASRs[0]
+				
+				#if True:
+				for i,asr in enumerate(ASRs):
+					row = []
+					
+					#asr = asr.replace("'","\\'")
+					
+					#hasFood = -1
+					#e_asr = ' ' + asr + ' '
+					#for food in foodnames:
+					#	if e_asr.find(food) != -1:
+					#		hasFood = 0
+					#		e_asr = e_asr.replace(food, ' FFFFD ')
+					#		#break
+					
+					#asr = e_asr.strip()
+					
+					if i>0: continue
+				
+					row.append(asr)
+					row.append(float(ASR_Scores[i]))
+					row.append(sr_id)
+					
+					for key in features.keys():
+						if key in acts:
+							row.append(1)
+						else:
+							row.append(0)
+					
+					#row.append(hasFood)
+							
+					if goal in goaldict:
+						if goal == 'name' or goal == 'food':
+							if goaldict[goal]=='dontcare':
+								row.append(goal + '.Yes.dontcare')
+							else:
+								row.append(goal + '.Yes')
+						else:
+							row.append(goal + '.Yes.'+goaldict[goal])
+					else:
+						row.append(goal + '.No')
+					
+					data.append(row)
+			
+			header =[]
+			header.append("ASR")
+			header.append("ASR_Score")
+			header.append("SR_ID")
+			
+			for key in features.keys():
+				header.append(key)
+			
+			#header.append("hasFood")
+			
+			goal = 'L' + goal
+
+			header.append(goal)
+			
+			types = []
+			types.append("String")
+			types = types + ['Continuous']
+			types.append('Category')
+			for key in features.keys():
+				types.append('Category')
+			
+			#types = types + ['Category']#hasFood
+				
+			types = types + ['Category']
+			
+			#fio.ArffWriter("res/"+test+"_nbest_goals_enrich_asrs_class_" + goal +".arff", header, types, "dstc", data)
+			fio.ArffWriter("res/"+test+"_asr_act_score_" + goal +".arff", header, types, "dstc", data)
+																				
 if (__name__ == '__main__'):
 						
 	#getMulanARFF_ActNgram("dstc2_train", ["dstc2_train", "dstc2_dev"])
@@ -1148,9 +1263,9 @@ if (__name__ == '__main__'):
 	#getMulanARFF_ASRs("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getMulanARFF_Enrich("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	#getMulanARFF_Enrich("dstc2_train", ["dstc2_train", "dstc2_test"])
-	#getWekaARFFBinarySwitch_ASRs("dstc2_train", ["dstc2_train", "dstc2_dev"])
-	#getWekaARFFBinarySwitch_ASRs("dstc2_traindev", ["dstc2_traindev", "dstc2_test"])
-	getWekaARFFBinarySwitch_ASRs("dstc2_traindev", ["dstc2_dev"])
-	getWekaARFFBinarySwitch_ASRs("dstc2_traindevtest", ["dstc2_test"])
+	getWekaARFFBinarySwitch_ASR_Act_Score("dstc2_train", ["dstc2_train", "dstc2_dev"])
+	getWekaARFFBinarySwitch_ASR_Act_Score("dstc2_traindev", ["dstc2_traindev", "dstc2_test"])
+	#getWekaARFFBinarySwitch_ASRs("dstc2_traindev", ["dstc2_dev"])
+	#getWekaARFFBinarySwitch_ASRs("dstc2_traindevtest", ["dstc2_test"])
 	#getMulanARFF_WizOz("dstc2_train", ["dstc2_train", "dstc2_dev"])
 	print "Done"

@@ -15,7 +15,8 @@ for %%m in (nbest_goals) do (
 
 goto after_summary
 set m=summary
-for %%t in (dstc2_test) do (
+rem for %%t in (dstc2_train dstc2_dev dstc2_traindev dstc2_test) do (
+for %%t in (dstc2_traindev) do (
 	python getSummary.py --dataset=%%t --dataroot=%root% --logfile=%outdir%%%t_%m%.txt
 )
 :after_summary
@@ -40,13 +41,22 @@ for %%t in (dstc2_train dstc2_dev) do (
 )
 :after_CombineNBest
 
-goto after_firstCorrect
+goto after_CombineNBest_Method
+set m=CombineNBest_Method
+for %%t in (dstc2_train dstc2_dev dstc2_test) do (
+	for %%k in (0 1 2 3 4 5 6 7 8 9 10) do (
+	python CombineNBest.py --dataset=%%t --dataroot=%root% --goal_area=%outdir%%%t_request_asr_act_score_all_ngram.arff.label.matrix --topK=%%k
+	)
+)
+:after_CombineNBest_Method
+
+rem goto after_firstCorrect
 set m=firstcorrect_top1
 for %%t in (dstc2_train dstc2_dev) do (
 	for %%k in (1) do (
 		python FirstCorrectModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --labelfile=%outdir%%%t_H1_actngram_binaryswitch.label --topK=%%k --methodfile=%outdir%%%t_method_actwithNamengram_mindchange.label --requestfile=%outdir%%%t_request_actngram_slot_ngram.arff.label
-		python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
-		python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
+		rem python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
+		rem python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
 	)
 )
 
@@ -68,6 +78,18 @@ for %%t in (dstc2_train dstc2_dev) do (
 	)
 )
 :after_binaryswitch
+
+goto after_asr_act_score
+set m=nbest_goals
+for %%t in (dstc2_train dstc2_dev dstc2_test) do (
+	for %%k in (0 1 2 3 4 5 6 7 8 9 10) do (
+	python NbestModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --methodfile=%outdir%%%t_method_asr_act_score_mindchange_all.label.%%k.combine --requestfile=%outdir%%%t_request_asr_act_score_all_ngram.arff.label.matrix.%%k.combine --goal_area=%outdir%%%t_asr_act_score_Larea_all.label --goal_food=%outdir%%%t_asr_act_score_Lfood_all.label --goal_name=%outdir%%%t_asr_act_score_Lname_all.label --goal_pricerange=%outdir%%%t_asr_act_score_Lpricerange_all.label --topK=%%k
+	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.%%k.txt
+	)
+)
+
+:after_asr_act_score
 
 goto after_nbestmodel_goals
 set m=nbest_goals
@@ -91,12 +113,13 @@ for %%t in (dstc2_test) do (
 goto after_2waymodel_error
 set m=2waymodel_error
 set m2=nbest_goals_hwu_food
-for %%t in (dstc2_train dstc2_dev dstc2_test) do (
+rem for %%t in (dstc2_train dstc2_dev dstc2_traindev dstc2_test) do (
+for %%t in (dstc2_traindev) do (
 	python get2wayError.py --trackfile=%outdir%%m2%_%%t_track.json --summaryfile=%outdir%%%t_summary.txt --logfile=%outdir%%m2%_%%t_error.txt
 )
 :after_2waymodel_error
 
-rem goto after_nbestmodel_goals_hwu_food
+goto after_nbestmodel_goals_hwu_food
 set m=nbest_goals_focus_food
 for %%t in (dstc2_train dstc2_dev) do (
 	for %%k in (0 1 2 3 4 5 6 7 8 9 10) do (

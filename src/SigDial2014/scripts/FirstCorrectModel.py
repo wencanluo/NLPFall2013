@@ -171,12 +171,18 @@ def main():
 	
 	tracker = Tracker()
 	
+	slu_total_count = 0
+	
+	call_count = 0
+	
 	for call in dataset :
+		call_count = call_count + 1
 		this_session = {"session-id":call.log["session-id"], "turns":[]}
 		tracker.reset()
 		for turn, _ in call :
 			turn_count = turn_count + 1
 			slu_count = len(turn['input']['live']['slu-hyps'])
+			slu_total_count = slu_total_count + slu_count
 			
 			ranks = labels[label_count:label_count + slu_count]
 			label_count = label_count + slu_count
@@ -193,6 +199,10 @@ def main():
 	track["wall-time"] = elapsed_time
    
 	json.dump(track, track_file,indent=4)
+	
+	print "call", call_count
+	print "turn:", turn_count
+	print "slu", slu_total_count
 	
 if __name__ == '__main__':
 	main()

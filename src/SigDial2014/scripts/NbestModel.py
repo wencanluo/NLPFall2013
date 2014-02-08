@@ -219,7 +219,7 @@ class Tracker(object):
 			else:
 				for i in range(len(request_slotnames)):
 					slot = request_slotnames[i]
-					if request_label[i] == 1:
+					if request_label[i] == '1':
 						requested_slot_stats[slot] += score
 					else:
 						if slot in hyps["requested-slots"]:
@@ -350,7 +350,8 @@ def main():
 		method_labels = [item[1] for item in body]
 	
 	if args.requestfile != None:
-		request_labels = fio.MulanOutReader(args.requestfile)
+		#request_labels = fio.MulanOutReader(args.requestfile)
+		head, request_labels = fio.readMatrix(args.requestfile, True)
 	
 	if args.goal_area != None and args.goal_food != None and args.goal_name != None and args.goal_pricerange != None:
 		head, body = fio.readMatrix(args.goal_area, True)
