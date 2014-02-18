@@ -3,6 +3,19 @@ set ontology=config/ontology_dstc2.json
 set outdir=res/
 set CRFDir=D:/NLP/CRF++-0.58/
 
+rem goto after_2waymodel_ff
+set m=2waymodel
+for %%t in (dstc2_test) do (
+	rem for %%f in (asr_act_score rawscore noasr noid noscore nosystem noslu) do (
+	for %%f in (asr_act_score) do (
+		python 2wayModelFood.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --methodfile=%outdir%%%t_method_actwithNamengram_mindchange.label --requestfile=%outdir%%%t_request_%%f_ngram.arff.label --goal_area=%outdir%%%t_nbest_goals_asr_Larea.label --goal_food=%outdir%%%t_asr_act_score_topbyfood_Lfood.label --goal_name=%outdir%%%t_nbest_goals_asr_Lname.label --goal_pricerange=%outdir%%%t_nbest_goals_asr_Lpricerange.label
+		python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%f_%%t_score.csv
+		python report.py --scorefile=%outdir%%m%_%%f_%%t_score.csv > %outdir%%m%_%%f_%%t_score.txt
+		)
+	)
+)
+:after_2waymodel_ff
+
 goto after_convert_track_prediction
 rem for %%m in (baseline baseline_focus HWUbaseline) do (
 for %%m in (nbest_goals) do (
@@ -15,8 +28,8 @@ for %%m in (nbest_goals) do (
 
 goto after_summary
 set m=summary
-rem for %%t in (dstc2_train dstc2_dev dstc2_traindev dstc2_test) do (
-for %%t in (dstc2_traindev) do (
+for %%t in (dstc2_train dstc2_dev dstc2_test) do (
+rem for %%t in (dstc2_traindev) do (
 	python getSummary.py --dataset=%%t --dataroot=%root% --logfile=%outdir%%%t_%m%.txt
 )
 :after_summary
@@ -46,11 +59,12 @@ set m=CombineNBest_Method
 for %%t in (dstc2_train dstc2_dev dstc2_test) do (
 	for %%k in (0 1 2 3 4 5 6 7 8 9 10) do (
 	python CombineNBest.py --dataset=%%t --dataroot=%root% --goal_area=%outdir%%%t_request_asr_act_score_all_ngram.arff.label.matrix --topK=%%k
+	python CombineNBest.py --dataset=%%t --dataroot=%root% --goal_area=%outdir%%%t_method_asr_act_score_mindchange_all.label --topK=%%k
 	)
 )
 :after_CombineNBest_Method
 
-rem goto after_firstCorrect
+goto after_firstCorrect
 set m=firstcorrect_top1
 for %%t in (dstc2_train dstc2_dev) do (
 	for %%k in (1) do (
@@ -80,7 +94,7 @@ for %%t in (dstc2_train dstc2_dev) do (
 :after_binaryswitch
 
 goto after_asr_act_score
-set m=nbest_goals
+set m=nbest_goals_all
 for %%t in (dstc2_train dstc2_dev dstc2_test) do (
 	for %%k in (0 1 2 3 4 5 6 7 8 9 10) do (
 	python NbestModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --methodfile=%outdir%%%t_method_asr_act_score_mindchange_all.label.%%k.combine --requestfile=%outdir%%%t_request_asr_act_score_all_ngram.arff.label.matrix.%%k.combine --goal_area=%outdir%%%t_asr_act_score_Larea_all.label --goal_food=%outdir%%%t_asr_act_score_Lfood_all.label --goal_name=%outdir%%%t_asr_act_score_Lname_all.label --goal_pricerange=%outdir%%%t_asr_act_score_Lpricerange_all.label --topK=%%k
@@ -231,14 +245,10 @@ for %%t in (dstc2_test) do (
 
 goto after_HWUbaseline
 set m=HWUbaseline
-for %%t in (dstc2_train dstc2_dev) do (
+for %%t in (dstc2_train dstc2_dev dstc2_test) do (
 	python baseline_HWU.py --dataset=%%t --dataroot=%root% --ontology=%ontology% --trackfile=%outdir%%m%_%%t_track.json
 	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
 	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
-)
-
-for %%t in (dstc2_test) do (
-	python baseline_HWU.py --dataset=%%t --dataroot=%root% --ontology=%ontology% --trackfile=%outdir%%m%_%%t_track.json
 )
 :after_HWUbaseline
 
@@ -253,9 +263,9 @@ for %%t in (dstc2_test) do (
 
 goto after_baseline_focus
 set m=baseline_focus
-for %%t in (dstc2_test) do (
+for %%t in (dstc2_train dstc2_dev dstc2_test) do (
 	python baseline.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --focus=True
-	rem python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
-	rem python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
+	python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
 )
 :after_baseline_focus

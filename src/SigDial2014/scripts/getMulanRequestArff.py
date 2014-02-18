@@ -213,7 +213,8 @@ def getMulanARFF_ASR_Act_Score(featurefile, tests):
 			in_act = row[in_index][1:-1]
 			asr = row[asr_index][1:-1]
 			
-			acts = set( list(getAct(out_act, "out_", True)) + list(getAct(in_act, "in_", True)))
+			#acts = set( list(getAct(out_act, "out_", True)) + list(getAct(in_act, "in_", True)))
+			acts = set( list(getAct(out_act, "out_", True)))
 			
 			requests = row[request_index][1:-1].split(';')
 			
@@ -225,7 +226,7 @@ def getMulanARFF_ASR_Act_Score(featurefile, tests):
 				
 				row = []
 				
-				#if i>0: continue
+				if i>0: continue
 				
 				row.append(asr)
 				row.append(float(ASR_Scores[i]))
@@ -236,8 +237,6 @@ def getMulanARFF_ASR_Act_Score(featurefile, tests):
 						row.append(1)
 					else:
 						row.append(0)
-						
-				#row.append()
 				
 				for label in labels:
 					if label in requests:
@@ -253,7 +252,6 @@ def getMulanARFF_ASR_Act_Score(featurefile, tests):
 		header.append("SR_ID")
 		for key in features.keys():
 			header.append(key)
-		#header = header + ['@@Class@@']
 		for i in range(len(labels)):
 			labels[i] = 'L' + labels[i]
 		header = header + labels
@@ -268,7 +266,7 @@ def getMulanARFF_ASR_Act_Score(featurefile, tests):
 		for label in labels:
 			types = types + ['Category']
 		#fio.ArffWriter("res/"+test+"_request_actngram.arff", header, types, "dstc", data)
-		fio.MulanWriter("res/"+test+"_request_asr_act_score_all", labels, header, types, "dstc", data)
+		fio.MulanWriter("res/"+test+"_request_noslu", labels, header, types, "dstc", data)
 														
 if (__name__ == '__main__'):
 	getMulanARFF_ASR_Act_Score("dstc2_train", ["dstc2_train", "dstc2_dev"])

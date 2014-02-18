@@ -1214,7 +1214,18 @@ def getWekaARFFBinarySwitch_ASR_Act_Score(featurefile, tests):
 							row.append(0)
 					
 					#row.append(hasFood)
-							
+					if goal in goaldict:
+						if goal == 'name':
+							if goaldict[goal]=='dontcare':
+								row.append(goal + '.Yes.dontcare')
+							else:
+								row.append(goal + '.Yes')
+						else:
+							row.append(goal + '.Yes.'+goaldict[goal])
+					else:
+						row.append(goal + '.No')
+						
+					'''		
 					if goal in goaldict:
 						if goal == 'name' or goal == 'food':
 							if goaldict[goal]=='dontcare':
@@ -1225,7 +1236,7 @@ def getWekaARFFBinarySwitch_ASR_Act_Score(featurefile, tests):
 							row.append(goal + '.Yes.'+goaldict[goal])
 					else:
 						row.append(goal + '.No')
-					
+					'''
 					data.append(row)
 			
 			header =[]
@@ -1254,7 +1265,7 @@ def getWekaARFFBinarySwitch_ASR_Act_Score(featurefile, tests):
 			types = types + ['Category']
 			
 			#fio.ArffWriter("res/"+test+"_nbest_goals_enrich_asrs_class_" + goal +".arff", header, types, "dstc", data)
-			fio.ArffWriter("res/"+test+"_asr_act_score_" + goal +".arff", header, types, "dstc", data)
+			fio.ArffWriter("res/"+test+"_asr_act_score_topbyfood_" + goal +".arff", header, types, "dstc", data)
 																				
 if (__name__ == '__main__'):
 						

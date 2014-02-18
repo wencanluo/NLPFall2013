@@ -402,6 +402,20 @@ def getCorrectSLUHypRank_H3(log_turn, label_turn, last_labelturn = None):
 		
 	return -1
 
+def getCorrectSLURequestRank(log_turn, label_turn, last_labelturn):
+	request_label = label_turn['requested-slots']
+	if len(request_label) == 0: return -2
+	
+	for k, hyps in enumerate(log_turn['input']['live']['slu-hyps']):
+		correct = True
+		request = []
+		for hyp in hyps['slu-hyp']:
+			if hyp['act'] == 'request':
+				request.append(hyp['slots'][0][1])
+		if(sorted(request) == sorted(request_label)):
+			return k
+	return -1
+
 def getLabels(label_turn):#goal is a dict; method is a string; request is a list
 	if label_turn == None:
 		return {}, u'none', []
@@ -425,7 +439,10 @@ def getRecoveryMethod(log_turn, label_turn, last_labelturn):
 	
 	if method_label != p_method_label:
 		return method_label
+	else:
+		return "none"
 	
+	'''
 	slu_hyps = baseline.Uacts(log_turn)
 	if len(slu_hyps) > 0:
 		n_goal_label, n_method_label, n_request_label = getNewOutput(mact, slu_hyps[0], label_turn, last_labelturn)
@@ -435,6 +452,7 @@ def getRecoveryMethod(log_turn, label_turn, last_labelturn):
 		return "none"
 	else:
 		return method_label
+	'''
 	
 	return "impossible"
 
@@ -564,6 +582,8 @@ def main(argv):
 				rank = getCorrectSLUHypRank_H1(log_turn, label_turn)
 				rank_H2 = getCorrectSLUHypRank_H2(log_turn, label_turn, last_labelturn)
 				rank_H3 = getCorrectSLUHypRank_H3(log_turn, label_turn, last_labelturn)
+				rank_request = getCorrectSLURequestRank(log_turn, label_turn, last_labelturn)
+				num_request = len(request_slots)
 				
 				recovery_method = getRecoveryMethod(log_turn, label_turn, last_labelturn)
 				recovery_goals = getRecoveryGoals(log_turn, label_turn, last_labelturn)
@@ -616,6 +636,8 @@ def main(argv):
 				row.append(rank)
 				row.append(rank_H2)
 				row.append(rank_H3)
+				row.append(rank_request)
+				row.append(num_request)
 				#row.append(quote(correct_slu))
 				row.append(quote(recovery_method))
 				row.append(quote(strdict(recovery_goals)))
@@ -672,6 +694,10 @@ def main(argv):
 	header.append("rank")
 	header.append("rank_H2")
 	header.append("rank_H3")
+	
+	header.append("rank_request")
+	header.append("num_request")
+	
 	header.append("recovery_method")
 	header.append("recovery_goals")
 	

@@ -124,7 +124,7 @@ def getSlotDict(file):
 	return dict
 
 def getSlotValuesDistribution():
-	tests = ["dstc2_train", "dstc2_dev"]
+	tests = ["dstc2_train", "dstc2_dev", "dstc2_test"]
 	
 	dicts = []
 	for test in tests:
@@ -301,7 +301,83 @@ def checkRequested():
 			
 			print dict['Yes.Yes'], "\t", dict['Yes.No']
 			print dict['No.Yes'], "\t", dict['No.No']
+			
+def getRequestRankDistribution():
+	tests = ["dstc2_train", "dstc2_dev", "dstc2_test"]
 
+	for test in tests:
+		dict = {}
+		
+		max = 0
+		
+		print test
+		filename = "res/"+test+"_summary.txt"
+		
+		head, body = fio.readMatrix(filename, True)
+		
+		rank_index = head.index('rank_request')
+		num_index = head.index('num_request')
+		
+		for i,row in enumerate(body):
+			rank = int(row[rank_index])
+			num = int(row[num_index])
+			if num == 0: continue
+			max = num if num > max else max
+			
+			if rank not in dict:
+				dict[rank] = defaultdict(int)
+			
+			if num == 1:
+				dict[rank][1] = dict[rank][1] + 1
+			else:
+				dict[rank][2] = dict[rank][2] + 1
+		
+		'''
+		for rank in range(0,10):
+			print rank+1, "\t",
+			if rank not in dict:
+				print 0,"\t",0
+			else:
+				print dict[rank][1], "\t",dict[rank][2]
+		print -1, "\t",
+		print dict[-1][1], "\t",dict[-1][2]
+		'''
+		print max
+
+def getMethodChange():
+	tests = ["dstc2_train", "dstc2_dev", "dstc2_test"]
+
+	for test in tests:
+		dict = {}
+		
+		max = 0
+		
+		print test
+		filename = "res/"+test+"_summary.txt"
+		
+		head, body = fio.readMatrix(filename, True)
+		
+		n = 0
+		
+		count = 0
+		
+		turn_index= head.index('turn_index')
+		method_index = head.index('method_label')
+		num_index = head.index('num_request')
+		
+		for i,row in enumerate(body):
+			turn_id = row[turn_index]
+			method = row[method_index][1:-1]
+			
+			count = count + 1
+			if turn_id == 0:
+				n = n + 1
+			else:
+				if row[method_index][1:-1] != body[i-1][method_index][1:-1]:
+					n = n + 1
+		
+		print n, "\t", count
+		
 def getARCombinationCount():
 	tests = ["dstc2_train", "dstc2_dev", "dstc2_test"]
 	#tests = ["dstc2_test"]
@@ -438,10 +514,12 @@ if (__name__ == '__main__'):
 	#checkDeny()
 	#getGoalsfromTracker()
 	#getSelfTraining()
-	#getSlotValuesDistribution()
+	getSlotValuesDistribution()
 	#checkSlotOntology()
 	#checkRequested()
-	getARCombinationCount()
+	#getARCombinationCount()
+	#getRequestRankDistribution()
+	#getMethodChange()
 	
 	#sys.stdout = SavedStdOut
 	
