@@ -122,14 +122,14 @@ public class SigDial2014GoalClassifier {
 	 */
 	public static void main(String[] args) throws Exception {
 		PrintStream oldout = System.out;
-		File f = new File("res_goals_asr_act_score_all_area.txt");		
+		File f = new File("res_goals_asr_act_score_topbyfood_all.txt");		
 		System.setOut(new PrintStream(f));
 		
 		SigDial2014GoalClassifier classifier = new SigDial2014GoalClassifier();
 
 		//String[] Goals = {"area", "food", "name", "pricerange"};
 		//String[] Goals = {"area", "food", "name", "pricerange"};
-		String[] Goals = {"area"};
+		String[] Goals = {"food"};
 		//String[] Goals = {"area", "pricerange"};
 		
 		//Act + Ngram, MindChange
@@ -137,11 +137,11 @@ public class SigDial2014GoalClassifier {
 			String train = "../SigDial2014/scripts/res/dstc2_train_asr_act_score_L" + goal;
 			String trainall = "../SigDial2014/scripts/res/dstc2_train_asr_act_score_L" + goal + "_all";
 			String dev = "../SigDial2014/scripts/res/dstc2_dev_asr_act_score_L" + goal + "_all";
-			String traindev = "../SigDial2014/scripts/res/dstc2_traindev_asr_act_score_L" + goal;
+			String traindev = "../SigDial2014/scripts/res/dstc2_traindev_asr_act_score_topbyfood_L" + goal + "";
 			//String traindevtest = "../SigDial2014/scripts/res/dstc2_traindevtest_asr_act_score_self_L" + goal;
-			String test = "../SigDial2014/scripts/res/dstc2_test_asr_act_score_L" + goal + "_all";
-			classifier.ClassifierNgram(train, trainall);
-			classifier.ClassifierNgram(train, dev);
+			String test = "../SigDial2014/scripts/res/dstc2_test_asr_act_score_topbyfood_L" + goal + "";
+			//classifier.ClassifierNgram(trainall, trainall);
+			//classifier.ClassifierNgram(trainall, dev);
 			classifier.ClassifierNgram(traindev, test);
 		}
 		

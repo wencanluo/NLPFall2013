@@ -167,11 +167,11 @@ public class SigDial2014MethodClassifier {
 		String train_all = "../SigDial2014/scripts/res/dstc2_train_method_asr_act_score_mindchange_all";
 		//String dev = "../SigDial2014/scripts/res/dstc2_dev_method_actwithNamengram_mindchange";
 		String dev = "../SigDial2014/scripts/res/dstc2_dev_method_asr_act_score_mindchange_all";
-		String traindev = "../SigDial2014/scripts/res/dstc2_traindev_method_asr_act_score_mindchange";
+		String traindev = "../SigDial2014/scripts/res/dstc2_traindev_method_asr_act_score_mindchange_all";
 		String test = "../SigDial2014/scripts/res/dstc2_test_method_asr_act_score_mindchange_all";
 		
-		classifier.ClassifierNgram(train, train_all);
-		classifier.ClassifierNgram(train, dev);
+		classifier.ClassifierNgram(train_all, train_all);
+		classifier.ClassifierNgram(train_all, dev);
 		classifier.ClassifierNgram(traindev, test);
 		
 		System.setOut(oldout);

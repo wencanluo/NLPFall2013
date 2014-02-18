@@ -1,72 +1,72 @@
-train:../SigDial2014/scripts/res/dstc2_train_method_asr_act_score_mindchange
+train:../SigDial2014/scripts/res/dstc2_train_method_asr_act_score_mindchange_all
 test:../SigDial2014/scripts/res/dstc2_train_method_asr_act_score_mindchange_all
-Train: 11677
+Train: 116767
 Test: 116767
 Classifier is done!
 === Detailed Accuracy By Class ===
 
                TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
-                 0.853     0.008      0.884     0.853     0.868      0.974      0.789    byalternatives
-                 0.958     0.014      0.971     0.958     0.965      0.984      0.955    byconstraints
-                 0.633     0          1         0.633     0.776      0.928      0.638    byname
-                 0.975     0.002      0.989     0.975     0.982      0.997      0.981    finished
-                 0.971     0.041      0.952     0.971     0.962      0.966      0.939    none
-Weighted Avg.    0.96      0.024      0.96      0.96      0.96       0.977      0.941
+                 0.86      0.007      0.898     0.86      0.879      0.979      0.808    byalternatives
+                 0.962     0.014      0.972     0.962     0.967      0.986      0.958    byconstraints
+                 0.822     0          1         0.822     0.902      0.977      0.824    byname
+                 0.976     0.002      0.988     0.976     0.982      0.998      0.981    finished
+                 0.973     0.038      0.955     0.973     0.964      0.968      0.943    none
+Weighted Avg.    0.962     0.023      0.962     0.962     0.962      0.979      0.945
 
 === Confusion Matrix ===
 
      a     b     c     d     e   <-- classified as
-  6247   433     0     0   640 |     a = byalternatives
-   119 37968     0    10  1520 |     b = byconstraints
-     0     0    57     0    33 |     c = byname
-     9    11     0 16151   389 |     d = finished
-   693   671     0   177 51639 |     e = none
+  6296   432     0     0   592 |     a = byalternatives
+    68 38106     0    10  1433 |     b = byconstraints
+     0     0    74     0    16 |     c = byname
+    10    11     0 16162   377 |     d = finished
+   636   636     0   180 51728 |     e = none
 
-train:../SigDial2014/scripts/res/dstc2_train_method_asr_act_score_mindchange
+train:../SigDial2014/scripts/res/dstc2_train_method_asr_act_score_mindchange_all
 test:../SigDial2014/scripts/res/dstc2_dev_method_asr_act_score_mindchange_all
-Train: 11677
+Train: 116767
 Test: 39340
 Classifier is done!
 === Detailed Accuracy By Class ===
 
                TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
-                 0.732     0.01       0.834     0.732     0.779      0.939      0.668    byalternatives
-                 0.933     0.025      0.946     0.933     0.939      0.971      0.917    byconstraints
-                 0         0          0         0         0          0.703      0.005    byname
-                 0.974     0.004      0.971     0.974     0.972      0.995      0.962    finished
-                 0.956     0.068      0.93      0.956     0.943      0.944      0.912    none
-Weighted Avg.    0.935     0.042      0.932     0.935     0.933      0.958      0.903
+                 0.739     0.01       0.838     0.739     0.785      0.943      0.677    byalternatives
+                 0.938     0.026      0.943     0.938     0.941      0.972      0.919    byconstraints
+                 0         0          0         0         0          0.611      0.003    byname
+                 0.973     0.004      0.971     0.973     0.972      0.995      0.962    finished
+                 0.954     0.065      0.933     0.954     0.943      0.944      0.913    none
+Weighted Avg.    0.936     0.041      0.933     0.936     0.934      0.959      0.905
 
 === Confusion Matrix ===
 
      a     b     c     d     e   <-- classified as
-  1800   263     0     0   397 |     a = byalternatives
-    63 11682     0     0   775 |     b = byconstraints
-     0     0     0     0    80 |     c = byname
-     2    10     0  5016   122 |     d = finished
-   294   400     1   151 18284 |     e = none
+  1818   277     0     0   365 |     a = byalternatives
+    36 11740     0     0   744 |     b = byconstraints
+     0     1     0     0    79 |     c = byname
+     0    10     0  5010   130 |     d = finished
+   315   417     0   149 18249 |     e = none
 
-train:../SigDial2014/scripts/res/dstc2_traindev_method_asr_act_score_mindchange
+train:../SigDial2014/scripts/res/dstc2_traindev_method_asr_act_score_mindchange_all
 test:../SigDial2014/scripts/res/dstc2_test_method_asr_act_score_mindchange_all
-Train: 15611
+Train: 156107
 Test: 98900
 Classifier is done!
 === Detailed Accuracy By Class ===
 
                TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area   PRC Area  Class
-                 0.797     0.009      0.854     0.797     0.824      0.959      0.728    byalternatives
-                 0.951     0.018      0.968     0.951     0.96       0.979      0.949    byconstraints
-                 0         0          0         0         0          0.74       0.004    byname
-                 0.969     0.002      0.985     0.969     0.977      0.995      0.974    finished
-                 0.97      0.049      0.943     0.97      0.956      0.96       0.929    none
-Weighted Avg.    0.952     0.03       0.951     0.952     0.951      0.971      0.929
+                 0.805     0.008      0.858     0.805     0.83       0.962      0.737    byalternatives
+                 0.943     0.02       0.965     0.943     0.954      0.977      0.945    byconstraints
+                 0.033     0          0.176     0.033     0.056      0.788      0.006    byname
+                 0.969     0.003      0.98      0.969     0.974      0.995      0.97     finished
+                 0.966     0.055      0.937     0.966     0.951      0.956      0.921    none
+Weighted Avg.    0.947     0.033      0.947     0.947     0.947      0.968      0.924
 
 === Confusion Matrix ===
 
      a     b     c     d     e   <-- classified as
-  4693   520     0     0   677 |     a = byalternatives
-   202 34585    12    10  1541 |     b = byconstraints
-     0    10     0     0    80 |     c = byname
-     0    20     0 11174   336 |     d = finished
-   603   598     2   159 43678 |     e = none
+  4741   540     0     8   601 |     a = byalternatives
+   117 34289    11    13  1920 |     b = byconstraints
+     0    10     3     0    77 |     c = byname
+     0    20     0 11172   338 |     d = finished
+   670   657     3   208 43502 |     e = none
 

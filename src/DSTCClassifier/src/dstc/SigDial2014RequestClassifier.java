@@ -73,21 +73,29 @@ public class SigDial2014RequestClassifier {
 	 */
 	public static void main(String[] args) throws Exception {
 		PrintStream oldout = System.out;
-		File f = new File("res_request_asr_act_score_all2.txt");		
+		File f = new File("res_request_ff.txt");		
 		System.setOut(new PrintStream(f));
 		
 		SigDial2014RequestClassifier classifier = new SigDial2014RequestClassifier();
 		
 		//Act + Ngram, MindChange
-		String train = "../SigDial2014/scripts/res/dstc2_train_request_asr_act_score";
+		/*String train = "../SigDial2014/scripts/res/dstc2_train_request_asr_act_score";
 		String trainall = "../SigDial2014/scripts/res/dstc2_train_request_asr_act_score_all";
 		String dev = "../SigDial2014/scripts/res/dstc2_dev_request_asr_act_score_all";
-		String traindev = "../SigDial2014/scripts/res/dstc2_traindev_request_asr_act_score";
+		String traindev = "../SigDial2014/scripts/res/dstc2_traindev_request_asr_act_score_all";
 		String test = "../SigDial2014/scripts/res/dstc2_test_request_asr_act_score_all";
 		
-		//classifier.ClassifierNgram(train, trainall);
-		//classifier.ClassifierNgram(train, dev);
-		classifier.ClassifierNgram(traindev, test);
+		classifier.ClassifierNgram(trainall, trainall);
+		classifier.ClassifierNgram(trainall, dev);
+		classifier.ClassifierNgram(traindev, test);*/
+		
+		String[] ft = {"asr_act_score","rawscore","noasr","noid","noscore","nosystem","noslu"};
+		for(String ff:ft){
+			String traindev = "../SigDial2014/scripts/res/dstc2_traindev_request_"+ff;
+			String test = "../SigDial2014/scripts/res/dstc2_test_request_"+ff;
+			
+			classifier.ClassifierNgram(traindev, test);
+		}
 		
 		System.setOut(oldout);
 		
