@@ -368,6 +368,8 @@ def getWekaARFF_ASRs_NgramRecovery(featurefile, tests):
 		in_index = head.index('top slu')
 		#asr_index = head.index('top asr')
 		asr_index = head.index('ASRs')
+		#asr_index = head.index('input trans')
+		
 		asr_score_index = head.index('ASR_Scores')
 		sr_id_index = head.index('sr_id')
 		
@@ -393,7 +395,7 @@ def getWekaARFF_ASRs_NgramRecovery(featurefile, tests):
 			
 			for i,asr in enumerate(ASRs):
 				row = []
-				#if i>0: continue
+				if i>0: continue
 				
 				row.append(asr)
 				row.append(float(ASR_Scores[i]))
@@ -425,7 +427,7 @@ def getWekaARFF_ASRs_NgramRecovery(featurefile, tests):
 		for key in features.keys():
 			types.append('Category')
 		types = types + ['Category']
-		fio.ArffWriter("res/"+test+"_method_asr_act_score_mindchange_all.arff", header, types, "dstc", data)
+		fio.ArffWriter("res/"+test+"_method_recovery.arff", header, types, "dstc", data)
 									
 if (__name__ == '__main__'):
 	#getWekaArff.getActList(["dstc2_train"], "dstc2_train", True)

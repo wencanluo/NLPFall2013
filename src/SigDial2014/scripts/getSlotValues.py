@@ -352,7 +352,7 @@ def getMethodChange():
 		
 		max = 0
 		
-		print test
+		#print test
 		filename = "res/"+test+"_summary.txt"
 		
 		head, body = fio.readMatrix(filename, True)
@@ -363,6 +363,7 @@ def getMethodChange():
 		
 		turn_index= head.index('turn_index')
 		method_index = head.index('method_label')
+		#method_index = head.index('recovery_method')
 		num_index = head.index('num_request')
 		
 		for i,row in enumerate(body):
@@ -370,7 +371,7 @@ def getMethodChange():
 			method = row[method_index][1:-1]
 			
 			count = count + 1
-			if turn_id == 0:
+			if turn_id == '0':
 				n = n + 1
 			else:
 				if row[method_index][1:-1] != body[i-1][method_index][1:-1]:
@@ -459,41 +460,11 @@ def getPrior():
 def getAccuracy():
 	goal_names = ['area', 'food', 'name', 'pricerange']
 	
-	for goal in goal_names:
+	for data in ['dstc2_dev', 'dstc2_test']:
 		print
-		for data in ['dstc2_dev']:
-			for method in ['baseline', 'baseline_focus', 'HWUbaseline']:
-				file = 'res/'+method+'_'+data+'_track.json.'+goal+'.label'
-				head, body = fio.readMatrix(file, True)
-				N = len(body)
-				n = 0.
-				for row in body:
-					if row[0] == row[1]:
-						n = n + 1
-				print data,"\t",method,'\t', goal, '\t', n/N
-				
-			for method in ['goals_enrich_more']:
-				file = 'res/'+data+'_'+method+'_L'+goal+'.label'
-				head, body = fio.readMatrix(file, True)
-				N = len(body)
-				n = 0.
-				for row in body:
-					if row[0] == row[1]:
-						n = n + 1
-				print data,"\t",method,'\t', goal, '\t', n/N
-	 		
-	 		for method in ['nbest_goals_enrich_asrs']:
-				file = 'res/'+data+'_'+method+'_L'+goal+'.label.combine'
-				head, body = fio.readMatrix(file, True)
-				N = len(body)
-				n = 0.
-				for row in body:
-					if row[0] == row[1]:
-						n = n + 1
-				print data,"\t",method,'\t', goal, '\t', n/N
-				
-			for method in ['voting']:
-				file = 'res/'+method+'_'+data+'.'+goal+'.label'
+		for goal in goal_names:
+			for method in ['baseline_focus', 'HWUbaseline', 'nbest_goals']:
+				file = 'res/'+method+'_'+data+'_track.json.'+goal+'.prediction'
 				head, body = fio.readMatrix(file, True)
 				N = len(body)
 				n = 0.
@@ -514,12 +485,12 @@ if (__name__ == '__main__'):
 	#checkDeny()
 	#getGoalsfromTracker()
 	#getSelfTraining()
-	getSlotValuesDistribution()
+	#getSlotValuesDistribution()
 	#checkSlotOntology()
 	#checkRequested()
 	#getARCombinationCount()
 	#getRequestRankDistribution()
-	#getMethodChange()
+	getMethodChange()
 	
 	#sys.stdout = SavedStdOut
 	

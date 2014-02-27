@@ -194,7 +194,8 @@ def getMulanARFF_ASR_Act_Score(featurefile, tests):
 		method_index = head.index('method_label')
 		request_index = head.index('request_slots')
 		
-		asr_index = head.index('ASRs')
+		#asr_index = head.index('ASRs')
+		asr_index = head.index('input trans')
 		asr_score_index = head.index('ASR_Scores')
 		sr_id_index = head.index('sr_id')
 		
@@ -213,8 +214,8 @@ def getMulanARFF_ASR_Act_Score(featurefile, tests):
 			in_act = row[in_index][1:-1]
 			asr = row[asr_index][1:-1]
 			
-			#acts = set( list(getAct(out_act, "out_", True)) + list(getAct(in_act, "in_", True)))
-			acts = set( list(getAct(out_act, "out_", True)))
+			acts = set( list(getAct(out_act, "out_", True)) + list(getAct(in_act, "in_", True)))
+			#acts = set( list(getAct(out_act, "out_", True)))
 			
 			requests = row[request_index][1:-1].split(';')
 			
@@ -266,7 +267,7 @@ def getMulanARFF_ASR_Act_Score(featurefile, tests):
 		for label in labels:
 			types = types + ['Category']
 		#fio.ArffWriter("res/"+test+"_request_actngram.arff", header, types, "dstc", data)
-		fio.MulanWriter("res/"+test+"_request_noslu", labels, header, types, "dstc", data)
+		fio.MulanWriter("res/"+test+"_request_trans", labels, header, types, "dstc", data)
 														
 if (__name__ == '__main__'):
 	getMulanARFF_ASR_Act_Score("dstc2_train", ["dstc2_train", "dstc2_dev"])

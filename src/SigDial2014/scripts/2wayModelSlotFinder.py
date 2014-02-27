@@ -164,7 +164,7 @@ def main():
 						help='Will look for corpus in <destroot>/<dataset>/...')
 	parser.add_argument('--trackfile',dest='trackfile',action='store',required=True,metavar='JSON_FILE',
 						help='File to write with tracker output')
-	parser.add_argument('--labelfile',dest='labelfile',action='store',required=True,metavar='TXT',
+	parser.add_argument('--labelfile',dest='labelfile',action='store',required=False,metavar='TXT',
 						help='File with 2-way prediction results')
 	parser.add_argument('--methodfile',dest='methodfile',action='store',required=False,metavar='TXT',
 						help='File with method prediction results')
@@ -181,12 +181,12 @@ def main():
 	
 	args = parser.parse_args()
 	
-	head, body = fio.readMatrix(args.labelfile, True)
-	labels = [item[1] for item in body]
+	#head, body = fio.readMatrix(args.labelfile, True)
+	#labels = [item[1] for item in body]
 	
 	if args.methodfile != None:
 		head, body = fio.readMatrix(args.methodfile, True)
-		method_labels = [item[1] for item in body]
+		method_labels = [item[0] for item in body]
 	
 	if args.requestfile != None:
 		request_labels = fio.MulanOutReader(args.requestfile)
@@ -220,7 +220,8 @@ def main():
 		for turn, label_turn in call :
 			turn_count = turn_count + 1
 			
-			rank = labels[turn_count]
+			#rank = labels[turn_count]
+			rank = 0
 			method = method_labels[turn_count] if args.methodfile != None else None
 			requests = request_labels[turn_count] if args.requestfile != None else None
 			goals = None

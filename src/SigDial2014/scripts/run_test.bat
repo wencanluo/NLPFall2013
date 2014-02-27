@@ -3,32 +3,65 @@ set ontology=config/ontology_dstc2.json
 set outdir=res/
 set CRFDir=D:/NLP/CRF++-0.58/
 
-rem goto after_2waymodel_ff
-set m=2waymodel
+rem goto after_2waymodel_method
+set m=2waymodel_method
+for %%t in (dstc2_test) do (
+	rem python 2wayModel.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --methodfile=%outdir%%%t_method_recovery.label --requestfile=%outdir%%%t_request_actngram_slot_ngram.arff.label --goal_area=%outdir%%%t_nbest_goals_asr_Larea.label --goal_food=%outdir%%%t_nbest_goals_asr_Lfood.label --goal_name=%outdir%%%t_nbest_goals_asr_Lname.label --goal_pricerange=%outdir%%%t_nbest_goals_asr_Lpricerange.label
+	
+	rem python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
+	python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
+)
+
+:after_2waymodel_method
+
+goto after_topline
+set m=topline3
+for %%t in (dstc2_test) do (
+	rem for %%k in (0 1 2 3 4 5 6 7 8 9 10) do (
+	for %%k in (10) do (
+	rem for %%k in (0) do (
+		python TopLine.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track_%%k.json --topK=%%k
+		python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track_%%k.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score_%%k.csv
+		python report.py --scorefile=%outdir%%m%_%%t_score_%%k.csv > %outdir%%m%_%%t_score_%%k.txt
+	)
+)
+:after_topline
+
+goto after_2waymodel_ff
+set m=decompose_topline
 for %%t in (dstc2_test) do (
 	rem for %%f in (asr_act_score rawscore noasr noid noscore nosystem noslu) do (
-	for %%f in (asr_act_score) do (
-		python 2wayModelFood.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --methodfile=%outdir%%%t_method_actwithNamengram_mindchange.label --requestfile=%outdir%%%t_request_%%f_ngram.arff.label --goal_area=%outdir%%%t_nbest_goals_asr_Larea.label --goal_food=%outdir%%%t_asr_act_score_topbyfood_Lfood.label --goal_name=%outdir%%%t_nbest_goals_asr_Lname.label --goal_pricerange=%outdir%%%t_nbest_goals_asr_Lpricerange.label
-		python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%f_%%t_score.csv
-		python report.py --scorefile=%outdir%%m%_%%f_%%t_score.csv > %outdir%%m%_%%f_%%t_score.txt
-		)
+	rem for %%f in (asr_act_score) do (
+		python 2wayModelSlotFinder.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --methodfile=%outdir%%%t_method_trans.label --requestfile=%outdir%%%t_request_trans_ngram.arff.label --goal_area=%outdir%%%t_trans_Larea.label --goal_food=%outdir%%%t_trans_Lfood.label --goal_name=%outdir%%%t_trans_Lname.label --goal_pricerange=%outdir%%%t_trans_Lpricerange.label
+		python score.py --dataset=%%t --dataroot=%root% --trackfile=%outdir%%m%_%%t_track.json --ontology=%ontology% --scorefile=%outdir%%m%_%%t_score.csv
+		python report.py --scorefile=%outdir%%m%_%%t_score.csv > %outdir%%m%_%%t_score.txt
+		rem )
 	)
 )
 :after_2waymodel_ff
 
+goto after_2waymodel_error
+set m=2waymodel_error
+set m2=decompose_topline
+rem for %%t in (dstc2_train dstc2_dev dstc2_traindev dstc2_test) do (
+for %%t in (dstc2_test) do (
+	python get2wayError.py --trackfile=%outdir%%m2%_%%t_track.json --summaryfile=%outdir%%%t_summary.txt --logfile=%outdir%%m2%_%%t_error.txt
+)
+:after_2waymodel_error
+
 goto after_convert_track_prediction
-rem for %%m in (baseline baseline_focus HWUbaseline) do (
-for %%m in (nbest_goals) do (
-	for %%t in (dstc2_train dstc2_dev dstc2_test) do (
-		rem python GetTrackFood.py --summaryfile=%outdir%%%t_summary.txt --trackfile=%outdir%%%m_%%t_track.json
-		python ConvertTrack.py --summaryfile=%outdir%%%t_summary.txt --trackfile=%outdir%%%m_%%t_track.json
+for %%m in (baseline_focus HWUbaseline nbest_goals) do (
+rem for %%m in (nbest_goals) do (
+	for %%t in (dstc2_dev dstc2_test) do (
+		python GetTrackFood.py --summaryfile=%outdir%%%t_summary.txt --trackfile=%outdir%%%m_%%t_track.json
+		rem python ConvertTrack.py --summaryfile=%outdir%%%t_summary.txt --trackfile=%outdir%%%m_%%t_track.json
 	)
 )
 :after_convert_track_prediction
 
 goto after_summary
 set m=summary
-for %%t in (dstc2_train dstc2_dev dstc2_test) do (
+for %%t in (dstc2_train dstc2_dev dstc2_traindev dstc2_test) do (
 rem for %%t in (dstc2_traindev) do (
 	python getSummary.py --dataset=%%t --dataroot=%root% --logfile=%outdir%%%t_%m%.txt
 )

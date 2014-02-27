@@ -239,7 +239,7 @@ class Topline2Tracker(object):
 			#if method != "none":
 			if method == method_label:
 				method_stats[method] = score
-			
+					
 			# goal_labels
 			#for slot in informed_goals:
 			for k, v in goal_label.items():
@@ -361,9 +361,10 @@ class Topline3Tracker(object):
 					#search v in the asr
 					if findTranscription(label_turn, v):
 						goal_stats[k][v] = score
-						print k, '=', v, '\t', "True"
+						#print k, '=', v, '\t', "True"
 					else:
-						print k, '=', v, '\t', "False"
+						pass
+						#print k, '=', v, '\t', "False"
 				
 		if len(method_stats) == 0:
 			method_stats[prev_method] = score
@@ -436,7 +437,7 @@ def main():
 
 	turn_count = -1
 	
-	tracker = Topline3Tracker()
+	tracker = Topline2Tracker()
 	
 	for call in dataset :
 		this_session = {"session-id":call.log["session-id"], "turns":[]}
